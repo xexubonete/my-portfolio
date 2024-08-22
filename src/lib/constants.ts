@@ -9,7 +9,7 @@ export const loaderAnimation = [
 export const LINKS = {
   github: 'https://github.com/xexubonete',
   linkedin: 'https://www.linkedin.com/in/jesus-bonete-sanchez/',
-   mail: 'mailto:xexubonete@gmail.com',
+  mail: 'mailto:xexubonete@gmail.com',
   instagram: 'https://www.instagram.com/xexubonete/',
   // medium: 'https://ladvace.medium.com/',
   // discord: 'https://discordapp.com/users/163300027618295808',
@@ -83,8 +83,7 @@ export const EXPERIENCE = [
     position: '.NET Developer',
     start: '2023',
     end: 'Current',
-    tasks: [
-    ],
+    tasks: [],
   },
   {
     company: 'NTT DATA',
@@ -93,8 +92,7 @@ export const EXPERIENCE = [
     position: 'Software Developer',
     start: '2022',
     end: '2023',
-    tasks: [
-    ],
+    tasks: [],
   },
   {
     company: 'NTT DATA',
@@ -103,7 +101,6 @@ export const EXPERIENCE = [
     position: 'Junior Developer',
     start: '2022',
     end: '2023',
-    tasks: [
-    ],
+    tasks: [],
   },
 ]
