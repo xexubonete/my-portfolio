@@ -11,7 +11,6 @@ import ExperienceCard from '../components/sections/ExperienceCard.astro'
 import TattooCard from '../components/sections/TattooCard.astro'
 import StudyCard from '../components/sections/StudyCard.astro'
 //
-import { motion, AnimatePresence } from 'framer-motion'
 ---
 
 <script>
@@ -24,12 +23,12 @@ import { motion, AnimatePresence } from 'framer-motion'
     loaderAnimation,
     [
       cards,
-      { y: ['40%', '0%'], opacity: [0, 1] },
+      { y: ['60%', '0%'], opacity: [0, 1] },
       {
         at: '-0.1',
         duration: 0.4,
-        delay: stagger(0.3),
-        easing: spring({ velocity: 100, stiffness: 50, damping: 10 }),
+        delay: stagger(0.07),
+        easing: spring({ velocity: 0.1, stiffness: 100, damping: 7 }),
       },
     ],
   ]
