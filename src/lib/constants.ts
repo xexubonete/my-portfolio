@@ -57,8 +57,8 @@ export const STUDIES = [
   },
   {
     title: '...',
-    institution: 'Platzi',
-    link: 'https://platzi.com/',
+    institution: 'Dometrain',
+    link: 'https://dometrain.com/',
     date: '2018 - 2022',
   },
   {
@@ -92,7 +92,18 @@ export const EXPERIENCE = [
     position: 'Software Developer',
     start: '2022',
     end: '2023',
-    tasks: [],
+    tasks: [
+      'Solo maintenance of corrective service.',
+      'Direct communication with the client.',
+      'Analysis, coding, and deployment of fixes.',
+      'Testing and validation of functionalities across the application.',
+      'Proposal of new features.',
+      'Use of API REST.',
+      'Experience with .NET Core 3.1.',
+      'Experience with Entity Framework 3.1.',
+      'Experience with Azure DevOps.',
+      'Experience with Git.'
+    ],
   },
   {
     company: 'NTT DATA',
@@ -101,6 +112,16 @@ export const EXPERIENCE = [
     position: 'Junior Developer',
     start: '2022',
     end: '2023',
-    tasks: [],
+    tasks: [
+    'Creating APIs in .NET C#.',
+    'Experience with .NET Framework 6.0.',
+    'Experience with .NET Core 6.0.',
+    'Postman requests.',
+    'Experience with GitHub.',
+    'Development of ASP classic applications.',
+    'Development of SQL database scripts.',
+    'Experience with MSSQL Server.',
+    'Deployment using Jenkins.',
+    'Experience with Git.'    ],
   },
 ]

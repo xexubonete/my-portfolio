@@ -1,0 +1,25 @@
+---
+import Card from '../Card.astro'
+import { LINKS } from '../../lib/constants'
+---
+
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="Goals">
+  <div class="flex h-full w-full flex-col text-xm">
+    <div>
+      <!-- <p> -->
+        <!-- In the coming months, I plan to expand and deepen my programming skills
+        with several key objectives, such as: -->
+        <p class="text-sm font-light">
+            I plan to expand and deepen my programming skills
+        with several key objectives, such as:</p>
+        <ul class="tech-list list-inside list-disc text-xs">
+          <strong class="goal-list">🧑‍💻 .NET Aspire</strong>
+          <p>A new, cloud-native framework for building observable, production-ready distributed applications.</p>
+          <strong class="goal-list">🧑‍💻 Astro</strong>
+          <p>To build fast, optimized static sites with flexible components.</p>
+          <strong class="goal-list"> 🧑‍💻 Minimal-API</strong>
+          <p>To create high-performance small APIs with concise code. </p>
+        </ul>  
+    </div>
+  </div>
+</Card>
