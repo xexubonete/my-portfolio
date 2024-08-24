@@ -9,7 +9,7 @@ export const loaderAnimation = [
 export const LINKS = {
   github: 'https://github.com/xexubonete',
   linkedin: 'https://www.linkedin.com/in/jesus-bonete-sanchez/',
-   mail: 'mailto:xexubonete@gmail.com',
+  mail: 'mailto:xexubonete@gmail.com',
   instagram: 'https://www.instagram.com/xexubonete/',
   // medium: 'https://ladvace.medium.com/',
   // discord: 'https://discordapp.com/users/163300027618295808',
@@ -83,8 +83,7 @@ export const EXPERIENCE = [
     position: '.NET Developer',
     start: '2023',
     end: 'Current',
-    tasks: [
-    ],
+    tasks: [],
   },
   {
     company: 'NTT DATA',
@@ -94,6 +93,17 @@ export const EXPERIENCE = [
     start: '2022',
     end: '2023',
     tasks: [
+      'Mantenimiento en solitario del servicio correctivo.',
+      'Comunicación directa con cliente.',
+      'Análisis, codificación y despliegue de correctivos.',
+      'Testeo y validación de funcionalidades en toda la aplicación.',
+      'Planteamiento de nuevos evolutivos.',
+      'Uso API REST.',
+      'Uso .NET Framework 3.1.',
+      'Uso .NET Core 3.1.',
+      'Uso Entity Framework 3.1.',
+      'Manejo de Azure DevOps.',
+      'Manejo de Git.',
     ],
   },
   {
@@ -104,6 +114,17 @@ export const EXPERIENCE = [
     start: '2022',
     end: '2023',
     tasks: [
+      'Desarrollo evolutivos ASP clásico.',
+      'Desarrollo scripts bases de datos SQL.',
+      'Uso MSSQL Server.',
+      'Creación API en .NET C#.',
+      'Uso .NET Framework 6.0.',
+      'Uso .NET Core 6.0.',
+      'Uso Entity Framework 6.0.',
+      'Peticiones Postman.',
+      'Manejo de GitHub.',
+      'Despliegue con Jenkins.',
+      'Uso de Git.',
     ],
   },
 ]
