@@ -10,6 +10,7 @@ import CVCard from '../components/sections/CVCard.astro'
 import ExperienceCard from '../components/sections/ExperienceCard.astro'
 import TattooCard from '../components/sections/TattooCard.astro'
 import StudyCard from '../components/sections/StudyCard.astro'
+import MyStack from '../components/sections/MyStack.astro'
 //
 ---
 
@@ -52,15 +53,16 @@ import StudyCard from '../components/sections/StudyCard.astro'
     <AboutMe />
     <CVCard />
     <Now />
-    <Card
+    <MyStack />
+    <!-- <Card
       colSpan="md:col-span-1"
       rowSpan="md:row-span-2"
       title="Portfolio & Projects"
       href="/portfolio"
-    />
+    /> -->
     <TimeZoneCard />
     <ContactsCard />
-    <ExperienceCard />
+    <TattooCard />
     <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
       <div class="flex h-full flex-col justify-between">
         <blockquote class="mt-6 border-l-2 pl-6 italic">
@@ -69,11 +71,11 @@ import StudyCard from '../components/sections/StudyCard.astro'
         <p class="mt-2 text-xs">- Robert C. Martin</p>
       </div>
     </Card>
-    <TattooCard />
+    <ExperienceCard />
     <StudyCard />
     <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
       <p class="text-xs">
-         ☼ 2024 · Edited with ♥️ using <a
+        ☼ 2024 · Edited with ♥️ using <a
           href="https://astro.build/"
           target="_blank"
           class="text-red-500">Astro</a
@@ -81,3 +83,4 @@ import StudyCard from '../components/sections/StudyCard.astro'
       </p>
     </Card>
   </main>
+</BaseLayout>

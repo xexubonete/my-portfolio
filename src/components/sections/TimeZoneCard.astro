@@ -3,6 +3,19 @@ import Card from '../Card.astro'
 import TimeZoneV2 from './TimeZoneCardV2'
 ---
 
-<Card colSpan="lg:col-span-2" rowSpan="md:row-span-2" title="Time zone">
-  <TimeZoneV2 timezone="Europe/Spain" client:load />
+<Card colSpan="lg:col-span-2" rowSpan="md:row-span-2" title="About me">
+  <div class="flex flex-col gap-2">
+    <p class="text-sm font-light">
+      I love cats and I have two here in my house in Alicante.📍
+    </p>
+    <p class="text-sm font-light">
+      Beyond coding, I'm passionate about the gym,🏋️‍♂️ and living a healthy
+      lifestyle🍏. An unusual hobby of mine is playing airsoft🎖️ on weekends,
+      please don't google it.🫠
+    </p>
+    <!-- <p class="text-sm font-light">
+      An unusual hobby of mine is playing airsoft🎖️ on weekends, please don't
+      google it.🫠
+    </p> -->
+  </div>
 </Card>

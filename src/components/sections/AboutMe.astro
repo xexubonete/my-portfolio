@@ -2,29 +2,56 @@
 import Card from '../Card.astro'
 ---
 
-<Card colSpan="md:col-span-1" rowSpan="md:row-span-6" title="About me">
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-6" title="Skills">
   <div class="flex flex-col gap-2">
     <p class="text-sm font-light">
-      I love cats and I have two here in my house in Alicante.🇪🇸
-      <br />
-      <br />
       My primary tools of choice includes:
-      <ul class="list-inside list-disc">
-        <li>.NET (+5.0)</li>
-        <li>C#</li>
-        <li>Entity Framework</li>
-        <li>APIs (REST)</li>
-        <li>MediatR pattern</li>
-        <li>Docker</li>
-        <li>CQRS</li>
-        <li>DDD</li>
+      <ul class="tech-list list-inside list-disc text-sm">
+        <ul>
+          <li>
+            <strong>Programming Languages:</strong>
+            <ul>
+              <li>C#</li>
+              <li>SQL</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Frameworks and Libraries:</strong>
+            <ul>
+              <li>.NET (+5.0)</li>
+              <li>API REST</li>
+              <li>Entity Framework</li>
+              <li>MediatR</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Design Patterns:</strong>
+            <ul>
+              <li>Clean arch</li>
+              <li>DDD (Domain-Driven Design)</li>
+              <li>CQRS</li>
+              <li>MediatR pattern</li>
+              <li>Repository</li>
+              <li>TDD (Test-Driven Development)</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Databases:</strong>
+            <ul>
+              <li>PostgreSQL</li>
+              <li>MSSQL</li>
+            </ul>
+          </li>
+        </ul>
       </ul>
+      <!-- <p class="text-sm font-light">
+      Beyond coding, I'm passionate about the gym,🏋️‍♂️ and living a healthy
+      lifestyle🍏.
     </p>
     <p class="text-sm font-light">
-      Beyond coding, I'm passionate about the gym,🏋️‍♂️ and living a healthy lifestyle🍏.
-    </p> 
-      <p class="text-sm font-light">
-        An unusual hobby of mine is playing airsoft🎖️ on weekends, please don't google it.🫠
+      An unusual hobby of mine is playing airsoft🎖️ on weekends, please don't
+      google it.🫠
+    </p> -->
     </p>
   </div>
 </Card>

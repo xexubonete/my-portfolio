@@ -57,8 +57,8 @@ export const STUDIES = [
   },
   {
     title: '...',
-    institution: 'Platzi',
-    link: 'https://platzi.com/',
+    institution: 'Dometrain',
+    link: 'https://dometrain.com/',
     date: '2018 - 2022',
   },
   {

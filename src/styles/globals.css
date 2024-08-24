@@ -56,11 +56,13 @@
   body {
     @apply bg-background text-foreground;
   }
-  .colorOrangeHover:hover{
+  .colorOrangeHover:hover {
     /* background-color: #b26e26; */
     /* background-color: #a87136; */
     background-color: #cf8b42;
-
   }
-  
+  /* Add space between list items */
+  .tech-list li:has(strong) {
+    margin-bottom: 1em; /* Adjust the value as needed for spacing */
+  }
 }

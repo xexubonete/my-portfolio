@@ -18,7 +18,7 @@ import { ModeToggle } from '../components/ui/ThemeToggle'
 </script>
 
 <header
-  class="bg-primary sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90"
+  class="sticky top-0 z-50 w-full border-b bg-background/95 bg-primary backdrop-blur supports-[backdrop-filter]:bg-background/90"
 >
   <div
     class="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0"
@@ -58,9 +58,9 @@ import { ModeToggle } from '../components/ui/ThemeToggle'
         >
           Mail
         </a>
-        </nav>
-        <nav class="flex items-center space-x-1">
-          <ModeToggle transition:persist client:load />  
+      </nav>
+      <nav class="flex items-center space-x-1">
+        <ModeToggle transition:persist client:load />
       </nav>
     </div>
   </div>
