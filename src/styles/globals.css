@@ -62,7 +62,12 @@
     background-color: #cf8b42;
   }
   /* Add space between list items */
-  .tech-list li:has(strong) {
-    margin-bottom: 1em; /* Adjust the value as needed for spacing */
-  }
+  .tech-list {
+    display: block; /* Asegura que se comporte como un bloque */
+    margin-top: 5px; /* Ajusta este valor para el espacio vertical deseado */  }
 }
+  .goal-list {
+    display: block; /* Asegura que se comporte como un bloque */
+    margin-top: 15px; /* Ajusta este valor para el espacio vertical deseado */  
+  }
+

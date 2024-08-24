@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import IntroCard from '../components/sections/IntroCard.astro'
-import AboutMe from '../components/sections/AboutMe.astro'
+import Skills from '../components/sections/Skills.astro'
 import Card from '../components/Card.astro'
 import TimeZoneCard from '../components/sections/TimeZoneCard.astro'
 import ContactsCard from '../components/sections/ContactsCard.astro'
-import Now from '../components/sections/Now.astro'
+import Available from '../components/sections/Available.astro'
 import CVCard from '../components/sections/CVCard.astro'
 import ExperienceCard from '../components/sections/ExperienceCard.astro'
-import TattooCard from '../components/sections/TattooCard.astro'
+import GoalsCard from '../components/sections/GoalsCard.astro'
 import StudyCard from '../components/sections/StudyCard.astro'
 import MyStack from '../components/sections/MyStack.astro'
 //
@@ -39,7 +39,7 @@ import MyStack from '../components/sections/MyStack.astro'
 
 <BaseLayout
   title="Jesus Bonete - Portfolio"
-  description="Jesus Bonete - Portfolio, Projects, CV, About Me, Contact, Timezone, Now, Experience, Study"
+  description="Jesus Bonete - Portfolio, Projects, CV, About Me, Contact, Timezone, Available, Experience, Study"
 >
   <div
     slot="loader"
@@ -50,9 +50,9 @@ import MyStack from '../components/sections/MyStack.astro'
     class="relative m-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:p-4 md:grid-cols-2 md:gap-3 md:p-6 lg:grid-cols-4 lg:grid-rows-8 lg:gap-4"
   >
     <IntroCard />
-    <AboutMe />
+    <Skills />
     <CVCard />
-    <Now />
+    <Available />
     <MyStack />
     <!-- <Card
       colSpan="md:col-span-1"
@@ -62,7 +62,7 @@ import MyStack from '../components/sections/MyStack.astro'
     /> -->
     <TimeZoneCard />
     <ContactsCard />
-    <TattooCard />
+    <GoalsCard />
     <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
       <div class="flex h-full flex-col justify-between">
         <blockquote class="mt-6 border-l-2 pl-6 italic">

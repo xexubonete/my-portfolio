@@ -22,6 +22,7 @@ const Timezone = ({ timezone }: any) => {
           </span>
         </div>
       </div>
+      <br></br>
       <p className="text-sm">{dateTime}</p>
     </div>
   )
