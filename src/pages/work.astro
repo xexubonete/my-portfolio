@@ -13,8 +13,7 @@ if (typeof window !== 'undefined') {
   if (userLang.startsWith('es')) {
     EXPERIENCE = (await import('../lib/constants-es')).SPANISH;
   }
-}
----
+
 
 <BaseLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
   <main class="flex min-h-[80vh] flex-auto flex-col" transition:animate="fade">
