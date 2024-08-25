@@ -4,12 +4,15 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import TopLayout from '../layouts/TopLayout.astro'
 import BottomLayout from '../layouts/BottomLayout.astro'
 
-var userLang = navigator.language;
-let EXPERIENCE
-if (userLang.startsWith('es')) {
-  EXPERIENCE = (await import('../lib/constants-es')).SPANISH;
-} else {
-  EXPERIENCE = (await import('../lib/constants')).EXPERIENCE;
+// Default to English (or some fallback) since navigator is unavailable server-side
+let EXPERIENCE = (await import('../lib/constants')).EXPERIENCE;
+
+// Run the language check on the client side
+if (typeof window !== 'undefined') {
+  const userLang = navigator.language;
+  if (userLang.startsWith('es')) {
+    EXPERIENCE = (await import('../lib/constants-es')).SPANISH;
+  }
 }
 ---
 
