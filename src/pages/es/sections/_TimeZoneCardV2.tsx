@@ -9,16 +9,37 @@ const Timezone = ({ timezone }: any) => {
       // const now = moment().tz(timezone)
       // setDateTime(now.format('dddd, DD MMMM YYYY [at] h:mm:ss A'))
       // Configura el idioma de moment.js a español
-      moment.locale('es');
-      const now = moment().tz(timezone, true);
+      moment.locale('es')
+      const now = moment().tz(timezone, true)
 
-      const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-      const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-      const dayName = days[now.day()];
-      const monthName = months[now.month()];
-      const formattedDateTime = `${dayName}, ${now.date()} ${monthName} ${now.year()} a las ${now.format('HH:mm:ss')}`;
+      const days = [
+        'Domingo',
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado',
+      ]
+      const months = [
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre',
+      ]
+      const dayName = days[now.day()]
+      const monthName = months[now.month()]
+      const formattedDateTime = `${dayName}, ${now.date()} ${monthName} ${now.year()} a las ${now.format('HH:mm:ss')}`
 
-setDateTime(formattedDateTime);
+      setDateTime(formattedDateTime)
     }, 1)
 
     return () => clearInterval(interval)

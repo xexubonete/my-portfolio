@@ -4,12 +4,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import TopLayout from '../layouts/TopLayout.astro'
 import BottomLayout from '../layouts/BottomLayout.astro'
 
-var userLang = navigator.language;
+var userLang = navigator.language
 let EXPERIENCE
 if (userLang.startsWith('es')) {
-  EXPERIENCE = (await import('../lib/constants-es')).SPANISH;
+  EXPERIENCE = (await import('../lib/constants-es')).SPANISH
 } else {
-  EXPERIENCE = (await import('../lib/constants')).EXPERIENCE;
+  EXPERIENCE = (await import('../lib/constants')).EXPERIENCE
 }
 ---
 

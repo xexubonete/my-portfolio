@@ -1,17 +1,17 @@
-import { Button } from '@/pages/en/ui/_button';
+import { Button } from '@/pages/en/ui/_button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/pages/en/ui/_dropdown-menu';
-import { Globe } from 'lucide-react'; // O cualquier ícono que prefieras para el botón
+} from '@/pages/en/ui/_dropdown-menu'
+import { Globe } from 'lucide-react' // O cualquier ícono que prefieras para el botón
 
 export function LanguageSwitcher() {
   const handleLanguageChange = (language: 'es' | 'en') => {
-    const baseUrl = window.location.origin; // Obtén la URL base del dominio
-    window.location.href = `${baseUrl}/${language}`; // Redirige a la URL con el idioma seleccionado
-  };
+    const baseUrl = window.location.origin // Obtén la URL base del dominio
+    window.location.href = `${baseUrl}/${language}` // Redirige a la URL con el idioma seleccionado
+  }
 
   return (
     <DropdownMenu>
@@ -30,5 +30,5 @@ export function LanguageSwitcher() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
