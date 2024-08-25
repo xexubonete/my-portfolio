@@ -4,7 +4,13 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import TopLayout from '../layouts/TopLayout.astro'
 import BottomLayout from '../layouts/BottomLayout.astro'
 
-import { EXPERIENCE } from '../lib/constants'
+var userLang = navigator.language;
+let EXPERIENCE
+if (userLang.startsWith('es')) {
+  EXPERIENCE = (await import('../lib/constants-es')).SPANISH;
+} else {
+  EXPERIENCE = (await import('../lib/constants')).EXPERIENCE;
+}
 ---
 
 <BaseLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>

@@ -1,6 +1,8 @@
 ---
-import { buttonVariants } from '../components/ui/button'
-import { ModeToggle } from '../components/ui/ThemeToggle'
+import { buttonVariants } from './ui/button'
+import { ModeToggle } from './ui/ThemeToggle'
+import { LanguageSwitcher } from './ui/RedirectToggle'
+
 ---
 
 <script is:inline>
@@ -61,6 +63,9 @@ import { ModeToggle } from '../components/ui/ThemeToggle'
       </nav>
       <nav class="flex items-center space-x-1">
         <ModeToggle transition:persist client:load />
+      </nav>
+      <nav class="flex items-center space-x-1">
+        <LanguageSwitcher transition:persist client:load />
       </nav>
     </div>
   </div>

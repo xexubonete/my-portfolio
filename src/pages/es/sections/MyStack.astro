@@ -1,0 +1,21 @@
+---
+import Card from '../Card.astro'
+import TimeZoneV2 from './TimeZoneCardV2'
+---
+
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="Local time">
+  <!-- <p class="text-sm font-light">
+    Here's a snapshot of the primary tools and technologies I work with:
+  </p> -->
+  <!-- <ul class="list-disc pl-5 text-sm font-light">
+    <li><strong>SQL</strong></li>
+    <li><strong>PostgreSQL</strong></li>
+    <li><strong>Docker</strong></li>
+  </ul> -->
+  <!-- <ul class="list-disc pl-5 text-sm font-light">
+    <li><strong>SQL</strong></li>
+    <li><strong>PostgreSQL</strong></li>
+    <li><strong>Docker</strong></li>
+  </ul> -->
+  <TimeZoneV2 timezone="Europe/Spain" client:load />
+</Card>
