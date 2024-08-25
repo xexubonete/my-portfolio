@@ -1,86 +1,16 @@
----
-import BaseLayout from '../layouts/BaseLayout.astro'
-import IntroCard from '../components/sections/IntroCard.astro'
-import Skills from '../components/sections/Skills.astro'
-import Card from '../components/Card.astro'
-import TimeZoneCard from '../components/sections/TimeZoneCard.astro'
-import ContactsCard from '../components/sections/ContactsCard.astro'
-import Available from '../components/sections/Available.astro'
-import CVCard from '../components/sections/CVCard.astro'
-import ExperienceCard from '../components/sections/ExperienceCard.astro'
-import GoalsCard from '../components/sections/GoalsCard.astro'
-import StudyCard from '../components/sections/StudyCard.astro'
-import MyStack from '../components/sections/MyStack.astro'
+
 //
 ---
 
 <script>
-  import { stagger, spring, timeline, type TimelineDefinition } from 'motion'
-  import { loaderAnimation } from '../lib/constants'
+  // Detectar el idioma del navegador
+  var userLang = navigator.language || navigator.userLanguage;
 
-  const cards = document.querySelectorAll('.card-animate')
-
-  const sequence = [
-    loaderAnimation,
-    [
-      cards,
-      { y: ['60%', '0%'], opacity: [0, 1] },
-      {
-        at: '-0.1',
-        duration: 0.4,
-        delay: stagger(0.07),
-        easing: spring({ velocity: 0.1, stiffness: 100, damping: 7 }),
-      },
-    ],
-  ]
-
-  timeline(sequence as TimelineDefinition)
+  // Redirigir al subdirectorio correspondiente
+  if (userLang.startsWith('es')) {
+      window.location.href = "/en/";
+  } else {
+      window.location.href = "/es/";
+  }
 </script>
 
-<BaseLayout
-  title="Jesus Bonete - Portfolio"
-  description="Jesus Bonete - Portfolio, Projects, CV, About Me, Contact, Timezone, Available, Experience, Study"
->
-  <div
-    slot="loader"
-    class="loader bg-darkslate-700 fixed bottom-0 left-0 right-0 top-0 z-50 flex h-screen w-screen items-center justify-center text-3xl font-black uppercase text-neutral-50"
-  >
-  </div>
-  <main
-    class="relative m-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:p-4 md:grid-cols-2 md:gap-3 md:p-6 lg:grid-cols-4 lg:grid-rows-8 lg:gap-4"
-  >
-    <IntroCard />
-    <Skills />
-    <CVCard />
-    <Available />
-    <MyStack />
-    <!-- <Card
-      colSpan="md:col-span-1"
-      rowSpan="md:row-span-2"
-      title="Portfolio & Projects"
-      href="/portfolio"
-    /> -->
-    <TimeZoneCard />
-    <ContactsCard />
-    <GoalsCard />
-    <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
-      <div class="flex h-full flex-col justify-between">
-        <blockquote class="mt-6 border-l-2 pl-6 italic">
-          “The only way to go fast, is to go well.”
-        </blockquote>
-        <p class="mt-2 text-xs">- Robert C. Martin</p>
-      </div>
-    </Card>
-    <ExperienceCard />
-    <StudyCard />
-    <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
-      <p class="text-xs">
-        ☼ 2024 · Edited with ♥️ using <a
-          href="https://astro.build/"
-          target="_blank"
-          class="text-red-500">Astro</a
-        > by Jesus Bonete.
-      </p>
-    </Card>
-  </main>
-</BaseLayout>

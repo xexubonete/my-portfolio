@@ -1,0 +1,53 @@
+---
+import Card from '../Card.astro'
+import { LINKS } from '../../../lib/constants'
+---
+
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-4">
+  <div class="h-full">
+    <header class="flex items-center">
+      <h1 class="text-xl font-bold text-foreground">
+        Let's start working together!
+      </h1>
+    </header>
+    <address class="mt-4 flex w-fit flex-col">
+      <!-- <h2 class="text-xm">Contact Details</h2> -->
+      <p class="text-sm">
+        <a href="mailto:xexubonete@gmail.com" target="_blank" rel="noreferrer">
+          📫xexubonete@gmail.com <br />
+        </a>
+        <br />
+        <a href="tel:+34722243881" target="_blank" rel="noreferrer">
+          🤙+34 722 24 38 81
+        </a>
+        <br />
+        <br />
+        <a
+          href="https://www.google.com/maps/place/Alicante+(Alacant),+Alicante/@38.3578408,-0.4725241,13z/data=!3m1!4b1!4m6!3m5!1s0xd6235da3b9dab4b:0x1d7da872ac0b81e3!8m2!3d38.3457685!4d-0.4909444!16zL20vMHpjNg?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D"
+          target="_blank"
+          rel="noreferrer"
+        >
+          📍Alicante, Spain
+        </a>
+        <br />
+        <!-- <p class="text-sm">📍Alicante, Spain&#x1F1EA;&#x1F1F8</p> -->
+        <br />
+        <a class="text-sm" href={LINKS.linkedin} target="_blank">🔗Linkedin</a>
+        <br /><br />
+        <a class="text-sm" href={LINKS.github} target="_blank">🎖️Github</a>
+      </p>
+    </address>
+    <br />
+    <div class="flex h-full w-full flex-col">
+      <div>
+        <img
+          width="90"
+          height="90"
+          src="/me_chillin.png"
+          class="pointer-events-none absolute bottom-[-20px] right-[-110px] z-[-1] max-h-[300px] w-auto select-none opacity-50 md:relative md:bottom-auto md:right-auto md:z-auto md:opacity-100"
+          alt="memoji of xexu taking easy"
+        />
+      </div>
+    </div>
+  </div>
+</Card>
