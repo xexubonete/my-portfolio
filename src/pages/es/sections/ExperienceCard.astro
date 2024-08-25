@@ -1,13 +1,13 @@
 ---
 import Card from '../Card.astro'
 import { Button } from '../ui/button'
-import { EXPERIENCE } from '../../../lib/constants'
+import { SPANISH } from '../../../lib/constants-es'
 ---
 
-<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="Experience (+2yr)">
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="Experiencia (+2a)">
   <div class="mt-2 space-y-4">
     {
-      EXPERIENCE.slice(0, 3).map((exp) => (
+      SPANISH.slice(0, 3).map((exp) => (
         <div>
           <h3 class="text-lg font-semibold">{exp.position}</h3>
           <a class="text-sm text-primary" href={exp?.link ?? ''}>
@@ -20,7 +20,7 @@ import { EXPERIENCE } from '../../../lib/constants'
       ))
     }
     <a href="/work">
-      <Button variant="link" className="pl-0"> View More </Button>
+      <Button variant="link" className="pl-0"> Ver más </Button>
     </a>
   </div>
 </Card>
