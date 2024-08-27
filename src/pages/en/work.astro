@@ -5,7 +5,6 @@ import TopLayout from '../../layouts/TopLayout.astro'
 import BottomLayout from '../../layouts/BottomLayout.astro'
 import { EXPERIENCE } from '../../lib/constants'
 
-
 // Default to English (or some fallback) since navigator is unavailable server-side
 // let EXPERIENCE;
 
@@ -20,11 +19,9 @@ import { EXPERIENCE } from '../../lib/constants'
 //   }
 // }
 ---
- 
-<BaseLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
 
+<BaseLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
   <main class="flex min-h-[80vh] flex-auto flex-col" transition:animate="fade">
-    
     <TopLayout>
       <h2
         class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"

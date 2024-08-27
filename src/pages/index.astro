@@ -1,24 +1,26 @@
 ---
+
 ---
+
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redireccionar según idioma</title>
   </head>
   <body>
     <script is:inline>
       // Detectar el idioma del navegador
-      var userLang = navigator.language || navigator.userLanguage;
+      var userLang = navigator.language || navigator.userLanguage
 
       // Verificar el idioma detectado en la consola
-      console.log("Idioma del navegador:", userLang);
+      console.log('Idioma del navegador:', userLang)
 
       // Redirigir al subdirectorio correspondiente
       if (userLang.startsWith('es')) {
-          window.location.replace("/es/");
+        window.location.replace('/es/')
       } else {
-          window.location.replace("/en/");
+        window.location.replace('/en/')
       }
     </script>
   </body>

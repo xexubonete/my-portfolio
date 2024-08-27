@@ -60,7 +60,7 @@
     /* background-color: #b26e26; */
     /* background-color: #a87136; */
     background-color: #cf8b42;
-    color:white;
+    color: white;
   }
   /* Add space between list items */
   .tech-list {
@@ -75,10 +75,10 @@
 a {
   font-style: normal;
 }
-.background-email{
+.background-email {
   background-color: #e18e36;
-  color:rgb(255, 251, 251);
+  color: rgb(255, 251, 251);
 }
-.background-email:hover{
+.background-email:hover {
   background-color: #ffffff00;
 }

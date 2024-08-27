@@ -14,8 +14,7 @@ const buttonVariants = cva(
           'background-email bg-destructive text-destructive-foreground hover:text-accent-foreground',
         outline:
           'border border-input bg-background hover:bg-accent hover:underline',
-        secondary:
-          'bg-secondary text-secondary-foreground colorOrangeHover',
+        secondary: 'bg-secondary text-secondary-foreground colorOrangeHover',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
       },
