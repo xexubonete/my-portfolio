@@ -60,6 +60,7 @@
     /* background-color: #b26e26; */
     /* background-color: #a87136; */
     background-color: #cf8b42;
+    color:white;
   }
   /* Add space between list items */
   .tech-list {
@@ -70,4 +71,14 @@
 .goal-list {
   display: block; /* Asegura que se comporte como un bloque */
   margin-top: 15px; /* Ajusta este valor para el espacio vertical deseado */
+}
+a {
+  font-style: normal;
+}
+.background-email{
+  background-color: #e18e36;
+  color:rgb(255, 251, 251);
+}
+.background-email:hover{
+  background-color: #ffffff00;
 }

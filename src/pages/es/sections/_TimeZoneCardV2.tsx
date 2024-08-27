@@ -37,7 +37,7 @@ const Timezone = ({ timezone }: any) => {
       ]
       const dayName = days[now.day()]
       const monthName = months[now.month()]
-      const formattedDateTime = `${dayName}, ${now.date()} ${monthName} ${now.year()} a las ${now.format('HH:mm:ss')}`
+      const formattedDateTime = `${dayName}, ${now.date()} de ${monthName} ${now.year()} a las ${now.format('HH:mm:ss')}`
 
       setDateTime(formattedDateTime)
     }, 1)

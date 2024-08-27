@@ -1,4 +1,5 @@
 ---
+import { buttonVariants } from '../ui/_button'
 import Card from '../Card.astro'
 import { LINKS } from '../../../lib/constants'
 ---
@@ -10,34 +11,39 @@ import { LINKS } from '../../../lib/constants'
         Let's start working together!
       </h1>
     </header>
-    <address class="mt-4 flex w-fit flex-col">
-      <!-- <h2 class="text-xm">Contact Details</h2> -->
-      <p class="text-sm">
-        <a href="mailto:xexubonete@gmail.com" target="_blank" rel="noreferrer">
-          📫xexubonete@gmail.com <br />
-        </a>
-        <br />
-        <a href="tel:+34722243881" target="_blank" rel="noreferrer">
-          🤙+34 722 24 38 81
-        </a>
-        <br />
-        <br />
-        <a
+    <address class="mt-4 flex flex-col" style="margin-top: -10px;">
+      <p>
+        <div class="text-right" style="display: flex; margin: 20px; height: 15px; align-self: center;">
+          <button id="copy-email" class={buttonVariants({ variant: 'secondary' })} style="margin:2px;">
+            <div>
+              <svg style="width: 22px; margin-right: 2px; margin-top: 3;" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="gray" viewBox="0 0 24 24">
+                <rect x="6" y="6" width="13" height="13" rx="2" ry="2" stroke="darkgray" stroke-width="2" fill="none"/>
+                <rect x="3" y="3" width="13" height="13" rx="2" ry="2" stroke="gray" stroke-width="2" fill="lightgray"/>
+              </svg>  
+            </div>
+            xexubonete@gmail.com
+          </button>
+        </div>
+        <div class="text-right">
+          <a class={buttonVariants({ variant: 'outline' })} style="margin-top:18px" href="tel:+34722243881" target="_blank" rel="noreferrer">
+            🤙Call me
+            </a>    
+        </div>
+        <div class="text-left">
+          <a class={buttonVariants({ variant: 'outline' })} style="margin-top:10px" 
           href="https://www.google.com/maps/place/Alicante+(Alacant),+Alicante/@38.3578408,-0.4725241,13z/data=!3m1!4b1!4m6!3m5!1s0xd6235da3b9dab4b:0x1d7da872ac0b81e3!8m2!3d38.3457685!4d-0.4909444!16zL20vMHpjNg?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D"
-          target="_blank"
-          rel="noreferrer"
-        >
-          📍Alicante, Spain
-        </a>
-        <br />
-        <!-- <p class="text-sm">📍Alicante, Spain&#x1F1EA;&#x1F1F8</p> -->
-        <br />
-        <a class="text-sm" href={LINKS.linkedin} target="_blank">🔗LinkedIn</a>
-        <br /><br />
-        <a class="text-sm" href={LINKS.github} target="_blank">🎖️Github</a>
+          target="_blank" rel="noreferrer">
+          Alicante📍
+            </a>     
+        </div>
+        <div class="text-right">
+        <a class={buttonVariants({ variant: 'outline' })} class="text-sm" style="margin-top:5px" href={LINKS.linkedin} target="_blank">👔LinkedIn</a>
+        </div>
+        <div class="text-left">
+          <a class={buttonVariants({ variant: 'outline' })} class="text-sm" style="margin-top:5px;" href={LINKS.github} target="_blank">Github🎖️</a>
+        </div> 
       </p>
     </address>
-    <br />
     <div class="flex h-full w-full flex-col">
       <div>
         <img
@@ -51,3 +57,17 @@ import { LINKS } from '../../../lib/constants'
     </div>
   </div>
 </Card>
+<script>
+  function copyToClipboard() {
+    const email = "xexubonete@gmail.com";
+    navigator.clipboard.writeText(email).then(() => {
+      alert('Copiado!');
+    }).catch((err) => {
+      console.error('Error al copiar al portapapeles: ', err);
+    });
+  }
+
+  document.getElementById('copy-email')?.addEventListener('click', copyToClipboard);
+
+  
+</script>
