@@ -10,9 +10,9 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-if (Astro.props.ogImage === undefined) {
-  Astro.props.ogImage = new URL('View1.png', canonicalURL)
-}
+// if (Astro.props.ogImage === undefined) {
+//   Astro.props.ogImage = new URL('View1.png', canonicalURL)
+// }
 
 const { title, description, ogImage } = Astro.props
 ---
@@ -23,7 +23,7 @@ const { title, description, ogImage } = Astro.props
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 <link rel="canonical" href={canonicalURL} />
-<link rel="icon" type="image/png" href="me.png" />
+<link rel="icon" type="image/png" href='/public/me_chillin.png' />
 
 <title>{title}</title>
 <meta name="title" content={title} />
