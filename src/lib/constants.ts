@@ -67,11 +67,11 @@ export const STUDIES = [
   },
   {
     title: '...',
-    institution: 'Autodidacta',
+    institution: 'Self-taught',
   },  
   {
     title: '...',
-    institution: 'Libros',
+    institution: 'Books',
   },
 ]
 
