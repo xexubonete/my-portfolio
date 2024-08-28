@@ -51,7 +51,7 @@ export const SEARCH: Page = {
 export const STUDIES = [
   {
     title: 'Web Developer',
-    institution: 'Ministerio de Educación',
+    institution: 'DAW',
     link: 'https://todofp.es/que-estudiar/loe/informatica-comunicaciones/des-aplicaciones-web.html',
     date: '2020 - 2022',
   },
@@ -67,8 +67,11 @@ export const STUDIES = [
   },
   {
     title: '...',
-    institution: 'Youtube',
-    link: 'https://www.youtube.com/',
+    institution: 'Self-taught',
+  },  
+  {
+    title: '...',
+    institution: 'Books',
   },
 ]
 
