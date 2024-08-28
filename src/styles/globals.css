@@ -59,8 +59,10 @@
   .colorOrangeHover:hover {
     /* background-color: #b26e26; */
     /* background-color: #a87136; */
-    background-color: #cf8b42;
+    background-color: #e18e36;
     color: white;
+    /* font-weight: bold; */
+    transition: font-weight 2s ease, background-color 0.6s ease, color 0.3s ease;
   }
   /* Add space between list items */
   .tech-list {
@@ -76,9 +78,41 @@ a {
   font-style: normal;
 }
 .background-email {
-  background-color: #e18e36;
+  background-color: #da8b37;
   color: rgb(255, 251, 251);
 }
 .background-email:hover {
   background-color: #ffffff00;
+  transition: background-color 0.6s ease, color 0.2s ease;
+
+}
+.myprojects{
+  font-weight:bold;
+  color:black;
+  margin-top:-10px;
+  margin-left:-10px;
+  background-color:rgb(255, 255, 255); 
+  font-size: 18px;
+  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.303);
+}
+.myprojects:hover {
+  background-color: #eae8e8;
+  /* color:white!important; */
+  text-decoration: none;
+
+  transition: background-color 0.6s ease, color 0.2s ease;
+}
+.destructive:hover{
+  background-color:rgb(232, 226, 226); 
+  color:black;
+  transition: background-color 0.6s ease, color 0.2s ease;
+}
+.myportfolio{
+  background-color:white; 
+  color:black;
+  box-shadow: 4px 4px 9px #da8b37b7;
+}
+.myportfolio:hover{
+  background-color:#da8b37; 
+
 }
