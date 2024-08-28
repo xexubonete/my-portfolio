@@ -68,7 +68,7 @@ export const STUDIES = [
   {
     title: '...',
     institution: 'Self-taught',
-  },  
+  },
   {
     title: '...',
     institution: 'Books',

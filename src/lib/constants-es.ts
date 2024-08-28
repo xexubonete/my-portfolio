@@ -67,7 +67,7 @@ export const STUDIES = [
   {
     title: '...',
     institution: 'Autodidacta',
-  },  
+  },
   {
     title: '...',
     institution: 'Libros',

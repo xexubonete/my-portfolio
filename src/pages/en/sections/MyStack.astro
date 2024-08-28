@@ -3,34 +3,69 @@ import Card from '../Card.astro'
 import TimeZoneV2 from './_TimeZoneCardV2'
 import { buttonVariants } from '../ui/_button'
 import { LINKS } from '../../../lib/constants'
-
 ---
 
 <Card colSpan="md:col-span-1" rowSpan="md:row-span-2" title="My projects">
   <!-- <TimeZoneV2 timezone="Europe/Madrid" client:load /> -->
   <p class="flex">
-    <div class="text-right flex">
-      <a class={buttonVariants({ variant: 'destructive', size: 'sm' })} style="margin-top:20px;margin-left:15px;" href="https://github.com/xexubonete/pilot-api" target="_blank" rel="noreferrer">
+    <div class="flex text-right">
+      <a
+        class={buttonVariants({ variant: 'destructive', size: 'sm' })}
+        style="margin-top:20px;margin-left:15px;"
+        href="https://github.com/xexubonete/pilot-api"
+        target="_blank"
+        rel="noreferrer"
+      >
         pilot-api
-        </a>    
-        <a class={buttonVariants({ variant: 'destructive', size: 'sm' })} + "colorOrangeHover" style="margin-top:-29px;margin-left:30px;background-color:grey;" 
+      </a>
+      <a
+        class={buttonVariants({ variant: 'destructive', size: 'sm' })}
+        +
+        "colorOrangeHover"
+        style="margin-top:-29px;margin-left:30px;background-color:grey;"
         href="https://github.com/xexubonete/my-portfolio"
-        target="_blank" rel="noreferrer">
+        target="_blank"
+        rel="noreferrer"
+      >
         my-porfolio
-          </a>      
+      </a>
     </div>
-    <div class="text-right flex" style="align-items: center; justify-items: center;">
-        <a class={buttonVariants({ variant: 'destructive', size: 'sm' })} style="margin-top:-28px;margin-left:110px;" href="https://github.com/xexubonete/mediator-api" target="_blank" rel="noreferrer">
-          mediator-api
-          </a>
+    <div
+      class="flex text-right"
+      style="align-items: center; justify-items: center;"
+    >
+      <a
+        class={buttonVariants({ variant: 'destructive', size: 'sm' })}
+        style="margin-top:-28px;margin-left:110px;"
+        href="https://github.com/xexubonete/mediator-api"
+        target="_blank"
+        rel="noreferrer"
+      >
+        mediator-api
+      </a>
     </div>
-    <div class="text-right flex" style="align-items: center; justify-items: center;">
-      <a class={buttonVariants({ variant: 'destructive', size: 'sm' })} style="margin-top:10px" href="https://github.com/xexubonete/dapper-api" target="_blank" rel="noreferrer">
+    <div
+      class="flex text-right"
+      style="align-items: center; justify-items: center;"
+    >
+      <a
+        class={buttonVariants({ variant: 'destructive', size: 'sm' })}
+        style="margin-top:10px"
+        href="https://github.com/xexubonete/dapper-api"
+        target="_blank"
+        rel="noreferrer"
+      >
         dapper-api
-        </a>    
-        <a class={buttonVariants({ variant: 'destructive', size: 'sm' })} style="margin-top:9px;margin-left: 15px;" href="https://github.com/xexubonete/crud-api" target="_blank" rel="noreferrer">
-          crud-api
-          </a>
+      </a>
+      <a
+        class={buttonVariants({ variant: 'destructive', size: 'sm' })}
+        style="margin-top:9px;margin-left: 15px;"
+        href="https://github.com/xexubonete/crud-api"
+        target="_blank"
+        rel="noreferrer"
+      >
+        crud-api
+      </a>
     </div>
   </p>
 </Card>
