@@ -1,6 +1,6 @@
 ---
 import Card from '../Card.astro'
-import { Button } from '../../ui/_button'
+import { Button } from '../ui/_button'
 
 const PDF = '/CV_orange.pdf'
 const PDFImage = '/me.png'
@@ -15,12 +15,12 @@ const PDFImage = '/me.png'
         <object data={PDF} type="application/PDF" width="100%"></object>
       </figure>
       <div class="mt-4 flex flex-col gap-2">
-        <p class="text-sm text-muted-foreground" style="text-align: center;">
-          Visualiza y descarga mi CV haciendo clic abajo
+        <p class="text-xs text-muted-foreground" style="text-align: center;">
+          View and download my resume by clicking on the button below
         </p>
         <div class="card-actions mt-2 flex w-full items-center justify-center">
           <a target="_blank" href={PDF}>
-            <Button> Descargar </Button>
+            <Button> Download </Button>
           </a>
         </div>
       </div>
