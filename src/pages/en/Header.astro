@@ -21,12 +21,10 @@ import { LanguageSwitcher } from './ui/_RedirectToggle'
 <header
   class="sticky top-0 z-50 w-full border-b bg-primary backdrop-blur supports-[backdrop-filter]:bg-background/90"
 >
-  <div
-    class="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0"
-  >
-    <div class="flex gap-6 md:gap-10">
-      <a href="/" class="flex items-center space-x-2">
-        <span class="inline-block font-bold">dotnet developer</span>
+  <div class="container flex h-16 items-center">
+    <div class="flex gap-6">
+      <a href="/" class="flex items-center space-x-1">
+        <span class="inline-block font-bold text-xs sm:text-sm">dotnet developer</span>
       </a>
     </div>
     <div class="flex flex-1 items-center justify-end space-x-4">
@@ -35,31 +33,19 @@ import { LanguageSwitcher } from './ui/_RedirectToggle'
           href="https://github.com/xexubonete"
           target="_blank"
           rel="noreferrer"
-          class={buttonVariants({ variant: 'ghost' })}
-        >
+          class=`text-xs sm:text-sm ${buttonVariants({ variant: 'ghost' })}`>
           GitHub
         </a>
       </nav>
-      <nav class="flex items-center space-x-1">
+      <nav class="flex items-center space-x-1 text-xs sm:text-lg">
         <a
           href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
           target="_blank"
           rel="noreferrer"
-          class={buttonVariants({ variant: 'ghost' })}
-        >
+          class=`text-xs sm:text-sm ${buttonVariants({ variant: 'ghost' })}`>
           LinkedIn
         </a>
       </nav>
-      <!-- <nav class="flex items-center space-x-1">
-        <a
-          href="mailto:xexubonete@gmail.com"
-          target="_blank"
-          rel="noreferrer"
-          class={buttonVariants({ variant: 'ghost' })}
-        >
-          Mail
-        </a>
-      </nav> -->
       <nav class="flex items-center space-x-1">
         <LanguageSwitcher transition:persist client:load />
       </nav>
