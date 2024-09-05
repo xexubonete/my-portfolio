@@ -22,10 +22,16 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="text-xs sm:text-sm" onClick={() => handleLanguageChange('es')}>
+        <DropdownMenuItem
+          className="text-xs sm:text-sm"
+          onClick={() => handleLanguageChange('es')}
+        >
           Español
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-xs sm:text-sm" onClick={() => handleLanguageChange('en')}>
+        <DropdownMenuItem
+          className="text-xs sm:text-sm"
+          onClick={() => handleLanguageChange('en')}
+        >
           English
         </DropdownMenuItem>
       </DropdownMenuContent>
