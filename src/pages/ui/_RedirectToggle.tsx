@@ -1,10 +1,10 @@
-import { Button } from '@/pages/en/ui/_button'
+import { Button } from '@/pages/ui/_button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/pages/en/ui/_dropdown-menu'
+} from '@/pages/ui/_dropdown-menu'
 import { Globe } from 'lucide-react' // O cualquier ícono que prefieras para el botón
 
 export function LanguageSwitcher() {

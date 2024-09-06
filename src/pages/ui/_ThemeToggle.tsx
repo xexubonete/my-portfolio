@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 
-import { Button } from '@/pages/en/ui/_button'
+import { Button } from '@/pages/ui/_button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/pages/en/ui/_dropdown-menu'
+} from '@/pages/ui/_dropdown-menu'
 
 export function ModeToggle() {
   const [theme, setThemeState] = React.useState<'light' | 'dark' | 'system'>(
@@ -42,22 +42,13 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          className="text-xs sm:text-sm"
-          onClick={() => onChangeTheme('light')}
-        >
+        <DropdownMenuItem onClick={() => onChangeTheme('light')}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-xs sm:text-sm"
-          onClick={() => onChangeTheme('dark')}
-        >
+        <DropdownMenuItem onClick={() => onChangeTheme('dark')}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-xs sm:text-sm"
-          onClick={() => onChangeTheme('system')}
-        >
+        <DropdownMenuItem onClick={() => onChangeTheme('system')}>
           System
         </DropdownMenuItem>
       </DropdownMenuContent>
