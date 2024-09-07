@@ -5,12 +5,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/pages/ui/_dropdown-menu'
-import { Globe } from 'lucide-react' // O cualquier ícono que prefieras para el botón
-
+import { Globe } from 'lucide-react'
 export function LanguageSwitcher() {
   const handleLanguageChange = (language: 'es' | 'en') => {
-    const baseUrl = window.location.origin // Obtén la URL base del dominio
-    window.location.href = `${baseUrl}/${language}` // Redirige a la URL con el idioma seleccionado
+    const baseUrl = window.location.origin
+    window.location.href = `${baseUrl}/${language}`
   }
 
   return (
