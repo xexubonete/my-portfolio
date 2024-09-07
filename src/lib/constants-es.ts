@@ -11,8 +11,6 @@ export const LINKS = {
   linkedin: 'https://www.linkedin.com/in/jesus-bonete-sanchez/',
   mail: 'mailto:xexubonete@gmail.com',
   instagram: 'https://www.instagram.com/xexubonete/',
-  // medium: 'https://ladvace.medium.com/',
-  // discord: 'https://discordapp.com/users/163300027618295808',
 }
 
 // Global
