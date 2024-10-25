@@ -13,18 +13,10 @@ export const LINKS = {
   instagram: 'https://www.instagram.com/xexubonete/',
 }
 
-// Global
-export const SITE: Site = {
-  TITLE: 'Astro Sphere',
-  DESCRIPTION:
-    'Welcome to Astro Sphere, a portfolio and blog for designers and developers.',
-  AUTHOR: 'Mark Horn',
-}
-
 // Work Page
 export const WORK: Page = {
-  TITLE: 'Work',
-  DESCRIPTION: 'Places I have worked.',
+  TITLE: 'Experiencia laboral (+2 años)',
+  DESCRIPTION: 'Sitios en los que he trabajado',
 }
 
 // Blog Page
