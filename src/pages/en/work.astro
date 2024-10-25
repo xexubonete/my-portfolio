@@ -1,20 +1,10 @@
 ---
-import { WORK } from '../lib/constants-es'
-import BaseLayout from '../layouts/BaseLayout.astro'
-import TopLayout from '../layouts/TopLayout.astro'
-import BottomLayout from '../layouts/BottomLayout.astro'
-import { SPANISH } from '../lib/constants-es'
+import { WORK } from '../../lib/constants-es'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import TopLayout from '../../layouts/TopLayout.astro'
+import BottomLayout from '../../layouts/BottomLayout.astro'
+import { EXPERIENCE } from '../../lib/constants'
 
-let EXPERIENCE
-
-if (typeof window !== 'undefined') {
-  const userLang = navigator.language
-  if (userLang.startsWith('es')) {
-    EXPERIENCE = (await import('../lib/constants-es')).SPANISH
-  } else {
-    EXPERIENCE = (await import('../lib/constants')).EXPERIENCE
-  }
-}
 ---
 
 <BaseLayout title={WORK.TITLE} description={WORK.DESCRIPTION}>
@@ -29,7 +19,7 @@ if (typeof window !== 'undefined') {
     <BottomLayout>
       <ul>
         {
-          SPANISH.map((entry) => (
+          EXPERIENCE.map((entry) => (
             <li class="animate mt-4 border-b border-black/10 py-8 first-of-type:mt-0 first-of-type:pt-0 last-of-type:border-none dark:border-white/25">
               <div class="mb-4 text-sm uppercase">
                 {entry.start} - {entry.end}

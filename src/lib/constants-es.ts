@@ -77,7 +77,7 @@ export const SPANISH = [
     link: 'https://www.savia.net/',
     location: 'Madrid, España',
     position: '.NET Developer',
-    start: '2023',
+    start: '2024',
     end: 'Actual',
     tasks: [],
   },

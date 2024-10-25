@@ -79,7 +79,7 @@ export const EXPERIENCE = [
     link: 'https://www.savia.net/',
     location: 'Madrid, Spain',
     position: '.NET Developer',
-    start: '2023',
+    start: '2024',
     end: 'Current',
     tasks: [],
   },
