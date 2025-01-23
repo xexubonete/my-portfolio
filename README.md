@@ -21,6 +21,7 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 - [Motion](https://motion.dev/)
 
 ## 🏗️ Project Structure
+
 ```
 ├── LICENSE
 ├── README.md
@@ -109,6 +110,7 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 ├── tsconfig.json
 └── vercel.json
 ```
+
 ## 🚀 Getting Started
 
 1. Clone the repository:
@@ -118,16 +120,19 @@ git clone https://github.com/xexubonete/portfolio.git
 ```
 
 2. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 3. Run the development server:
+
 ```bash
 pnpm dev
 ```
 
 4. Build for production:
+
 ```bash
 pnpm build
 ```
@@ -164,4 +169,3 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 - Design inspired by modern portfolio trends
 - Built with Astro's excellent documentation and community support
-
