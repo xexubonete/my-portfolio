@@ -1,4 +1,4 @@
-# Personal Portfolio
+# 🎯 My portfolio
 
 A modern, responsive portfolio website built with Astro, React, and Tailwind CSS. Features a bilingual interface (English/Spanish) and a dark/light theme toggle.
 
