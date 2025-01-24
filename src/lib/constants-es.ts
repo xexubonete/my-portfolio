@@ -1,4 +1,4 @@
-import type { Site, Page } from './types'
+import type { Page } from './types'
 
 export const loaderAnimation = [
   '.loader',

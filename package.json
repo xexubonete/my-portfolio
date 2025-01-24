@@ -6,7 +6,8 @@
     "name": "AREA44"
   },
   "scripts": {
-    "build": "astro check && astro build",
+    "build": "astro build",
+    "check": "astro check",
     "dev": "astro dev",
     "format": "prettier -w . --cache",
     "preview": "astro preview",

@@ -9,6 +9,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src/env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.astro"],
   "exclude": ["dist"]
 }
