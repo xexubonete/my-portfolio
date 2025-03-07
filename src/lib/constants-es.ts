@@ -15,7 +15,7 @@ export const LINKS = {
 
 // Work Page
 export const WORK: Page = {
-  TITLE: 'Experiencia laboral (+2 años)',
+  TITLE: 'Experiencia laboral (+3 años)',
   DESCRIPTION: 'Sitios en los que he trabajado',
 }
 
