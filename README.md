@@ -35,7 +35,7 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 ├── package.json
 ├── pnpm-lock.yaml
 ├── public
-│   ├── CV_JesusBonete_070325.pdf
+│   ├── CV_JesusBoneteS_070325.pdf
 │   ├── View1.png
 │   ├── View2.png
 │   ├── me.png
