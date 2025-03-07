@@ -23,7 +23,7 @@ export const SITE: Site = {
 
 // Work Page
 export const WORK: Page = {
-  TITLE: 'Work experience (+2 years)',
+  TITLE: 'Work experience (+3 years)',
   DESCRIPTION: 'Places I have worked.',
 }
 
