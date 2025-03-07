@@ -81,7 +81,7 @@ export const EXPERIENCE = [
     position: '.NET Developer',
     start: '2024',
     end: 'Current',
-    tasks: [    
+    tasks: [
       'Analysis and research of potential improvements',
       'Development of enhancements and new features',
       'Optimization of database query performance',
@@ -97,7 +97,7 @@ export const EXPERIENCE = [
       'Experience with Hangfire and SignalR',
       'Experience with SQL and MSSQL',
       'Proficiency in Git',
-      'Proficiency in Azure DevOps'
+      'Proficiency in Azure DevOps',
     ],
   },
   {
