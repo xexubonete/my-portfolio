@@ -15,7 +15,7 @@ export const LINKS = {
 
 // Work Page
 export const WORK: Page = {
-  TITLE: 'Experiencia laboral (+3 años)',
+  TITLE: 'Experiencia laboral (+4 años)',
   DESCRIPTION: 'Sitios en los que he trabajado',
 }
 
@@ -65,12 +65,25 @@ export const STUDIES = [
 ]
 export const SPANISH = [
   {
+    company: 'Cafler',
+    link: 'https://cafler.com/',
+    location: 'Barcelona, España',
+    position: 'Backend Developer',
+    start: '2026',
+    end: 'Actual',
+    tasks: [
+      'Construyendo un Sistema Operativo con IA para la industria automotriz',
+      'Trabajo con tecnologías .NET',
+      'Desarrollo de servicios backend para marketplace de servicios de coche',
+    ],
+  },
+  {
     company: 'SAVIA',
     link: 'https://www.savia.net/',
     location: 'Madrid, España',
     position: '.NET Developer',
     start: '2024',
-    end: 'Actual',
+    end: '2026',
     tasks: [
       'Análisis e investigación de posibles mejoras',
       'Desarrollo de evolutivos y nuevas funcionalidades',

@@ -23,7 +23,7 @@ export const SITE: Site = {
 
 // Work Page
 export const WORK: Page = {
-  TITLE: 'Work experience (+3 years)',
+  TITLE: 'Work experience (+4 years)',
   DESCRIPTION: 'Places I have worked.',
 }
 
@@ -75,12 +75,25 @@ export const STUDIES = [
 
 export const EXPERIENCE = [
   {
+    company: 'Cafler',
+    link: 'https://cafler.com/',
+    location: 'Barcelona, Spain',
+    position: 'Backend Developer',
+    start: '2026',
+    end: 'Current',
+    tasks: [
+      'Building AI-powered Operating System for the auto industry',
+      'Working with .NET technologies',
+      'Developing backend services for car services marketplace',
+    ],
+  },
+  {
     company: 'SAVIA',
     link: 'https://www.savia.net/',
     location: 'Madrid, Spain',
     position: '.NET Developer',
     start: '2024',
-    end: 'Current',
+    end: '2026',
     tasks: [
       'Analysis and research of potential improvements',
       'Development of enhancements and new features',
