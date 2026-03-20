@@ -1,0 +1,33 @@
+<svg width="1400" height="980" viewBox="0 0 1400 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="980" fill="#F8F6F2"/>
+  <text x="50" y="65" fill="#18181B" font-family="Arial, sans-serif" font-size="30" font-weight="700">New proposal</text>
+  <text x="50" y="102" fill="#52525B" font-family="Arial, sans-serif" font-size="20">Keep one grid, but change the column spans so the first row is packed tighter.</text>
+
+  <rect x="70" y="140" width="690" height="280" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="100" y="195" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="18">welcome</text>
+  <text x="100" y="250" fill="#18181B" font-family="Arial, sans-serif" font-size="40" font-weight="700">Welcome</text>
+  <text x="100" y="300" fill="#52525B" font-family="Arial, sans-serif" font-size="24">Change from 3 columns to 2 columns</text>
+
+  <rect x="790" y="140" width="260" height="280" rx="24" fill="#FFFFFF" stroke="#D97706" stroke-width="4"/>
+  <text x="820" y="195" fill="#18181B" font-family="Arial, sans-serif" font-size="36" font-weight="700">CV</text>
+  <text x="820" y="235" fill="#D97706" font-family="Arial, sans-serif" font-size="20" font-weight="700">Move up beside Welcome</text>
+
+  <rect x="1080" y="140" width="260" height="560" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="1110" y="195" fill="#18181B" font-family="Arial, sans-serif" font-size="36" font-weight="700">Skills</text>
+  <text x="1110" y="235" fill="#52525B" font-family="Arial, sans-serif" font-size="20">Stay in last column</text>
+
+  <rect x="790" y="450" width="260" height="120" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="820" y="505" fill="#18181B" font-family="Arial, sans-serif" font-size="32" font-weight="700">Blocked</text>
+
+  <rect x="790" y="590" width="260" height="120" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="820" y="645" fill="#18181B" font-family="Arial, sans-serif" font-size="32" font-weight="700">Projects</text>
+
+  <rect x="70" y="460" width="690" height="150" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="100" y="520" fill="#18181B" font-family="Arial, sans-serif" font-size="34" font-weight="700">About me</text>
+
+  <text x="50" y="810" fill="#18181B" font-family="Arial, sans-serif" font-size="24" font-weight="700">What I would change in code:</text>
+  <text x="50" y="850" fill="#52525B" font-family="Arial, sans-serif" font-size="22">- `WelcomeCard`: `md:col-span-3` → `md:col-span-2`</text>
+  <text x="50" y="885" fill="#52525B" font-family="Arial, sans-serif" font-size="22">- `CVCard`: place it before `Skills` in the grid order</text>
+  <text x="50" y="920" fill="#52525B" font-family="Arial, sans-serif" font-size="22">- `Skills`: keep as the last card in the first row/right column</text>
+  <text x="50" y="955" fill="#52525B" font-family="Arial, sans-serif" font-size="22">This pulls the cards under Welcome upward without changing their heights.</text>
+</svg>

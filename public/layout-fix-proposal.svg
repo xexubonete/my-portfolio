@@ -1,0 +1,38 @@
+<svg width="1400" height="980" viewBox="0 0 1400 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="980" fill="#F8F6F2"/>
+  <text x="60" y="70" fill="#18181B" font-family="Arial, sans-serif" font-size="30" font-weight="700">Proposed layout fix</text>
+  <text x="60" y="108" fill="#52525B" font-family="Arial, sans-serif" font-size="20">Split the page into 2 grids: top section + lower cards section.</text>
+
+  <rect x="60" y="150" width="860" height="290" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="90" y="195" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="18">welcome</text>
+  <text x="90" y="250" fill="#18181B" font-family="Arial, sans-serif" font-size="42" font-weight="700">Welcome card</text>
+  <text x="90" y="300" fill="#52525B" font-family="Arial, sans-serif" font-size="24">Keep this card exactly as it is now.</text>
+
+  <rect x="950" y="150" width="390" height="610" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="980" y="205" fill="#18181B" font-family="Arial, sans-serif" font-size="42" font-weight="700">Skills</text>
+  <text x="980" y="255" fill="#52525B" font-family="Arial, sans-serif" font-size="24">Stays on the right side.</text>
+  <text x="980" y="290" fill="#52525B" font-family="Arial, sans-serif" font-size="24">No scroll. No card stretching.</text>
+
+  <path d="M70 485H1330" stroke="#D6D3D1" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="60" y="470" fill="#D97706" font-family="Arial, sans-serif" font-size="20" font-weight="700">Small fixed gap only</text>
+
+  <rect x="60" y="510" width="260" height="240" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="90" y="570" fill="#18181B" font-family="Arial, sans-serif" font-size="34" font-weight="700">CV</text>
+
+  <rect x="350" y="510" width="260" height="140" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="380" y="570" fill="#18181B" font-family="Arial, sans-serif" font-size="34" font-weight="700">Blocked</text>
+
+  <rect x="640" y="510" width="280" height="160" rx="24" fill="#FFFFFF" stroke="#D97706" stroke-width="4"/>
+  <text x="670" y="570" fill="#18181B" font-family="Arial, sans-serif" font-size="34" font-weight="700">Projects</text>
+  <text x="670" y="610" fill="#D97706" font-family="Arial, sans-serif" font-size="20" font-weight="700">These cards move up here</text>
+
+  <rect x="350" y="700" width="570" height="140" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="380" y="760" fill="#18181B" font-family="Arial, sans-serif" font-size="34" font-weight="700">About me</text>
+
+  <rect x="950" y="790" width="390" height="150" rx="24" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
+  <text x="980" y="850" fill="#18181B" font-family="Arial, sans-serif" font-size="34" font-weight="700">Contacts</text>
+
+  <text x="60" y="905" fill="#18181B" font-family="Arial, sans-serif" font-size="24" font-weight="700">Implementation idea:</text>
+  <text x="60" y="940" fill="#52525B" font-family="Arial, sans-serif" font-size="22">1) Top grid: Welcome + Skills.  2) Second grid: CV / Blocked / Projects / About / rest.</text>
+  <text x="60" y="968" fill="#52525B" font-family="Arial, sans-serif" font-size="22">This removes the fake empty rows under Welcome without changing card heights.</text>
+</svg>

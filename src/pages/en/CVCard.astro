@@ -1,11 +1,11 @@
 ---
 import Card from '../Card.astro'
-import { Button } from '@/components/ui/_button'
+import { buttonVariants } from '../ui/_button'
 
 const PDF = '/CV_Jesus_BoneteS.pdf'
 ---
 
-<Card colSpan="md:col-span-1" rowSpan="md:row-span-4" title="CV">
+<Card colSpan="md:col-span-1 lg:col-span-1" rowSpan="md:row-span-4 lg:row-span-4" title="CV">
   <div class="mt-4 flex w-full justify-center">
     <div
       class="card card-compact md:w-112 lg:w-128 w-96 gap-2 border-[oklch(var(--p))] transition-all"
@@ -19,7 +19,7 @@ const PDF = '/CV_Jesus_BoneteS.pdf'
         </p>
         <div class="card-actions mt-2 flex w-full items-center justify-center">
           <a target="_blank" href={PDF}>
-            <Button> Download </Button>
+            <button class={buttonVariants({ variant: 'destructive' })}> Download </button>
           </a>
         </div>
       </div>

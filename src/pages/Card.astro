@@ -8,17 +8,20 @@ interface Props {
   body?: string
   colSpan?: string
   rowSpan?: string
+  colStart?: string
+  rowStart?: string
+  extraClass?: string
   href?: string
   colorText?: string
 }
 
-const { title, body, colSpan, rowSpan, href, colorText } = Astro.props
+const { title, body, colSpan, rowSpan, colStart, rowStart, extraClass, href, colorText } = Astro.props
 ---
 
 <ShadcnCard
-  className={`card-animate transfor-y-[-40%] align-start perspective-1200 group group relative col-span-1 h-auto w-full flex-none transform justify-start overflow-hidden p-6 shadow-lg transition duration-75 ease-in-out ${
+  className={`card-animate transfor-y-[-40%] align-start perspective-1200 group group relative col-span-1 h-auto w-full self-start flex-none transform justify-start overflow-hidden p-6 shadow-lg transition duration-75 ease-in-out ${
     colSpan || 'md:col-span-2'
-  } ${rowSpan || ''} ${href ? 'cursor-pointer hover:border-primary' : ''}`}
+  } ${rowSpan || ''} ${colStart || ''} ${rowStart || ''} ${extraClass || ''} ${href ? 'cursor-pointer hover:border-primary' : ''}`}
 >
   {
     href ? (
