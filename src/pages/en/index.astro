@@ -48,7 +48,7 @@ import MyStack from './MyStack.astro'
   </div>
   <main
     ng-if=""
-    class="relative m-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:p-4 md:grid-cols-2 md:gap-3 md:p-6 lg:auto-rows-min lg:grid-cols-4 lg:gap-4"
+    class="relative m-auto grid w-full max-w-6xl gap-[2px] overflow-hidden p-2 sm:gap-[2px] sm:p-4 lg:auto-rows-min lg:grid-cols-4 lg:gap-[2px]"
   >
     <WelcomeCard />
     <Skills />
@@ -58,10 +58,7 @@ import MyStack from './MyStack.astro'
     <AboutMe />
     <GoalsCard />
     <ExperienceCard />
-    <Card
-      colSpan="md:col-span-1 lg:col-span-1"
-      rowSpan="md:row-span-1 lg:row-span-1"
-    >
+    <Card colSpan="lg:col-span-1" rowSpan="lg:row-span-1" colStart="lg:col-start-3" rowStart="lg:row-start-7">
       <div class="flex h-full flex-col justify-between">
         <blockquote class="mt-6 border-l-2 pl-6 italic">
           "The only way to go fast, is to go well."

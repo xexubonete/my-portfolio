@@ -16,7 +16,10 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <Globe className="h-[1.2rem] w-[1.2rem]" />
+          <Globe
+            className="h-[1.2rem] w-[1.2rem] shrink-0"
+            strokeWidth={1.75}
+          />
           <span className="sr-only">Select Language</span>
         </Button>
       </DropdownMenuTrigger>

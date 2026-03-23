@@ -2,39 +2,42 @@
 import Card from '../Card.astro'
 ---
 
-<Card
-  colSpan="md:col-span-1 lg:col-span-1"
-  rowSpan="md:row-span-6 lg:row-span-8"
-  extraClass="lg:self-stretch"
-  title="Skills"
->
+<Card colSpan="lg:col-span-1" rowSpan="lg:row-span-5" colStart="lg:col-start-4" rowStart="lg:row-start-1" extraClass="lg:self-stretch">
   <div class="flex flex-col gap-2">
-    <p class="text-xm font-light">
-      Mis herramientas🛠️ principales son:
-      <ul class="list-inside list-disc text-sm">
-        <strong class="tech-list">🧑‍💻 Lenguajes:</strong>
-        <li>C#</li>
-        <li>SQL</li>
+    <p class="m-0 text-sm font-light">
+      <ul class="m-0 list-inside list-disc text-sm">
         <strong class="tech-list">📚 Frameworks y librerías:</strong>
         <li>.NET (+5.0)</li>
+        <li>.NET Core 3.1</li>
         <li>.NET Framework 4.8</li>
-        <li>API REST</li>
+        <li>REST APIs</li>
         <li>gRPC</li>
         <li>Microservicios</li>
         <li>Dapper</li>
-        <li>Entity Framework</li>
+        <li>Entity Framework Core</li>
+        <li>Entity Framework 6.0</li>
         <li>Hangfire</li>
         <li>MediatR</li>
+        <li>AutoMapper</li>
+        <li>FluentValidation</li>
+        <li>xUnit / MSTest</li>
+        <li>Serilog</li>
+        <li>Swagger / OpenAPI</li>
         <strong class="tech-list">🧑‍🎨 Patrones de diseño:</strong>
-        <li>Clean arch</li>
-        <li>DDD (Domain-Driven Design)</li>
+        <li>Clean Architecture</li>
+        <li>DDD Domain-Driven Design</li>
         <li>CQRS</li>
         <li>MediatR pattern</li>
         <li>Repository</li>
+        <li>Unit of Work</li>
         <strong class="tech-list">📊 Bases de datos:</strong>
         <li>PostgreSQL</li>
-        <li>MSSQL</li>
+        <li>SQL Server</li>
         <li>CosmoDB</li>
+        <strong class="tech-list">☁️ DevOps y Cloud:</strong>
+        <li>Azure</li>
+        <li>CI/CD</li>
+        <li>Git</li>
       </ul>
     </p>
   </div>

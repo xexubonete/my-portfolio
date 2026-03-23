@@ -4,63 +4,10 @@ import Card from '../Card.astro'
 import { LINKS } from '../../lib/constants'
 ---
 
-<Card
-  colSpan="md:col-span-1 lg:col-span-1"
-  rowSpan="md:row-span-4 lg:row-span-4"
-  colStart="lg:col-start-4"
-  rowStart="lg:row-start-9"
->
+<Card colSpan="lg:col-span-1" rowSpan="lg:row-span-4" colStart="lg:col-start-4" rowStart="lg:row-start-6">
   <div class="h-full">
-    <header class="flex items-center">
-      <h1 class="text-xl font-bold text-foreground">
-        Let's start working together!
-      </h1>
-    </header>
     <address class="mt-4 flex flex-col" style="margin-top: -10px;">
       <p>
-        <div
-          class="text-right"
-          style="display: flex; margin: 20px; height: 15px; align-self: center;"
-        >
-          <button
-            id="copy-email"
-            class={buttonVariants({ variant: 'secondary' })}
-            style="margin:2px;"
-          >
-            <div>
-              <svg
-                style="width: 22px; margin-right: 2px; margin-top: 3;"
-                xmlns="http://www.w3.org/2000/svg"
-                width="40"
-                height="40"
-                fill="gray"
-                viewBox="0 0 24 24"
-              >
-                <rect
-                  x="6"
-                  y="6"
-                  width="13"
-                  height="13"
-                  rx="2"
-                  ry="2"
-                  stroke="darkgray"
-                  stroke-width="2"
-                  fill="none"></rect>
-                <rect
-                  x="3"
-                  y="3"
-                  width="13"
-                  height="13"
-                  rx="2"
-                  ry="2"
-                  stroke="gray"
-                  stroke-width="2"
-                  fill="lightgray"></rect>
-              </svg>
-            </div>
-            xexubonete@gmail.com
-          </button>
-        </div>
         <div class="text-right">
           <a
             class={buttonVariants({ variant: 'outline' })}
@@ -69,18 +16,16 @@ import { LINKS } from '../../lib/constants'
             target="_blank"
             rel="noreferrer"
           >
-            🤙Call me
+            🤙 Call me
           </a>
         </div>
         <div class="text-left">
           <a
             class={buttonVariants({ variant: 'outline' })}
             style="margin-top:10px"
-            href="https://www.google.com/maps/place/Alicante+(Alacant),+Alicante/@38.3578408,-0.4725241,13z/data=!3m1!4b1!4m6!3m5!1s0xd6235da3b9dab4b:0x1d7da872ac0b81e3!8m2!3d38.3457685!4d-0.4909444!16zL20vMHpjNg?entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D"
-            target="_blank"
-            rel="noreferrer"
+            href="mailto:xexubonete@gmail.com"
           >
-            Alicante📍
+            Email me 📧
           </a>
         </div>
         <div class="text-right">
@@ -109,27 +54,10 @@ import { LINKS } from '../../lib/constants'
           width="90"
           height="90"
           src="/me_chillin.png"
-          class="pointer-events-none absolute bottom-[-20px] right-[-110px] z-[-1] max-h-[300px] w-auto select-none opacity-50 md:relative md:bottom-auto md:right-auto md:z-auto md:opacity-100"
+          class="pointer-events-none absolute bottom-[-20px] right-[-110px] z-[-1] max-h-[300px] w-auto select-none opacity-50 lg:relative lg:bottom-auto lg:right-auto lg:z-auto lg:opacity-100"
           alt="memoji of xexu taking easy"
         />
       </div>
     </div>
   </div>
 </Card>
-<script>
-  function copyToClipboard() {
-    const email = 'xexubonete@gmail.com'
-    navigator.clipboard
-      .writeText(email)
-      .then(() => {
-        alert('Copiado!')
-      })
-      .catch((err) => {
-        console.error('Error al copiar al portapapeles: ', err)
-      })
-  }
-
-  document
-    .getElementById('copy-email')
-    ?.addEventListener('click', copyToClipboard)
-</script>

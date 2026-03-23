@@ -3,59 +3,39 @@ import Card from '../Card.astro'
 import { buttonVariants } from '../ui/_button'
 ---
 
-<Card
-  colSpan="md:col-span-1 lg:col-span-1"
-  rowSpan="md:row-span-2 lg:row-span-2"
-  title="Projects"
->
-  <p class="flex">
-    <div class="flex text-right">
-      <a
-        class={`text-sm ${buttonVariants({ variant: 'destructive', size: 'sm' })}`}
-        style="margin-top:20px;margin-left:1.25em;"
-        href="https://github.com/xexubonete/pilot-api"
-        target="_blank"
-        rel="noreferrer"
-      >
-        pilot-api
-      </a>
-    </div>
-    <div
-      class="flex text-right"
-      style="align-items: center; justify-items: center;"
+<Card colSpan="lg:col-span-1" rowSpan="lg:row-span-1" colStart="lg:col-start-3" rowStart="lg:row-start-3" title="Projects">
+  <div class="mt-4 grid grid-cols-2 gap-3">
+    <a
+      class={`project-pill w-full justify-center text-xs ${buttonVariants({ variant: 'destructive', size: 'sm' })}`}
+      href="https://github.com/xexubonete/pilot-api"
+      target="_blank"
+      rel="noreferrer"
     >
-      <a
-        class={`text-sm ${buttonVariants({ variant: 'destructive', size: 'sm' })}`}
-        style="margin-top:-28px;margin-left:8.3em;"
-        href="https://github.com/xexubonete/mediator-api"
-        target="_blank"
-        rel="noreferrer"
-      >
-        mediator-api
-      </a>
-    </div>
-    <div
-      class="flex text-right"
-      style="align-items: center; justify-items: center;"
+      pilot-api
+    </a>
+    <a
+      class={`project-pill w-full justify-center text-xs ${buttonVariants({ variant: 'destructive', size: 'sm' })}`}
+      href="https://github.com/xexubonete/mediator-api"
+      target="_blank"
+      rel="noreferrer"
     >
-      <a
-        class={`text-sm ${buttonVariants({ variant: 'destructive', size: 'sm' })}`}
-        style="margin-top:10px;"
-        href="https://github.com/xexubonete/dapper-api"
-        target="_blank"
-        rel="noreferrer"
-      >
-        dapper-api
-      </a>
-      <a
-        class={`text-sm myportfolio ${buttonVariants({ variant: 'outline', size: 'sm' })}`}
-        style="margin-top:9px;margin-left:1.25em;"
-        href="https://github.com/xexubonete/my-portfolio"
-        target="_blank"
-        rel="noreferrer"
-      >
-        my-portfolio
-      </a>
-    </div>
-  </p>
+      mediator-api
+    </a>
+    <a
+      class={`project-pill w-full justify-center text-xs ${buttonVariants({ variant: 'destructive', size: 'sm' })}`}
+      href="https://github.com/xexubonete/dapper-api"
+      target="_blank"
+      rel="noreferrer"
+    >
+      dapper-api
+    </a>
+    <a
+      class={`project-pill project-pill-outline myportfolio w-full justify-center text-xs ${buttonVariants({ variant: 'outline', size: 'sm' })}`}
+      href="https://github.com/xexubonete/my-portfolio"
+      target="_blank"
+      rel="noreferrer"
+    >
+      my-portfolio
+    </a>
+  </div>
 </Card>

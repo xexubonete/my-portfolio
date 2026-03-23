@@ -7,14 +7,10 @@ const PDF = '/CV_Jesus_BoneteS.pdf'
 // const PDFImage = '/me.png'
 ---
 
-<Card
-  colSpan="md:col-span-1 lg:col-span-1"
-  rowSpan="md:row-span-4 lg:row-span-4"
-  title="CV"
->
+<Card colSpan="lg:col-span-1" rowSpan="lg:row-span-4" colStart="lg:col-start-1" rowStart="lg:row-start-3" title="CV">
   <div class="mt-4 flex w-full justify-center">
     <div
-      class="card card-compact md:w-112 lg:w-128 w-96 gap-2 border-[oklch(var(--p))] transition-all"
+      class="card card-compact w-full max-w-full gap-2 border-[oklch(var(--p))] transition-all md:max-w-[28rem] lg:max-w-[32rem]"
     >
       <figure>
         <object data={PDF} type="application/PDF" width="100%"></object>
@@ -25,9 +21,7 @@ const PDF = '/CV_Jesus_BoneteS.pdf'
         </p>
         <div class="card-actions mt-2 flex w-full items-center justify-center">
           <a target="_blank" href={PDF}>
-            <button class={buttonVariants({ variant: 'destructive' })}>
-              Descargar
-            </button>
+            <button class={buttonVariants({ variant: 'destructive' })}> Descargar </button>
           </a>
         </div>
       </div>
