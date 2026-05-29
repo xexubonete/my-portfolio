@@ -55,8 +55,13 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Default the portfolio to a slightly "zoomed-out" view so more of the
-       bento grid is visible at once. Does not affect the /cv page. */
+  }
+  /* Zoom the bento content out a touch so more of the grid is visible at once.
+     Applied to <main> (not <body>) on purpose: zooming the body breaks the
+     sticky header and mis-positions the Radix language/theme dropdowns, which
+     render in a body-level portal and compute coordinates ignoring zoom. The
+     header stays at real scale; only the content reads "from further away". */
+  main {
     zoom: 0.9;
   }
   .colorOrangeHover:hover {

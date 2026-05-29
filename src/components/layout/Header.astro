@@ -13,12 +13,13 @@ const { lang = 'en' } = Astro.props
 
 <script is:inline>
   // Apply the theme as early as possible to avoid a flash.
-  // No stored preference => follow the operating system.
+  // Default to light; only go dark if the user explicitly chose "dark",
+  // or chose "system" and their OS is in dark mode. Their choice is persisted
+  // in localStorage by the theme toggle.
   function applyStoredTheme() {
     const stored = localStorage.getItem('theme')
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const isDark =
-      stored === 'dark' || ((stored === 'system' || !stored) && systemDark)
+    const isDark = stored === 'dark' || (stored === 'system' && systemDark)
     document.documentElement.classList.toggle('dark', isDark)
   }
 
@@ -27,8 +28,8 @@ const { lang = 'en' } = Astro.props
   window
     .matchMedia('(prefers-color-scheme: dark)')
     .addEventListener('change', function () {
-      const stored = localStorage.getItem('theme')
-      if (stored === 'system' || !stored) applyStoredTheme()
+      // Only track the OS when the user explicitly picked "system".
+      if (localStorage.getItem('theme') === 'system') applyStoredTheme()
     })
 </script>
 
