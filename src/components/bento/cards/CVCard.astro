@@ -1,0 +1,69 @@
+---
+import Card from '../Card.astro'
+import { buttonVariants } from '@/components/ui/_button'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+const cvUrl = lang === 'es' ? '/cv' : '/en/cv'
+
+const strings = {
+  es: {
+    caption: 'Vista previa de mi CV — haz clic para verlo y descargarlo',
+    download: 'Ver y descargar CV',
+  },
+  en: {
+    caption: 'Preview of my resume — click to view and download',
+    download: 'View & download CV',
+  },
+}[lang]
+---
+
+<Card span={span} title="CV">
+  <a
+    href={cvUrl}
+    target="_blank"
+    rel="noreferrer"
+    class="mt-3 flex h-full min-h-0 flex-col gap-3"
+  >
+    <div
+      id="cv-preview"
+      class="relative hidden aspect-[210/297] w-full overflow-hidden rounded-md border bg-muted lg:block"
+    >
+      <iframe
+        id="cv-frame"
+        src={cvUrl}
+        title="CV"
+        loading="lazy"
+        tabindex="-1"
+        class="pointer-events-none absolute left-0 top-0 origin-top-left"
+        style="width:794px;height:1123px;border:0;"></iframe>
+    </div>
+    <p class="text-center text-xs text-muted-foreground">{strings.caption}</p>
+    <span
+      class={`btn-uniform w-full justify-center ${buttonVariants({ variant: 'destructive' })}`}
+    >
+      {strings.download}
+    </span>
+  </a>
+</Card>
+
+<script>
+  // Scale the embedded A4 CV (794px wide) to fit the card width.
+  const wrap = document.getElementById('cv-preview')
+  const frame = document.getElementById('cv-frame')
+  const fit = () => {
+    if (!wrap || !frame) return
+    // Cover the preview box (fill width and height) so it grows with the card
+    // without leaving empty space; the bottom of the A4 is cropped.
+    const scale = Math.max(wrap.clientWidth / 794, wrap.clientHeight / 1123)
+    frame.style.transform = `scale(${scale})`
+  }
+  fit()
+  if (wrap) new ResizeObserver(fit).observe(wrap)
+  window.addEventListener('load', fit)
+</script>

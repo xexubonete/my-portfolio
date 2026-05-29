@@ -1,0 +1,38 @@
+---
+import Card from '../Card.astro'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+
+const strings = {
+  es: {
+    title: 'Sobre mí',
+    paragraphs: [
+      'Mas allá de la programación, me apasiona entrenar🏋️‍♂️ y llevar una vida saludable🍏.',
+      'Otra afición que practico es jugar a airsoft🎖️ los fines de semana.',
+    ],
+  },
+  en: {
+    title: 'About me',
+    paragraphs: [
+      "Beyond coding, I'm passionate about the gym 🏋️‍♂️ and living a healthy lifestyle 🍏.",
+      'Another hobby of mine is playing airsoft 🎖️ on weekends.',
+    ],
+  },
+}[lang]
+---
+
+<Card span={span} title={strings.title}>
+  <div class="flex flex-col gap-2">
+    {
+      strings.paragraphs.map((paragraph) => (
+        <p class="font-light md:text-xs lg:text-sm">{paragraph}</p>
+      ))
+    }
+  </div>
+</Card>

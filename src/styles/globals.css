@@ -10,7 +10,7 @@
     --card-foreground: 20 14.3% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
-    --primary: 24.6 95% 53.1%;
+    --primary: 31 69% 53%;
     --primary-foreground: 60 9.1% 97.8%;
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
@@ -22,30 +22,30 @@
     --destructive-foreground: 60 9.1% 97.8%;
     --border: 20 5.9% 90%;
     --input: 20 5.9% 90%;
-    --ring: 24.6 95% 53.1%;
+    --ring: 31 69% 53%;
     --radius: 1rem;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 20 12% 12%;
     --foreground: 60 9.1% 97.8%;
-    --card: 20 14.3% 4.1%;
+    --card: 24 10% 16%;
     --card-foreground: 60 9.1% 97.8%;
-    --popover: 20 14.3% 4.1%;
+    --popover: 24 10% 16%;
     --popover-foreground: 60 9.1% 97.8%;
-    --primary: 20.5 90.2% 48.2%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 12 6.5% 15.1%;
+    --primary: 32 72% 56%;
+    --primary-foreground: 20 14% 8%;
+    --secondary: 20 8% 22%;
     --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-    --accent: 12 6.5% 15.1%;
+    --muted: 20 8% 21%;
+    --muted-foreground: 24 6% 70%;
+    --accent: 20 8% 24%;
     --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 20.5 90.2% 48.2%;
+    --border: 20 7% 27%;
+    --input: 20 7% 27%;
+    --ring: 32 72% 56%;
   }
 }
 
@@ -55,74 +55,33 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Default the portfolio to a slightly "zoomed-out" view so more of the
+       bento grid is visible at once. Does not affect the /cv page. */
+    zoom: 0.9;
   }
   .colorOrangeHover:hover {
-    /* background-color: #b26e26; */
-    /* background-color: #a87136; */
-    background-color: #e18e36;
-    color: white;
-    /* font-weight: bold; */
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
     transition:
-      font-weight 2s ease,
       background-color 0.6s ease,
       color 0.3s ease;
   }
-  /* Add space between list items */
+  /* Space between grouped list items */
   .tech-list {
-    display: block; /* Asegura que se comporte como un bloque */
-    margin-top: 5px; /* Ajusta este valor para el espacio vertical deseado */
+    display: block;
+    margin-top: 5px;
   }
 }
 .goal-list {
-  display: block; /* Asegura que se comporte como un bloque */
-  margin-top: 15px; /* Ajusta este valor para el espacio vertical deseado */
+  display: block;
 }
 a {
   font-style: normal;
 }
-.background-email {
-  background-color: #da8b37;
-  color: rgb(255, 251, 251);
-}
-.background-email:hover {
-  background-color: #ffffff00;
-  transition:
-    background-color 0.6s ease,
-    color 0.2s ease;
-}
-.myprojects {
-  font-weight: bold;
-  color: black;
-  margin-top: -10px;
-  margin-left: -10px;
-  background-color: rgb(255, 255, 255);
-  font-size: 18px;
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.303);
-}
-.myprojects:hover {
-  background-color: #eae8e8;
-  /* color:white!important; */
-  text-decoration: none;
-
-  transition:
-    background-color 0.6s ease,
-    color 0.2s ease;
-}
-.destructive:hover {
-  background-color: rgb(232, 226, 226);
-  color: black;
-  transition:
-    background-color 0.6s ease,
-    color 0.2s ease;
-}
-.myportfolio {
-  background-color: white;
-  color: black;
-  box-shadow: 4px 4px 9px #da8b37b7;
-  margin-top: 0;
-  margin-left: 0;
-}
-.project-pill {
+/* Unified button hover used across the site (project pills, contact buttons,
+   CV button, etc.): fill brand orange + lift + glow. `!important` guarantees it
+   wins over shadcn variant hovers (outline's bg-accent, destructive's opacity). */
+.btn-uniform {
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -131,15 +90,97 @@ a {
     border-color 0.2s ease;
 }
 
-.project-pill:hover {
-  background-color: #da8b37;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(218, 139, 55, 0.28);
+.btn-uniform:hover {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-color: hsl(var(--primary)) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px hsl(var(--primary) / 0.35);
 }
 
-.project-pill-outline:hover {
-  background-color: #da8b37;
-  border-color: #da8b37;
-  color: black;
+/* Project repo buttons: outline + icon + ↗ arrow; fill brand orange on hover. */
+.repo-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1.5px solid hsl(var(--primary));
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.repo-btn:hover {
+  transform: translateY(-2px);
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 8px 20px hsl(var(--primary) / 0.3);
+}
+
+.repo-arrow {
+  margin-left: auto;
+  opacity: 0.5;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.repo-btn:hover .repo-arrow {
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
+/* my-portfolio = the project we're deployed on: a green "live" beacon. */
+.repo-btn--live {
+  border-color: #22c55e;
+  font-weight: 600;
+  animation: portfolio-pulse 2.2s ease-in-out infinite;
+}
+
+.repo-btn--live:hover {
+  animation: none;
+}
+
+.repo-btn--live:hover .portfolio-live {
+  background: hsl(var(--primary-foreground));
+  box-shadow: none;
+}
+
+@keyframes portfolio-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(34, 197, 94, 0);
+  }
+}
+
+.portfolio-live {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.7);
+  animation: portfolio-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes portfolio-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
 }

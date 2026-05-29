@@ -1,0 +1,27 @@
+---
+import Card from '../Card.astro'
+import { Badge } from '@/components/ui/_badge'
+import { studiesByLang } from '@/i18n'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+const studies = studiesByLang[lang]
+const title = lang === 'es' ? 'Aprendizaje' : 'Study'
+---
+
+<Card span={span} title={title}>
+  <div class="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
+    {
+      studies.map((study) => (
+        <a href={study.link} target="_blank" rel="noreferrer">
+          <Badge variant="outline">{study.institution}</Badge>
+        </a>
+      ))
+    }
+  </div>
+</Card>

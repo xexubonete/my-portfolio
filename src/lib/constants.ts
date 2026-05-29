@@ -1,4 +1,4 @@
-import type { Site, Page } from './types'
+import type { Page } from './types'
 
 export const loaderAnimation = [
   '.loader',
@@ -13,36 +13,10 @@ export const LINKS = {
   instagram: 'https://www.instagram.com/xexubonete/',
 }
 
-// Global
-export const SITE: Site = {
-  TITLE: 'Astro Sphere',
-  DESCRIPTION:
-    'Welcome to Astro Sphere, a portfolio and blog for designers and developers.',
-  AUTHOR: 'Mark Horn',
-}
-
 // Work Page
 export const WORK: Page = {
   TITLE: 'Work experience (+4 years)',
   DESCRIPTION: 'Places I have worked.',
-}
-
-// Blog Page
-export const BLOG: Page = {
-  TITLE: 'Blog',
-  DESCRIPTION: 'Writing on topics I am passionate about.',
-}
-
-// Projects Page
-export const PROJECTS: Page = {
-  TITLE: 'Projects',
-  DESCRIPTION: 'Recent projects I have worked on.',
-}
-
-// Search Page
-export const SEARCH: Page = {
-  TITLE: 'Search',
-  DESCRIPTION: 'Search all posts and projects by keyword.',
 }
 
 // Study Page
@@ -79,47 +53,65 @@ export const EXPERIENCE = [
     link: 'https://cafler.com/',
     location: 'Barcelona, Spain',
     position: '.NET Backend Developer',
-    start: '2026',
+    start: '01/2026',
     end: 'Current',
-    tasks: [
-      'Building an AI-powered Operating System for the automotive industry',
-      'Development of backend services for a car services marketplace',
-      'Experience with .NET 8',
-      'Experience with microservices architecture',
-      'Experience with gRPC',
-      'Experience with Entity Framework',
-      'Experience with Hangfire',
-      'Experience with CosmoDB',
-      'Experience with MSSQL',
-      'Experience with Azure Portal',
-      'Proficiency in Git',
-      'Proficiency in GitHub',
+    description:
+      'AI-powered Operating System for the automotive industry and backend services for a car-services marketplace.',
+    responsibilities: [
+      'Design and development of backend services with microservices architecture and gRPC.',
+      'AI-assisted development with Claude and GitHub Copilot PRO.',
+    ],
+    stack: [
+      '.NET 10',
+      '.NET 9',
+      '.NET 8',
+      'C#',
+      'Clean Architecture',
+      'CQRS',
+      'MediatR',
+      'Microservices',
+      'gRPC',
+      'Entity Framework',
+      'Hangfire',
+      'CosmoDB',
+      'MSSQL',
+      'Azure',
+      'Azure Blob Storage',
+      'Azure DevOps',
+      'Git/GitHub',
+      'Postman',
+      'Bruno',
     ],
   },
   {
-    company: 'SAVIA',
+    company: 'Savia by Berger-Levrault',
     link: 'https://www.savia.net/',
     location: 'Madrid, Spain',
     position: '.NET Developer',
-    start: '2024',
-    end: '2026',
-    tasks: [
-      'Analysis and research of potential improvements',
-      'Development of enhancements and new features',
-      'Optimization of database query performance',
-      'Bug fixing and backend issue resolution',
-      'Creation of various types of tests',
-      'Adherence to best practices',
-      'Experience with .NET 8.0',
-      'Experience with .NET Framework 4.8',
-      'Experience with REST APIs',
-      'Experience with Dapper and Entity Framework for data access',
-      'Experience with Automapper',
-      'Experience with MediatR pattern',
-      'Experience with Hangfire and SignalR',
-      'Experience with SQL and MSSQL',
-      'Proficiency in Git',
-      'Proficiency in Azure DevOps',
+    start: '05/2024',
+    end: '12/2025',
+    description:
+      'Web application for human-resources management in public administration.',
+    responsibilities: [
+      'Development of enhancements and new features; optimization of database query times.',
+      'Bug fixing, creation of different types of tests and best practices.',
+      'AI-assisted development with GitHub Copilot.',
+    ],
+    stack: [
+      '.NET 8',
+      '.NET Framework 4.8',
+      'C#',
+      'REST APIs',
+      'Dapper',
+      'Entity Framework',
+      'AutoMapper',
+      'MediatR',
+      'Hangfire',
+      'SignalR',
+      'MSSQL',
+      'Azure DevOps',
+      'Git',
+      'Postman',
     ],
   },
   {
@@ -127,39 +119,62 @@ export const EXPERIENCE = [
     link: 'https://es.nttdata.com/',
     location: 'Alicante, Spain',
     position: '.NET Developer',
-    start: '2023',
-    end: '2024',
-    tasks: [
-      'Solo maintenance of corrective service.',
-      'Direct communication with the client.',
-      'Analysis, coding, and deployment of fixes.',
-      'Testing and validation of functionalities across the application.',
-      'Proposal of new features.',
-      'Use of API REST.',
-      'Experience with .NET Core 3.1.',
-      'Experience with Entity Framework 3.1.',
-      'Experience with Azure DevOps.',
-      'Experience with Git.',
+    start: '12/2023',
+    end: '05/2024',
+    description:
+      'Sole maintenance of the corrective service for a leading renewable-energy company.',
+    responsibilities: [
+      'Sole maintenance of the corrective service and direct communication with the client.',
+      'Analysis, coding, deployment of fixes and validation of features.',
+      'Proposal of new enhancements.',
+    ],
+    stack: [
+      '.NET Core 3.1',
+      'C#',
+      'REST APIs',
+      'Entity Framework',
+      'Azure DevOps',
+      'Git/GitHub',
+      'Postman',
     ],
   },
   {
     company: 'NTT DATA',
     link: 'https://es.nttdata.com/',
     location: 'Alicante, Spain',
-    position: '.NET Junior Developer',
-    start: '2022',
-    end: '2023',
-    tasks: [
-      'Creating APIs in .NET C#.',
-      'Experience with .NET Framework 6.0.',
-      'Experience with .NET Core 6.0.',
-      'Postman requests.',
-      'Experience with GitHub.',
-      'Development of ASP classic applications.',
-      'Development of SQL database scripts.',
-      'Experience with MSSQL Server.',
-      'Deployment using Jenkins.',
-      'Experience with Git.',
+    position: 'Junior .NET Developer',
+    start: '06/2022',
+    end: '12/2023',
+    description:
+      'Maintenance of language literals in a web application in the fuel sector.',
+    responsibilities: [
+      'Development of classic ASP enhancements and SQL database scripts.',
+    ],
+    stack: [
+      'Classic ASP',
+      'SQL',
+      'MSSQL',
+      'Team Explorer',
+      'Jenkins',
+      'Postman',
+    ],
+  },
+  {
+    company: 'NTT DATA',
+    link: 'https://es.nttdata.com/',
+    location: 'Alicante, Spain',
+    position: 'Backend Intern',
+    start: '02/2022',
+    end: '06/2022',
+    description: 'Backend for a wind-farm application (3-month internship).',
+    responsibilities: ['Design and implementation of an API in .NET C#.'],
+    stack: [
+      '.NET 6',
+      'C#',
+      'Entity Framework',
+      'Azure DevOps',
+      'Git/GitHub',
+      'Postman',
     ],
   },
 ]

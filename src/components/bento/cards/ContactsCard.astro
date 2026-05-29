@@ -1,0 +1,51 @@
+---
+import Card from '../Card.astro'
+import { buttonVariants } from '@/components/ui/_button'
+import { LINKS } from '@/i18n'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+
+const strings = {
+  es: { call: '🤙 Llámame', email: '📧 Escríbeme' },
+  en: { call: '🤙 Call me', email: '📧 Email me' },
+}[lang]
+
+const contacts = [
+  { label: strings.call, href: 'tel:+34722243881' },
+  { label: strings.email, href: LINKS.mail },
+  { label: '👔 LinkedIn', href: LINKS.linkedin },
+  { label: '🎖️ Github', href: LINKS.github },
+]
+---
+
+<Card span={span}>
+  <div class="flex h-full flex-col justify-between gap-3">
+    <address class="flex flex-col gap-3 not-italic">
+      {
+        contacts.map((contact) => (
+          <a
+            class={`${buttonVariants({ variant: 'outline' })} btn-uniform h-14 w-full justify-center border-primary text-base`}
+            href={contact.href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {contact.label}
+          </a>
+        ))
+      }
+    </address>
+    <img
+      width="240"
+      height="240"
+      src="/me_chillin.png"
+      class="pointer-events-none mx-auto mt-2 max-h-[240px] w-auto select-none"
+      alt="memoji of Jesús taking it easy"
+    />
+  </div>
+</Card>

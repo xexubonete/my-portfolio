@@ -1,0 +1,103 @@
+---
+import Card from '../Card.astro'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+
+type Group = { label: string; items: string[] }
+
+const languages = ['C#', 'SQL']
+
+const frameworks = [
+  '.NET',
+  '.NET Core 3.1',
+  '.NET Framework 4.8',
+  'REST APIs',
+  'gRPC',
+  lang === 'es' ? 'Microservicios' : 'Microservices',
+  'Dapper',
+  'Entity Framework Core',
+  'Entity Framework 6.0',
+  'Hangfire',
+  'MediatR',
+  'AutoMapper',
+  'FluentValidation',
+  'SignalR',
+  'xUnit / MSTest',
+  'Serilog',
+  'Swagger / OpenAPI',
+]
+const patterns = [
+  'Clean Architecture',
+  'DDD Domain-Driven Design',
+  'CQRS',
+  'MediatR pattern',
+  'Repository',
+  'Unit of Work',
+]
+const databases = ['PostgreSQL', 'MSSQL', 'CosmoDB', 'Stored Procedures']
+const devops = [
+  'Azure',
+  'Azure Blob Storage',
+  'Azure DevOps',
+  'Pipelines',
+  'CI/CD',
+  'Jenkins',
+  'Git',
+]
+const tools = ['Postman', 'Bruno', 'Team Explorer']
+
+const labels = {
+  es: {
+    languages: '🧑‍💻 Lenguajes:',
+    frameworks: '📚 Frameworks y librerías:',
+    patterns: '🧑‍🎨 Patrones de diseño:',
+    databases: '📊 Bases de datos:',
+    devops: '☁️ DevOps y Cloud:',
+    tools: '🧰 Herramientas:',
+  },
+  en: {
+    languages: '🧑‍💻 Languages:',
+    frameworks: '📚 Frameworks and Libraries:',
+    patterns: '🧑‍🎨 Design Patterns:',
+    databases: '📊 Databases:',
+    devops: '☁️ DevOps and Cloud:',
+    tools: '🧰 Tools:',
+  },
+}[lang]
+
+const groups: Group[] = [
+  { label: labels.languages, items: languages },
+  { label: labels.frameworks, items: frameworks },
+  { label: labels.patterns, items: patterns },
+  { label: labels.databases, items: databases },
+  { label: labels.devops, items: devops },
+  { label: labels.tools, items: tools },
+]
+---
+
+<Card span={span}>
+  <div class="flex flex-col gap-4">
+    {
+      groups.map((group) => (
+        <div>
+          <p class="mb-2 text-xs font-semibold text-muted-foreground">
+            {group.label}
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            {group.items.map((item) => (
+              <span class="cursor-default rounded-md border border-border bg-secondary/50 px-2 py-0.5 text-xs transition-colors hover:border-primary hover:text-primary">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Card>

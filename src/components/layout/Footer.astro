@@ -1,0 +1,27 @@
+---
+import { LINKS } from '@/i18n'
+
+const year = new Date().getFullYear()
+---
+
+<footer class="w-full border-t">
+  <div
+    class="container flex flex-col items-center justify-between gap-2 py-6 text-xs text-muted-foreground sm:flex-row"
+  >
+    <span>© {year} Jesús Bonete</span>
+    <div class="flex items-center gap-4">
+      <a
+        class="transition-colors hover:text-foreground"
+        href={LINKS.github}
+        target="_blank"
+        rel="noreferrer">GitHub</a
+      >
+      <a
+        class="transition-colors hover:text-foreground"
+        href={LINKS.linkedin}
+        target="_blank"
+        rel="noreferrer">LinkedIn</a
+      >
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,42 @@
+---
+import Card from '../Card.astro'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+
+const strings = {
+  es: {
+    eyebrow: 'bienvenido',
+    bodyHtml: `Hola, soy <b class="font-bold text-primary">Jesús Bonete</b>, desarrollador backend enfocado en crear aplicaciones eficientes y escalables. Me especializo en servicios robustos y seguros, optimización de bases de datos e integración impecable con el frontend desde el servidor. La IA es el núcleo de mi forma de trabajar: la integro en mi día a día para desarrollar más rápido, automatizar tareas repetitivas y elevar la calidad del código sin sacrificar buenas prácticas. Saco el máximo partido de LLMs, agentes y asistentes como Claude o GitHub Copilot para acelerar cada fase, de la arquitectura al despliegue, tomando mejores decisiones en menos tiempo.<br />Cuido el código limpio, la arquitectura sólida y el crecimiento en cada proyecto. Apasionado de la tecnología, siempre busco nuevos retos.`,
+  },
+  en: {
+    eyebrow: 'welcome',
+    bodyHtml: `Hi, I'm <b class="font-bold text-primary">Jesús Bonete</b>, a backend dev focused on building efficient and scalable applications. I specialize in robust, secure services, database optimization and seamless integration with the frontend from the server side. AI is at the core of how I work: I weave it into my daily workflow to build faster, automate repetitive tasks and raise code quality without compromising best practices. I make the most of LLMs, agents and assistants like Claude or GitHub Copilot to speed up every phase, from architecture to deployment, making better decisions in less time.<br />I care about clean code, solid architecture and growing with every project. Passionate about technology, I'm always after new challenges.`,
+  },
+}[lang]
+---
+
+<Card span={span}>
+  <div class="flex h-full w-full">
+    <div class="flex flex-col justify-between gap-4">
+      <div class="flex h-full flex-col">
+        <h6 class="m-0 text-sm font-light text-muted-foreground">
+          {strings.eyebrow}
+        </h6>
+        <p class="m-0 mt-4 text-xl font-light" set:html={strings.bodyHtml} />
+      </div>
+    </div>
+    <img
+      width="500"
+      height="300"
+      src="/me.png"
+      class="pointer-events-none absolute bottom-[-20px] right-[-11px] z-[-1] max-h-[300px] w-auto select-none opacity-50 lg:relative lg:bottom-auto lg:right-auto lg:z-auto lg:opacity-100"
+      alt="memoji of Jesús Bonete"
+    />
+  </div>
+</Card>

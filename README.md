@@ -6,7 +6,7 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 
 - **Bilingual Support**: Automatically detects browser language and switches between English and Spanish
 - **Dark/Light Theme**: Toggle between dark and light modes
-- **Responsive Design**: Fully responsive layout that works on all devices
+- **Responsive Design**: A bento-style grid that reflows from 1 → 2 → 4 columns
 - **Modern Stack**: Built with Astro, React, and Tailwind CSS
 - **Performance Optimized**: Fast loading times and smooth animations
 - **SEO Friendly**: Includes meta tags and proper SEO structure
@@ -20,92 +20,37 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 - [Lucide Icons](https://lucide.dev/)
 - [Motion](https://motion.dev/)
 
+> Package manager: **pnpm** (pinned via the `packageManager` field). Use `corepack enable` to get the matching version automatically.
+
 ## 🏗️ Project Structure
 
 ```
-├── LICENSE
-├── README.md
-├── astro.config.ts
+├── astro.config.mjs
 ├── components.json
-├── dist
-│   └── me_chillin.png
 ├── netlify.toml
-├── node_modules
-├── package-lock.json
 ├── package.json
 ├── pnpm-lock.yaml
-├── public
-│   ├── CV_JesusBoneteS_070325.pdf
-│   ├── View1.png
-│   ├── View2.png
-│   ├── me.png
-│   └── me_chillin.png
+├── public/                       # static assets (CV PDF, images, memojis)
 ├── src
 │   ├── components
-│   │   └── sections
-│   ├── content
-│   │   └── work
-│   │       └── apple.md
-│   ├── env.d.ts
-│   ├── layouts
-│   │   ├── BaseLayout.astro
-│   │   ├── BottomLayout.astro
-│   │   └── TopLayout.astro
-│   ├── lib
-│   │   ├── constants-es.ts
-│   │   ├── constants.ts
-│   │   ├── contentful.ts
-│   │   ├── types.ts
-│   │   └── utils.ts
+│   │   ├── bento
+│   │   │   ├── BentoGrid.astro    # responsive bento layout + entry animation
+│   │   │   ├── Card.astro         # shared card shell (fills its grid cell)
+│   │   │   ├── Container.astro
+│   │   │   ├── ContentCard.astro
+│   │   │   └── cards/             # one bilingual component per card
+│   │   ├── layout                 # Header, Footer, HeadSEO, Pulse
+│   │   └── ui/                    # shadcn/ui primitives (React)
+│   ├── i18n
+│   │   └── index.ts               # Lang type + per-language data helpers
+│   ├── layouts/                   # BaseLayout, TopLayout, BottomLayout
+│   ├── lib/                       # constants, constants-es, types, utils
 │   ├── pages
 │   │   ├── 404.astro
-│   │   ├── Card.astro
-│   │   ├── Container.astro
-│   │   ├── ContentCard.astro
-│   │   ├── Footer.astro
-│   │   ├── HeadSEO.astro
-│   │   ├── Header.astro
-│   │   ├── ProjectCard.astro
-│   │   ├── Pulse.astro
-│   │   ├── ThemeToggle.astro
-│   │   ├── en
-│   │   │   ├── AboutMe.astro
-│   │   │   ├── Available.astro
-│   │   │   ├── CVCard.astro
-│   │   │   ├── ContactsCard.astro
-│   │   │   ├── ExperienceCard.astro
-│   │   │   ├── GoalsCard.astro
-│   │   │   ├── MyStack.astro
-│   │   │   ├── Skills.astro
-│   │   │   ├── StudyCard.astro
-│   │   │   ├── WelcomeCard.astro
-│   │   │   ├── index.astro
-│   │   │   └── work.astro
-│   │   ├── es
-│   │   │   ├── AboutMe.astro
-│   │   │   ├── Available.astro
-│   │   │   ├── CVCard.astro
-│   │   │   ├── ContactsCard.astro
-│   │   │   ├── ExperienceCard.astro
-│   │   │   ├── GoalsCard.astro
-│   │   │   ├── MyStack.astro
-│   │   │   ├── Skills.astro
-│   │   │   ├── StudyCard.astro
-│   │   │   ├── WelcomeCard.astro
-│   │   │   ├── index.astro
-│   │   │   └── work.astro
-│   │   ├── index.astro
-│   │   ├── portfolio.astro
-│   │   └── ui
-│   │       ├── _RedirectToggle.tsx
-│   │       ├── _ThemeToggle.tsx
-│   │       ├── _badge.tsx
-│   │       ├── _button.tsx
-│   │       ├── _card.tsx
-│   │       └── _dropdown-menu.tsx
-│   └── styles
-│       ├── fonts.css
-│       └── globals.css
+│   │   ├── index.astro            # redirects by browser language
+│   │   ├── en/{index,work}.astro  # thin route entries
+│   │   └── es/{index,work}.astro
+│   └── styles/                    # fonts.css, globals.css
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── vercel.json
@@ -116,12 +61,13 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/xexubonete/portfolio.git
+git clone https://github.com/xexubonete/my-portfolio.git
 ```
 
 2. Install dependencies:
 
 ```bash
+corepack enable   # activates the pinned pnpm version
 pnpm install
 ```
 
@@ -131,41 +77,28 @@ pnpm install
 pnpm dev
 ```
 
-4. Build for production:
+4. Type-check and build for production:
 
 ```bash
+pnpm check
 pnpm build
 ```
 
 ## 🎨 Customization
 
-- Edit `src/lib/constants.ts` and `src/lib/constants-es.ts` to update your personal information
-- Modify themes in `src/styles/globals.css`
-- Update content in the respective language folders under `src/pages/`
+- Edit `src/lib/constants.ts` (English) and `src/lib/constants-es.ts` (Spanish) for experience and study data.
+- Card copy lives co-located inside each bilingual component under `src/components/bento/cards/` (a small `strings[lang]` object per card).
+- Adjust the grid (column/row spans, gaps) in `src/components/bento/BentoGrid.astro`.
+- Modify theme colors in `src/styles/globals.css`.
 
-## 📱 Components
+## 📱 Cards
 
-- **WelcomeCard**: Main introduction section
-- **Skills**: Technical skills showcase
-- **Experience**: Work history
-- **Contact**: Contact information
-- **About**: Personal information
-- **Goals**: Future objectives
-- **CV**: Resume section
+`IntroCard`, `SkillsCard`, `CVCard`, `AvailableCard`, `ProjectsCard`, `AboutCard`, `GoalsCard`, `ExperienceCard`, `QuoteCard`, `StudyCard`, `ContactsCard` — each is a single component rendered for both languages.
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/xexubonete/portfolio/issues).
-
 ## 📧 Contact
 
-- Email: [xexubonete@gmail.com]
-
-## 🙏 Acknowledgments
-
-- Design inspired by modern portfolio trends
-- Built with Astro's excellent documentation and community support
+- Email: [xexubonete@gmail.com](mailto:xexubonete@gmail.com)

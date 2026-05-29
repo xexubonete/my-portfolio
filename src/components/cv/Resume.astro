@@ -1,0 +1,603 @@
+---
+import '@/styles/fonts.css'
+import { experienceByLang, LINKS, yearsOfExperience } from '@/i18n'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const experience = experienceByLang[lang]
+
+// Group consecutive roles at the same company (e.g. NTT DATA's 3 stages).
+type Role = (typeof experience)[number]
+const companyGroups: {
+  company: string
+  location: string
+  link?: string
+  roles: Role[]
+}[] = []
+for (const role of experience) {
+  const last = companyGroups[companyGroups.length - 1]
+  if (last && last.company === role.company) last.roles.push(role)
+  else
+    companyGroups.push({
+      company: role.company,
+      location: role.location,
+      link: role.link,
+      roles: [role],
+    })
+}
+
+const T = {
+  es: {
+    role: 'Desarrollador Backend .NET',
+    download: '⤓ Descargar PDF',
+    pdf: '/CV_Jesus_Bonete_ES.pdf',
+    location: 'Elda, Alicante, España',
+    profileTitle: 'Perfil',
+    profile:
+      'Desarrollador backend .NET con {EXP} de experiencia construyendo servicios robustos y escalables. Especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código sin sacrificar buenas prácticas.',
+    contactTitle: 'Contacto',
+    dataTitle: 'Datos',
+    dob: 'Nacimiento',
+    nat: 'Nacionalidad',
+    natValue: 'Española',
+    license: 'Permiso de conducir',
+    langTitle: 'Idiomas',
+    spanish: 'Español',
+    spanishLevel: 'Nativo',
+    english: 'Inglés',
+    skillsTitle: 'Habilidades',
+    expTitle: 'Experiencia',
+    eduTitle: 'Formación',
+    eduName: 'Desarrollo de Aplicaciones Web (DAW)',
+    eduPlace: 'Alicante, España',
+    softSkills: [
+      'Autoaprendizaje',
+      'Trabajo bajo presión',
+      'Resolución de problemas',
+      'Autonomía y proactividad',
+      'Liderazgo',
+      'Comunicación',
+      'Trabajo en equipo',
+      'Adaptabilidad',
+    ],
+  },
+  en: {
+    role: 'Backend .NET Developer',
+    download: '⤓ Download PDF',
+    pdf: '/CV_Jesus_Bonete_EN.pdf',
+    location: 'Elda, Alicante, Spain',
+    profileTitle: 'Profile',
+    profile:
+      'Backend .NET developer with {EXP} of experience building robust and scalable services. Specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality without compromising best practices.',
+    contactTitle: 'Contact',
+    dataTitle: 'Details',
+    dob: 'Date of birth',
+    nat: 'Nationality',
+    natValue: 'Spanish',
+    license: 'Driving licence',
+    langTitle: 'Languages',
+    spanish: 'Spanish',
+    spanishLevel: 'Native',
+    english: 'English',
+    skillsTitle: 'Skills',
+    expTitle: 'Experience',
+    eduTitle: 'Education',
+    eduName: 'Web Application Development (DAW)',
+    eduPlace: 'Alicante, Spain',
+    softSkills: [
+      'Self-learning',
+      'Working under pressure',
+      'Problem solving',
+      'Autonomy and proactivity',
+      'Leadership',
+      'Communication',
+      'Teamwork',
+      'Adaptability',
+    ],
+  },
+}[lang]
+
+const { years, exact } = yearsOfExperience()
+const expPhrase =
+  lang === 'es'
+    ? exact
+      ? `${years} años`
+      : `más de ${years} años`
+    : exact
+      ? `${years} years`
+      : `${years}+ years`
+const profileText = T.profile.replace(
+  '{EXP}',
+  `<span class="js-exp-phrase">${expPhrase}</span>`,
+)
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CV — Jesús Bonete Sánchez</title>
+    <style is:global>
+      :root {
+        --brand: #da8b37;
+        --brand-dark: #b9722a;
+        --ink: #1f2937;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+        background: #f3f4f6;
+        line-height: 1.45;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .toolbar {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .btn {
+        cursor: pointer;
+        border: none;
+        border-radius: 0.5rem;
+        background: var(--brand);
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        padding: 0.6rem 1.4rem;
+        box-shadow: 0 4px 12px rgba(218, 139, 55, 0.35);
+      }
+      .btn:hover {
+        background: var(--brand-dark);
+      }
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto 2rem;
+        background: #fff;
+        display: grid;
+        grid-template-columns: 66mm 1fr;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+      .aside {
+        background: linear-gradient(160deg, var(--brand), var(--brand-dark));
+        color: #fff;
+        padding: 9mm 7mm;
+      }
+      .photo {
+        width: 32mm;
+        height: 32mm;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 4mm;
+        background: #fff;
+        border: 2px solid #6b7280;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+      }
+      .name {
+        text-align: center;
+        font-size: 16pt;
+        font-weight: 700;
+        line-height: 1.15;
+      }
+      .role {
+        text-align: center;
+        font-size: 9.5pt;
+        opacity: 0.92;
+        margin-top: 1mm;
+      }
+      .aside h2 {
+        font-size: 9pt;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 5mm 0 2mm;
+        padding-bottom: 1mm;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      }
+      .aside a {
+        color: #fff;
+        text-decoration: none;
+        word-break: break-word;
+      }
+      .field {
+        font-size: 8.5pt;
+        margin-bottom: 1.6mm;
+        line-height: 1.35;
+      }
+      .field .label {
+        display: block;
+        font-weight: 700;
+        opacity: 0.85;
+        font-size: 7.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .contact {
+        display: flex;
+        align-items: flex-start;
+        gap: 2mm;
+        font-size: 8.5pt;
+        margin-bottom: 2mm;
+        line-height: 1.3;
+      }
+      .contact svg {
+        width: 3.8mm;
+        height: 3.8mm;
+        flex-shrink: 0;
+        margin-top: 0.2mm;
+        fill: currentColor;
+      }
+      .contact a {
+        word-break: break-word;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2mm;
+      }
+      .chip {
+        font-size: 7.5pt;
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        padding: 0.8mm 2mm;
+      }
+      .main {
+        padding: 8mm 9mm;
+      }
+      .main h2 {
+        font-size: 11pt;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--brand-dark);
+        border-bottom: 2px solid var(--brand);
+        padding-bottom: 1mm;
+        margin-bottom: 2.2mm;
+      }
+      .section + .section {
+        margin-top: 3.5mm;
+      }
+      .summary {
+        font-size: 9pt;
+        color: #374151;
+      }
+      .job {
+        position: relative;
+        padding-left: 5mm;
+        margin-bottom: 2.6mm;
+      }
+      .job::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 1.4mm;
+        width: 2.2mm;
+        height: 2.2mm;
+        border-radius: 50%;
+        background: var(--brand);
+      }
+      .job::after {
+        content: '';
+        position: absolute;
+        left: 0.9mm;
+        top: 4mm;
+        bottom: -2.5mm;
+        width: 0.4mm;
+        background: var(--line);
+      }
+      .job:last-child::after {
+        display: none;
+      }
+      .job-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 4mm;
+      }
+      .job-title {
+        font-size: 10pt;
+        font-weight: 700;
+      }
+      .job-company {
+        color: var(--brand-dark);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .job-period {
+        font-size: 8pt;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .job-place {
+        font-size: 8pt;
+        color: var(--muted);
+      }
+      .job-summary {
+        font-size: 8.5pt;
+        font-style: italic;
+        color: #4b5563;
+        margin: 0.4mm 0;
+      }
+      .job ul {
+        list-style: none;
+        font-size: 8.5pt;
+      }
+      .job li {
+        position: relative;
+        padding-left: 3.5mm;
+        margin-bottom: 0.4mm;
+        line-height: 1.28;
+      }
+      .job li::before {
+        content: '▹';
+        position: absolute;
+        left: 0;
+        color: var(--brand);
+      }
+      .stack {
+        font-size: 8pt;
+        color: var(--muted);
+        margin-top: 0.8mm;
+        line-height: 1.3;
+      }
+      .stack b {
+        color: #374151;
+      }
+      /* Same company, multiple stages: one company header + nested roles. */
+      .company-name {
+        font-size: 11pt;
+      }
+      .roles {
+        margin-top: 2mm;
+        margin-left: 0.4mm;
+        padding-left: 4mm;
+        border-left: 1.5px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        gap: 2.8mm;
+      }
+      .exp-role .job-title {
+        font-weight: 700;
+        font-size: 9.5pt;
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .toolbar {
+          display: none;
+        }
+        .page {
+          margin: 0;
+          box-shadow: none;
+          width: 100%;
+          min-height: 100vh;
+        }
+      }
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <a class="btn" href={T.pdf} download>{T.download}</a>
+    </div>
+
+    <div class="page">
+      <aside class="aside">
+        <img class="photo" src="/me.png" alt="Jesús Bonete" />
+        <div class="name">Jesús Bonete Sánchez</div>
+        <div class="role">{T.role}</div>
+
+        <h2>{T.contactTitle}</h2>
+        <div class="contact">
+          <svg viewBox="0 0 24 24"
+            ><path
+              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"
+            ></path></svg
+          ><span>{T.location}</span>
+        </div>
+        <div class="contact">
+          <svg viewBox="0 0 24 24"
+            ><path
+              d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+            ></path></svg
+          ><a href={LINKS.mail}>xexubonete@gmail.com</a>
+        </div>
+        <div class="contact">
+          <svg viewBox="0 0 24 24"
+            ><path
+              d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1l-2.23 2.2z"
+            ></path></svg
+          ><span>(+34) 722 243 881</span>
+        </div>
+        <div class="contact">
+          <svg viewBox="0 0 24 24"
+            ><path
+              d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.7 15.7 0 0 0-1.38-3.56A8 8 0 0 1 18.93 8zM12 4c.83 1.2 1.48 2.53 1.91 4h-3.82c.43-1.47 1.08-2.8 1.91-4zM4.26 14a7.8 7.8 0 0 1 0-4h3.38a16.6 16.6 0 0 0 0 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8 8 0 0 1 5.07 16zm2.95-8H5.07a8 8 0 0 1 4.33-3.56A15.7 15.7 0 0 0 8.02 8zM12 20c-.83-1.2-1.48-2.53-1.91-4h3.82A13.9 13.9 0 0 1 12 20zm2.34-6H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.27 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8 8 0 0 1-4.33 3.56zM16.36 14a16.6 16.6 0 0 0 0-4h3.38a7.8 7.8 0 0 1 0 4h-3.38z"
+            ></path></svg
+          ><a href="https://xexubonete.dev" target="_blank" rel="noreferrer"
+            >xexubonete.dev</a
+          >
+        </div>
+        <div class="contact">
+          <svg viewBox="0 0 24 24"
+            ><path
+              d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.9H5.67v8.44h2.67zM7 8.67a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.67v-4.63c0-2.47-1.32-3.62-3.08-3.62-1.42 0-2.06.78-2.42 1.33V9.9h-2.67v8.44h2.67v-4.45c0-.24.02-.47.09-.64.18-.47.61-.96 1.33-.96.94 0 1.31.71 1.31 1.76v4.33h2.67z"
+            ></path></svg
+          ><a href={LINKS.linkedin} target="_blank" rel="noreferrer"
+            >jesus-bonete-sanchez</a
+          >
+        </div>
+        <div class="contact">
+          <svg viewBox="0 0 24 24"
+            ><path
+              d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2z"
+            ></path></svg
+          ><a href={LINKS.github} target="_blank" rel="noreferrer"
+            >xexubonete</a
+          >
+        </div>
+
+        <h2>{T.dataTitle}</h2>
+        <div class="field">
+          <span class="label">{T.nat}</span>{T.natValue}
+        </div>
+        <div class="field"><span class="label">{T.license}</span>B</div>
+
+        <h2>{T.langTitle}</h2>
+        <div class="field">
+          <span class="label">{T.spanish}</span>{T.spanishLevel}
+        </div>
+        <div class="field"><span class="label">{T.english}</span>B1</div>
+
+        <h2>{T.skillsTitle}</h2>
+        <div class="chips">
+          {T.softSkills.map((skill) => <span class="chip">{skill}</span>)}
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="section">
+          <h2>{T.profileTitle}</h2>
+          <p class="summary" set:html={profileText} />
+        </section>
+
+        <section class="section">
+          <h2>{T.expTitle}</h2>
+          {
+            companyGroups.map((group) =>
+              group.roles.length === 1 ? (
+                <div class="job">
+                  <div class="job-head">
+                    <span class="job-title">
+                      {group.roles[0].position} ·{' '}
+                      <a
+                        class="job-company"
+                        href={group.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {group.company}
+                      </a>
+                    </span>
+                    <span class="job-period">
+                      {group.roles[0].start} – {group.roles[0].end}
+                    </span>
+                  </div>
+                  <div class="job-place">{group.location}</div>
+                  <p class="job-summary">{group.roles[0].description}</p>
+                  <ul>
+                    {group.roles[0].responsibilities.map((task) => (
+                      <li>{task}</li>
+                    ))}
+                  </ul>
+                  <p class="stack">
+                    <b>Stack:</b> {group.roles[0].stack.join(' · ')}
+                  </p>
+                </div>
+              ) : (
+                <div class="job">
+                  <div class="job-head">
+                    <a
+                      class="job-company company-name"
+                      href={group.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {group.company}
+                    </a>
+                    <span class="job-period">
+                      {group.roles[group.roles.length - 1].start} –{' '}
+                      {group.roles[0].end}
+                    </span>
+                  </div>
+                  <div class="job-place">{group.location}</div>
+                  <div class="roles">
+                    {group.roles.map((role) => (
+                      <div class="exp-role">
+                        <div class="job-head">
+                          <span class="job-title">{role.position}</span>
+                          <span class="job-period">
+                            {role.start} – {role.end}
+                          </span>
+                        </div>
+                        <p class="job-summary">{role.description}</p>
+                        <ul>
+                          {role.responsibilities.map((task) => (
+                            <li>{task}</li>
+                          ))}
+                        </ul>
+                        <p class="stack">
+                          <b>Stack:</b> {role.stack.join(' · ')}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ),
+            )
+          }
+        </section>
+
+        <section class="section">
+          <h2>{T.eduTitle}</h2>
+          <div class="job">
+            <div class="job-head">
+              <span class="job-title">
+                {T.eduName} · <span class="job-company">IES Mare Nostrum</span>
+              </span>
+              <span class="job-period">2020 – 2022</span>
+            </div>
+            <div class="job-place">{T.eduPlace}</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Hide the download toolbar when the CV is embedded as a preview (iframe).
+      if (window.self !== window.top) {
+        const toolbar = document.querySelector('.toolbar')
+        if (toolbar instanceof HTMLElement) toolbar.style.display = 'none'
+      }
+      // Keep the years-of-experience phrase live (from Feb 2022), immune to caching.
+      const now = new Date()
+      const month = now.getMonth() + 1
+      let years = now.getFullYear() - 2022
+      if (month < 2) years -= 1
+      const exact = month === 2
+      const lang = document.documentElement.lang
+      const phrase = document.querySelector('.js-exp-phrase')
+      if (phrase) {
+        phrase.textContent =
+          lang === 'es'
+            ? exact
+              ? `${years} años`
+              : `más de ${years} años`
+            : exact
+              ? `${years} years`
+              : `${years}+ years`
+      }
+    </script>
+  </body>
+</html>

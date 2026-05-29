@@ -1,0 +1,71 @@
+---
+import type { Lang } from '@/i18n'
+import IntroCard from './cards/IntroCard.astro'
+import SkillsCard from './cards/SkillsCard.astro'
+import CVCard from './cards/CVCard.astro'
+import AvailableCard from './cards/AvailableCard.astro'
+import ProjectsCard from './cards/ProjectsCard.astro'
+import AboutCard from './cards/AboutCard.astro'
+import GoalsCard from './cards/GoalsCard.astro'
+import ExperienceCard from './cards/ExperienceCard.astro'
+import QuoteCard from './cards/QuoteCard.astro'
+import StudyCard from './cards/StudyCard.astro'
+import LanguagesCard from './cards/LanguagesCard.astro'
+import SoftSkillsCard from './cards/SoftSkillsCard.astro'
+import ContactsCard from './cards/ContactsCard.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+---
+
+<script>
+  import { stagger, spring, timeline, type TimelineDefinition } from 'motion'
+  import { loaderAnimation } from '@/lib/constants'
+
+  const cards = document.querySelectorAll('.card-animate')
+
+  const sequence = [
+    loaderAnimation,
+    [
+      cards,
+      { y: ['60%', '0%'], opacity: [0, 1] },
+      {
+        at: '-0.1',
+        duration: 0.4,
+        delay: stagger(0.07),
+        easing: spring({ velocity: 0.1, stiffness: 100, damping: 7 }),
+      },
+    ],
+  ]
+
+  timeline(sequence as TimelineDefinition)
+</script>
+
+<main class="relative m-auto w-full max-w-6xl overflow-hidden p-4 sm:p-6">
+  <IntroCard lang={lang} />
+  {/* Mobile/tablet: single stack. lg: 3 equal-height columns whose last
+      card grows so the three columns end on a straight bottom line. */}
+  <div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-stretch">
+    <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
+      <SkillsCard lang={lang} />
+      <StudyCard lang={lang} />
+      <LanguagesCard lang={lang} />
+      <SoftSkillsCard lang={lang} />
+    </div>
+    <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
+      <AvailableCard lang={lang} />
+      <ProjectsCard lang={lang} />
+      <AboutCard lang={lang} />
+      <ExperienceCard lang={lang} />
+      <GoalsCard lang={lang} />
+    </div>
+    <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
+      <CVCard lang={lang} />
+      <QuoteCard />
+      <ContactsCard lang={lang} />
+    </div>
+  </div>
+</main>

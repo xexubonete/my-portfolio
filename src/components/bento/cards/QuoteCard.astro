@@ -1,0 +1,18 @@
+---
+import Card from '../Card.astro'
+
+interface Props {
+  span?: string
+}
+
+const { span } = Astro.props
+---
+
+<Card span={span}>
+  <div class="flex h-full flex-col justify-between">
+    <blockquote class="mt-6 border-l-2 pl-6 italic">
+      "The only way to go fast, is to go well."
+    </blockquote>
+    <p class="mt-2 text-xs">- Robert C. Martin</p>
+  </div>
+</Card>

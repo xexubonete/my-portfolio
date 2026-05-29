@@ -1,0 +1,74 @@
+---
+import Card from '../Card.astro'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+
+const strings = {
+  es: {
+    title: 'Objetivos',
+    intro: 'Quiero especializarme en integrar la IA en el backend, dominando:',
+    items: [
+      {
+        label: '🤖 Integración de LLMs',
+        text: 'Conectar modelos como Claude o GPT a servicios y APIs backend de forma segura y eficiente.',
+      },
+      {
+        label: '🧠 RAG y bases vectoriales',
+        text: 'Búsqueda semántica con embeddings y bases de datos vectoriales para dar contexto propio a los modelos.',
+      },
+      {
+        label: '🛠️ Agentes y tool calling',
+        text: 'Orquestar agentes que invocan herramientas y APIs (function calling, MCP) para automatizar flujos.',
+      },
+      {
+        label: '📊 Evaluación y observabilidad',
+        text: 'Medir calidad, latencia y coste de los LLMs con evals y trazas para llevar la IA a producción con garantías.',
+      },
+    ],
+  },
+  en: {
+    title: 'Goals',
+    intro: 'I want to specialize in integrating AI into the backend, mastering:',
+    items: [
+      {
+        label: '🤖 LLM integration',
+        text: 'Connecting models like Claude or GPT to backend services and APIs securely and efficiently.',
+      },
+      {
+        label: '🧠 RAG & vector databases',
+        text: 'Semantic search with embeddings and vector databases to ground models with your own data.',
+      },
+      {
+        label: '🛠️ Agents & tool calling',
+        text: 'Orchestrating agents that call tools and APIs (function calling, MCP) to automate workflows.',
+      },
+      {
+        label: '📊 Evals & observability',
+        text: 'Measuring quality, latency and cost of LLMs with evals and tracing to ship AI to production with confidence.',
+      },
+    ],
+  },
+}[lang]
+---
+
+<Card span={span} title={strings.title}>
+  <div class="flex h-full w-full flex-col">
+    <p class="text-sm font-light">{strings.intro}</p>
+    <div class="mt-2 flex flex-1 flex-col justify-between gap-3 text-xs">
+      {
+        strings.items.map((item) => (
+          <div>
+            <strong class="goal-list">{item.label}</strong>
+            <p>{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Card>

@@ -1,0 +1,75 @@
+---
+import { buttonVariants } from '@/components/ui/_button'
+import { ModeToggle } from '@/components/ui/_ThemeToggle'
+import { LanguageSwitcher } from '@/components/ui/_RedirectToggle'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang?: Lang
+}
+
+const { lang = 'en' } = Astro.props
+---
+
+<script is:inline>
+  // Apply the theme as early as possible to avoid a flash.
+  // No stored preference => follow the operating system.
+  function applyStoredTheme() {
+    const stored = localStorage.getItem('theme')
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isDark =
+      stored === 'dark' || ((stored === 'system' || !stored) && systemDark)
+    document.documentElement.classList.toggle('dark', isDark)
+  }
+
+  applyStoredTheme()
+  document.addEventListener('astro:after-swap', applyStoredTheme)
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', function () {
+      const stored = localStorage.getItem('theme')
+      if (stored === 'system' || !stored) applyStoredTheme()
+    })
+</script>
+
+<header
+  class="sticky top-0 z-50 w-full border-b bg-primary backdrop-blur supports-[backdrop-filter]:bg-background/90"
+>
+  <div class="container flex h-16 items-center">
+    <div class="flex gap-6">
+      <a href="/" class="flex items-center space-x-1">
+        <span class="inline-block text-xs font-bold sm:text-sm"
+          >dotnet developer</span
+        >
+      </a>
+    </div>
+    <div class="flex flex-1 items-center justify-end space-x-4">
+      <nav class="flex items-center space-x-1">
+        <a
+          href="https://github.com/xexubonete"
+          target="_blank"
+          rel="noreferrer"
+          class=`text-xs sm:text-sm ${buttonVariants({ variant: 'ghost' })}`
+        >
+          GitHub
+        </a>
+      </nav>
+      <nav class="flex items-center space-x-1 text-xs sm:text-lg">
+        <a
+          href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
+          target="_blank"
+          rel="noreferrer"
+          class=`text-xs sm:text-sm ${buttonVariants({ variant: 'ghost' })}`
+        >
+          LinkedIn
+        </a>
+      </nav>
+      <nav class="flex items-center space-x-1">
+        <LanguageSwitcher transition:persist client:load />
+      </nav>
+      <nav class="flex items-center space-x-1">
+        <ModeToggle lang={lang} client:load />
+      </nav>
+    </div>
+  </div>
+</header>

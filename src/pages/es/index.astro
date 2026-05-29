@@ -1,76 +1,15 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import WelcomeCard from './WelcomeCard.astro'
-import Skills from './Skills.astro'
-import Card from '../Card.astro'
-import AboutMe from './AboutMe.astro'
-import ContactsCard from './ContactsCard.astro'
-import Available from './Available.astro'
-import CVCard from './CVCard.astro'
-import ExperienceCard from './ExperienceCard.astro'
-import GoalsCard from './GoalsCard.astro'
-import StudyCard from './StudyCard.astro'
-import MyStack from './MyStack.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import BentoGrid from '@/components/bento/BentoGrid.astro'
+
+// Dynamic experience years are computed per request — never cache.
+Astro.response.headers.set('Cache-Control', 'no-store')
 ---
 
-<script>
-  import { stagger, spring, timeline, type TimelineDefinition } from 'motion'
-  import { loaderAnimation } from '../../lib/constants'
-
-  const cards = document.querySelectorAll('.card-animate')
-
-  const sequence = [
-    loaderAnimation,
-    [
-      cards,
-      { y: ['60%', '0%'], opacity: [0, 1] },
-      {
-        at: '-0.1',
-        duration: 0.4,
-        delay: stagger(0.07),
-        easing: spring({ velocity: 0.1, stiffness: 100, damping: 7 }),
-      },
-    ],
-  ]
-
-  timeline(sequence as TimelineDefinition)
-</script>
-
 <BaseLayout
-  title="Jesus Bonete - Portfolio"
-  description="Jesus Bonete - Portfolio, Proyectos, CV, Sobre Mí, Contacto, Disponible, Experiencia, Estudios"
+  lang="es"
+  title="Jesús Bonete - Portfolio"
+  description="Jesús Bonete - Portfolio, Proyectos, CV, Sobre Mí, Contacto, Disponible, Experiencia, Estudios"
 >
-  <div
-    slot="loader"
-    class="loader bg-darkslate-700 fixed bottom-0 left-0 right-0 top-0 z-50 flex h-screen w-screen items-center justify-center text-3xl font-black uppercase text-neutral-50"
-  >
-  </div>
-  <main
-    ng-if=""
-    class="relative m-auto grid w-full max-w-6xl gap-[2px] overflow-hidden p-2 sm:gap-[2px] sm:p-4 lg:auto-rows-min lg:grid-cols-4 lg:gap-[2px]"
-  >
-    <WelcomeCard />
-    <Skills />
-    <CVCard />
-    <Available />
-    <MyStack />
-    <AboutMe />
-    <GoalsCard />
-    <ExperienceCard />
-    <Card
-      colSpan="lg:col-span-1"
-      rowSpan="lg:row-span-1"
-      colStart="lg:col-start-3"
-      rowStart="lg:row-start-7"
-    >
-      <div class="flex h-full flex-col justify-between">
-        <blockquote class="mt-6 border-l-2 pl-6 italic">
-          "The only way to go fast, is to go well."
-        </blockquote>
-        <p class="mt-2 text-xs">- Robert C. Martin</p>
-      </div>
-    </Card>
-    <StudyCard />
-    <ContactsCard />
-  </main>
+  <BentoGrid lang="es" />
 </BaseLayout>

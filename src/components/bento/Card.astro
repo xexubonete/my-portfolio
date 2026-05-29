@@ -1,0 +1,41 @@
+---
+import ContentCard from './ContentCard.astro'
+import { Card as ShadcnCard } from '@/components/ui/_card'
+import { SquareArrowOutUpRight } from 'lucide-react'
+
+interface Props {
+  title?: string
+  body?: string
+  /** Optional extra placement/utility classes. */
+  span?: string
+  href?: string
+  colorText?: string
+  class?: string
+}
+
+const { title, body, span, href, colorText, class: extraClass } = Astro.props
+---
+
+<ShadcnCard
+  className={`card-animate group relative flex w-full break-inside-avoid flex-col overflow-hidden p-6 shadow-lg transition duration-75 ease-in-out ${
+    span ?? ''
+  } ${extraClass ?? ''} ${href ? 'cursor-pointer hover:border-primary' : ''}`}
+>
+  {
+    href ? (
+      <a href={href} class={`block h-full w-full ${colorText ?? ''}`}>
+        <SquareArrowOutUpRight
+          className="absolute right-6 top-6 group-hover:text-primary"
+          size={20}
+        />
+        <ContentCard title={title} body={body}>
+          <slot />
+        </ContentCard>
+      </a>
+    ) : (
+      <ContentCard title={title} body={body}>
+        <slot />
+      </ContentCard>
+    )
+  }
+</ShadcnCard>

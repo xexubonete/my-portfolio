@@ -1,0 +1,47 @@
+---
+import Card from '../Card.astro'
+import Pulse from '@/components/layout/Pulse.astro'
+import type { Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  span?: string
+}
+
+const { lang, span } = Astro.props
+
+const strings = {
+  es: {
+    title: 'Ocupado',
+    subtitle: 'Pero puedes contactarme...',
+    company: 'Cafler',
+    role: 'Startup · Barcelona',
+  },
+  en: {
+    title: 'Blocked',
+    subtitle: 'But you can contact me...',
+    company: 'Cafler',
+    role: 'Startup · Barcelona',
+  },
+}[lang]
+---
+
+<Card span={span} title={strings.title}>
+  <div class="mb-2 flex w-full items-start justify-between">
+    <span class="text-xs text-muted-foreground">{strings.subtitle}</span>
+    <Pulse />
+  </div>
+  <div class="mt-4 flex items-center gap-3">
+    <img
+      src="/cafler-logo.png"
+      alt="Cafler"
+      width="40"
+      height="40"
+      class="h-10 w-10 flex-shrink-0 rounded-lg"
+    />
+    <div class="leading-tight">
+      <p class="text-sm font-semibold">{strings.company}</p>
+      <p class="text-xs text-muted-foreground">{strings.role}</p>
+    </div>
+  </div>
+</Card>

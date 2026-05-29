@@ -1,28 +1,57 @@
 ---
 import { ViewTransitions } from 'astro:transitions'
-import HeadSEO from '../pages/HeadSEO.astro'
-import Footer from '../pages/Footer.astro'
-import Header from '../pages/Header.astro'
+import HeadSEO from '@/components/layout/HeadSEO.astro'
+import Footer from '@/components/layout/Footer.astro'
+import Header from '@/components/layout/Header.astro'
+import type { Lang } from '@/i18n'
 
 interface Props {
   title?: string | undefined
   description?: string | undefined
   ogImage?: URL | undefined
+  lang?: Lang
 }
 
-const { title, description, ogImage } = Astro.props
+const { title, description, ogImage, lang = 'en' } = Astro.props
 ---
 
-<html lang="en">
+<html lang={lang}>
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
     <ViewTransitions />
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
-    <div class="flex flex-col items-center justify-center">
-      <Header />
+    <div class="flex w-full flex-col items-center justify-center">
+      <Header lang={lang} />
       <slot />
-      <Footer />
+      <Footer lang={lang} />
     </div>
+
+    <script>
+      // Recompute years of experience on the client (from Feb 2022) so the
+      // value is always live, regardless of any HTTP/browser caching.
+      function updateExperienceYears() {
+        const now = new Date()
+        const month = now.getMonth() + 1
+        let years = now.getFullYear() - 2022
+        if (month < 2) years -= 1
+        const plus = month === 2 ? '' : '+'
+        const lang = document.documentElement.lang
+        document.querySelectorAll('.js-exp-card h2').forEach((el) => {
+          el.textContent =
+            lang === 'es'
+              ? `Experiencia (${plus}${years}a)`
+              : `Experience (${plus}${years}yr)`
+        })
+        document.querySelectorAll('.js-exp-title').forEach((el) => {
+          el.textContent =
+            lang === 'es'
+              ? `Experiencia laboral (${plus}${years} años)`
+              : `Work experience (${plus}${years} years)`
+        })
+      }
+      updateExperienceYears()
+      document.addEventListener('astro:page-load', updateExperienceYears)
+    </script>
   </body>
 </html>
