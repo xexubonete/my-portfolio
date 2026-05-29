@@ -11,9 +11,9 @@ const { lang, span } = Astro.props
 
 type Group = { label: string; items: string[] }
 
-const languages = ['C#', 'SQL']
-
 const frameworks = [
+  'C#',
+  'SQL',
   '.NET',
   '.NET Core 3.1',
   '.NET Framework 4.8',
@@ -54,7 +54,6 @@ const tools = ['Postman', 'Bruno', 'Team Explorer']
 
 const labels = {
   es: {
-    languages: '🧑‍💻 Lenguajes:',
     frameworks: '📚 Frameworks y librerías:',
     patterns: '🧑‍🎨 Patrones de diseño:',
     databases: '📊 Bases de datos:',
@@ -62,7 +61,6 @@ const labels = {
     tools: '🧰 Herramientas:',
   },
   en: {
-    languages: '🧑‍💻 Languages:',
     frameworks: '📚 Frameworks and Libraries:',
     patterns: '🧑‍🎨 Design Patterns:',
     databases: '📊 Databases:',
@@ -72,7 +70,6 @@ const labels = {
 }[lang]
 
 const groups: Group[] = [
-  { label: labels.languages, items: languages },
   { label: labels.frameworks, items: frameworks },
   { label: labels.patterns, items: patterns },
   { label: labels.databases, items: databases },

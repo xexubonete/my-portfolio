@@ -33,19 +33,20 @@ function applyTheme(theme: Theme) {
 }
 
 export function ModeToggle({ lang = 'en' }: { lang?: 'es' | 'en' }) {
+  // Default to light when the user hasn't chosen a theme yet; their explicit
+  // choice (light/dark/system) is persisted in localStorage.
   const [theme, setThemeState] = React.useState<Theme>(() =>
     typeof localStorage !== 'undefined'
-      ? ((localStorage.getItem('theme') as Theme) ?? 'system')
-      : 'system',
+      ? ((localStorage.getItem('theme') as Theme) ?? 'light')
+      : 'light',
   )
 
   React.useEffect(() => {
     applyTheme(theme)
-    // Follow OS changes while in "system" mode.
+    // Follow OS changes only when the user explicitly picked "system".
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const onSystemChange = () => {
-      if ((localStorage.getItem('theme') ?? 'system') === 'system')
-        applyTheme('system')
+      if (localStorage.getItem('theme') === 'system') applyTheme('system')
     }
     mq.addEventListener('change', onSystemChange)
     return () => mq.removeEventListener('change', onSystemChange)
