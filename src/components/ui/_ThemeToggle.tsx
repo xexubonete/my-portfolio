@@ -12,8 +12,18 @@ import {
 type Theme = 'light' | 'dark' | 'system'
 
 const LABELS = {
-  es: { light: 'Claro', dark: 'Oscuro', system: 'Sistema', toggle: 'Cambiar tema' },
-  en: { light: 'Light', dark: 'Dark', system: 'System', toggle: 'Toggle theme' },
+  es: {
+    light: 'Claro',
+    dark: 'Oscuro',
+    system: 'Sistema',
+    toggle: 'Cambiar tema',
+  },
+  en: {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+    toggle: 'Toggle theme',
+  },
 }
 
 function applyTheme(theme: Theme) {

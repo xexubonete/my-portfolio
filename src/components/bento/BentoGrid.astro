@@ -46,8 +46,10 @@ const { lang } = Astro.props
 
 <main class="relative m-auto w-full max-w-6xl overflow-hidden p-4 sm:p-6">
   <IntroCard lang={lang} />
-  {/* Mobile/tablet: single stack. lg: 3 equal-height columns whose last
-      card grows so the three columns end on a straight bottom line. */}
+  {
+    /* Mobile/tablet: single stack. lg: 3 equal-height columns whose last
+      card grows so the three columns end on a straight bottom line. */
+  }
   <div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-stretch">
     <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
       <SkillsCard lang={lang} />
