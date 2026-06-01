@@ -50,24 +50,28 @@ const { lang } = Astro.props
     /* Mobile/tablet: single stack. lg: 3 equal-height columns whose last
       card grows so the three columns end on a straight bottom line. */
   }
+  {/* On mobile every card is a single ordered stack (the `order-*` classes set
+      the sequence); the column wrappers collapse to `display:contents` so their
+      cards become direct flex children. From `lg` up they become 3 real columns
+      again and `lg:order-none` restores natural (DOM) order. */}
   <div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-stretch">
-    <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
-      <SkillsCard lang={lang} />
-      <StudyCard lang={lang} />
-      <LanguagesCard lang={lang} />
-      <SoftSkillsCard lang={lang} />
+    <div class="contents lg:flex lg:flex-1 lg:flex-col lg:gap-4 lg:[&>*:last-child]:grow">
+      <SkillsCard lang={lang} span="order-1 lg:order-none" />
+      <StudyCard lang={lang} span="order-10 lg:order-none" />
+      <LanguagesCard lang={lang} span="order-9 lg:order-none" />
+      <SoftSkillsCard lang={lang} span="order-8 lg:order-none" />
     </div>
-    <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
-      <AvailableCard lang={lang} />
-      <ProjectsCard lang={lang} />
-      <AboutCard lang={lang} />
-      <ExperienceCard lang={lang} />
-      <GoalsCard lang={lang} />
+    <div class="contents lg:flex lg:flex-1 lg:flex-col lg:gap-4 lg:[&>*:last-child]:grow">
+      <AvailableCard lang={lang} span="order-2 lg:order-none" />
+      <ProjectsCard lang={lang} span="order-3 lg:order-none" />
+      <AboutCard lang={lang} span="order-5 lg:order-none" />
+      <ExperienceCard lang={lang} span="order-6 lg:order-none" />
+      <GoalsCard lang={lang} span="order-7 lg:order-none" />
     </div>
-    <div class="flex flex-1 flex-col gap-4 lg:[&>*:last-child]:grow">
-      <CVCard lang={lang} />
-      <QuoteCard />
-      <ContactsCard lang={lang} />
+    <div class="contents lg:flex lg:flex-1 lg:flex-col lg:gap-4 lg:[&>*:last-child]:grow">
+      <CVCard lang={lang} span="order-4 lg:order-none" />
+      <QuoteCard span="order-11 lg:order-none" />
+      <ContactsCard lang={lang} span="order-12 lg:order-none" />
     </div>
   </div>
 </main>
