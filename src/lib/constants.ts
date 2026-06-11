@@ -52,7 +52,7 @@ export const EXPERIENCE = [
     company: 'Cafler',
     link: 'https://cafler.com/',
     location: 'Barcelona, Spain',
-    position: '.NET Backend Developer',
+    position: 'Senior .NET Engineer',
     start: '01/2026',
     end: 'Current',
     description:

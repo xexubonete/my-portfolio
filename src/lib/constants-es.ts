@@ -38,7 +38,7 @@ export const SPANISH = [
     company: 'Cafler',
     link: 'https://cafler.com/',
     location: 'Barcelona, España',
-    position: 'Programador Backend .NET',
+    position: 'Ingeniero .NET Senior',
     start: '01/2026',
     end: 'Actual',
     description:
