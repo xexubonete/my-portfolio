@@ -67,6 +67,7 @@ export const SPANISH = [
       'Git/GitHub',
       'Postman',
       'Bruno',
+      'Angular',
     ],
   },
   {
@@ -98,6 +99,7 @@ export const SPANISH = [
       'Azure DevOps',
       'Git',
       'Postman',
+      'Angular',
     ],
   },
   {
@@ -122,6 +124,7 @@ export const SPANISH = [
       'Azure DevOps',
       'Git/GitHub',
       'Postman',
+      'Angular',
     ],
   },
   {
@@ -143,6 +146,7 @@ export const SPANISH = [
       'Team Explorer',
       'Jenkins',
       'Postman',
+      'Angular',
     ],
   },
   {
@@ -162,6 +166,7 @@ export const SPANISH = [
       'Azure DevOps',
       'Git/GitHub',
       'Postman',
+      'Angular',
     ],
   },
 ]

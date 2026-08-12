@@ -81,6 +81,7 @@ export const EXPERIENCE = [
       'Git/GitHub',
       'Postman',
       'Bruno',
+      'Angular',
     ],
   },
   {
@@ -112,6 +113,7 @@ export const EXPERIENCE = [
       'Azure DevOps',
       'Git',
       'Postman',
+      'Angular',
     ],
   },
   {
@@ -136,6 +138,7 @@ export const EXPERIENCE = [
       'Azure DevOps',
       'Git/GitHub',
       'Postman',
+      'Angular',
     ],
   },
   {
@@ -157,6 +160,7 @@ export const EXPERIENCE = [
       'Team Explorer',
       'Jenkins',
       'Postman',
+      'Angular',
     ],
   },
   {
@@ -175,6 +179,7 @@ export const EXPERIENCE = [
       'Azure DevOps',
       'Git/GitHub',
       'Postman',
+      'Angular',
     ],
   },
 ]
