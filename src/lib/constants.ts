@@ -54,7 +54,7 @@ export const EXPERIENCE = [
     location: 'Barcelona, Spain',
     position: 'Senior .NET Developer',
     start: '01/2026',
-    end: 'Current',
+    end: '09/2026',
     description:
       'AI-powered Operating System for the automotive industry and backend services for a car-services marketplace.',
     responsibilities: [
