@@ -40,7 +40,7 @@ export const SPANISH = [
     location: 'Barcelona, España',
     position: 'Senior .NET Developer',
     start: '01/2026',
-    end: 'Actual',
+    end: '09/2026',
     description:
       'Sistema operativo con IA para el sector de la automoción y servicios backend para un marketplace de servicios del automóvil.',
     responsibilities: [

@@ -1,6 +1,7 @@
 ---
 import Card from '../Card.astro'
 import Pulse from '@/components/layout/Pulse.astro'
+import { experienceByLang } from '@/i18n'
 import type { Lang } from '@/i18n'
 
 interface Props {
@@ -10,38 +11,39 @@ interface Props {
 
 const { lang, span } = Astro.props
 
+// The card mirrors the most recent role, so company, position and dates stay in
+// sync with the experience list (constants.ts / constants-es.ts) automatically.
+const [latest] = experienceByLang[lang]
+const city = latest.location.split(',')[0]
+
 const strings = {
-  es: {
-    title: 'Ocupado',
-    subtitle: 'Pero puedes contactarme...',
-    company: 'Cafler',
-    role: 'Startup · Barcelona',
-  },
-  en: {
-    title: 'Blocked',
-    subtitle: 'But you can contact me...',
-    company: 'Cafler',
-    role: 'Startup · Barcelona',
-  },
+  es: { title: 'Último trabajo', available: 'Disponible' },
+  en: { title: 'Last role', available: 'Available' },
 }[lang]
 ---
 
-<Card span={span} title={strings.title}>
-  <div class="mb-2 flex w-full items-start justify-between">
-    <span class="text-xs text-muted-foreground">{strings.subtitle}</span>
-    <Pulse />
+<Card span={span}>
+  <div class="flex w-full items-center justify-between gap-3">
+    <h2 class="z-20 m-0 text-xl font-bold">{strings.title}</h2>
+    <span class="flex items-center">
+      <span class="sr-only">{strings.available}</span>
+      <Pulse color="bg-emerald-500" />
+    </span>
   </div>
   <div class="mt-4 flex items-center gap-3">
     <img
       src="/cafler-logo.png"
-      alt="Cafler"
+      alt={latest.company}
       width="40"
       height="40"
       class="h-10 w-10 flex-shrink-0 rounded-lg"
     />
     <div class="leading-tight">
-      <p class="text-sm font-semibold">{strings.company}</p>
-      <p class="text-xs text-muted-foreground">{strings.role}</p>
+      <p class="text-sm font-semibold">{latest.company}</p>
+      <p class="text-sm font-light">{latest.position}</p>
+      <p class="text-xs text-muted-foreground">
+        {latest.start} – {latest.end} · {city}
+      </p>
     </div>
   </div>
 </Card>
