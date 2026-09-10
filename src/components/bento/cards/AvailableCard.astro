@@ -1,6 +1,6 @@
 ---
 import Card from '../Card.astro'
-import Pulse from '@/components/layout/Pulse.astro'
+import { badgeVariants } from '@/components/ui/_badge'
 import { experienceByLang } from '@/i18n'
 import type { Lang } from '@/i18n'
 
@@ -25,9 +25,10 @@ const strings = {
 <Card span={span}>
   <div class="flex w-full items-center justify-between gap-3">
     <h2 class="z-20 m-0 text-xl font-bold">{strings.title}</h2>
-    <span class="flex items-center">
-      <span class="sr-only">{strings.available}</span>
-      <Pulse color="bg-emerald-500" />
+    <span
+      class={`${badgeVariants({ variant: 'outline' })} shrink-0 border-emerald-500/45 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400`}
+    >
+      {strings.available}
     </span>
   </div>
   <div class="mt-4 flex items-center gap-3">
