@@ -19,7 +19,11 @@ const BASE = process.env.CV_BASE_URL ?? 'http://localhost:4321'
 
 const targets = [
   { url: `${BASE}/cv`, out: 'public/CV_Jesus_Bonete_ES.pdf', expect: 'Bonete' },
-  { url: `${BASE}/en/cv`, out: 'public/CV_Jesus_Bonete_EN.pdf', expect: 'Bonete' },
+  {
+    url: `${BASE}/en/cv`,
+    out: 'public/CV_Jesus_Bonete_EN.pdf',
+    expect: 'Bonete',
+  },
 ]
 
 // Text that only ever appears when something has gone wrong. Vite injects its
@@ -101,7 +105,9 @@ async function render(browser, target) {
     // The positive check, which is the one that catches a page that broke in a way
     // nobody thought to look for: if the resume is not in there, it is not a CV.
     if (!body.includes(target.expect)) {
-      throw new Error(`the page does not contain ${JSON.stringify(target.expect)}`)
+      throw new Error(
+        `the page does not contain ${JSON.stringify(target.expect)}`,
+      )
     }
 
     // Written beside the real file and moved into place only once everything above
@@ -119,7 +125,9 @@ async function render(browser, target) {
     console.log(`✓ ${target.out}`)
 
     if (noise.length) {
-      console.warn(`  warnings (the PDF is still fine)\n    - ${noise.join('\n    - ')}`)
+      console.warn(
+        `  warnings (the PDF is still fine)\n    - ${noise.join('\n    - ')}`,
+      )
     }
   } finally {
     await page.close()
