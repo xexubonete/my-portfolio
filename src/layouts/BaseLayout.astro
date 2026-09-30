@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 import HeadSEO from '@/components/layout/HeadSEO.astro'
 import Footer from '@/components/layout/Footer.astro'
 import Header from '@/components/layout/Header.astro'
@@ -18,7 +18,7 @@ const { title, description, ogImage, lang = 'en' } = Astro.props
 <html lang={lang}>
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="flex w-full flex-col items-center justify-center">

@@ -1,11 +1,5 @@
 import type { Page } from './types'
 
-export const loaderAnimation = [
-  '.loader',
-  { opacity: [1, 0], pointerEvents: 'none' },
-  { easing: 'ease-out' },
-]
-
 export const LINKS = {
   github: 'https://github.com/xexubonete',
   linkedin: 'https://www.linkedin.com/in/jesus-bonete-sanchez/',
