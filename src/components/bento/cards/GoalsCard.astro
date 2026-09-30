@@ -62,14 +62,12 @@ const strings = {
   <div class="flex h-full w-full flex-col">
     <p class="text-sm font-light">{strings.intro}</p>
     <div class="mt-2 flex flex-1 flex-col justify-between gap-3 text-xs">
-      {
-        strings.items.map((item) => (
-          <div>
-            <strong class="goal-list">{item.label}</strong>
-            <p>{item.text}</p>
-          </div>
-        ))
-      }
+      {strings.items.map((item) => (
+        <div>
+          <strong class="goal-list">{item.label}</strong>
+          <p>{item.text}</p>
+        </div>
+      ))}
     </div>
   </div>
 </Card>

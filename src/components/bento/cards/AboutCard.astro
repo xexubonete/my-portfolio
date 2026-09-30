@@ -29,10 +29,8 @@ const strings = {
 
 <Card span={span} title={strings.title}>
   <div class="flex flex-col gap-2">
-    {
-      strings.paragraphs.map((paragraph) => (
-        <p class="font-light md:text-xs lg:text-sm">{paragraph}</p>
-      ))
-    }
+    {strings.paragraphs.map((paragraph) => (
+      <p class="font-light md:text-xs lg:text-sm">{paragraph}</p>
+    ))}
   </div>
 </Card>

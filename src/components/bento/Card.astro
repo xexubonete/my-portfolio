@@ -21,21 +21,19 @@ const { title, body, span, href, colorText, class: extraClass } = Astro.props
     span ?? ''
   } ${extraClass ?? ''} ${href ? 'cursor-pointer hover:border-primary' : ''}`}
 >
-  {
-    href ? (
-      <a href={href} class={`block h-full w-full ${colorText ?? ''}`}>
-        <SquareArrowOutUpRight
-          className="absolute right-6 top-6 group-hover:text-primary"
-          size={20}
-        />
-        <ContentCard title={title} body={body}>
-          <slot />
-        </ContentCard>
-      </a>
-    ) : (
+  {href ? (
+    <a href={href} class={`block h-full w-full ${colorText ?? ''}`}>
+      <SquareArrowOutUpRight
+        className="absolute right-6 top-6 group-hover:text-primary"
+        size={20}
+      />
       <ContentCard title={title} body={body}>
         <slot />
       </ContentCard>
-    )
-  }
+    </a>
+  ) : (
+    <ContentCard title={title} body={body}>
+      <slot />
+    </ContentCard>
+  )}
 </ShadcnCard>

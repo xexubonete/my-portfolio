@@ -27,18 +27,16 @@ const contacts = [
 <Card span={span}>
   <div class="flex h-full flex-col justify-between gap-3">
     <address class="flex flex-col gap-3 not-italic">
-      {
-        contacts.map((contact) => (
-          <a
-            class={`${buttonVariants({ variant: 'outline' })} btn-uniform h-14 w-full justify-center border-primary text-base`}
-            href={contact.href}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {contact.label}
-          </a>
-        ))
-      }
+      {contacts.map((contact) => (
+        <a
+          class={`${buttonVariants({ variant: 'outline' })} btn-uniform h-14 w-full justify-center border-primary text-base`}
+          href={contact.href}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {contact.label}
+        </a>
+      ))}
     </address>
     <img
       width="240"
