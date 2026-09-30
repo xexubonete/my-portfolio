@@ -35,9 +35,8 @@ const ERROR_MARKERS = [
   'LoadPluginContext',
 ]
 
-// The toolchain this project was built against. Astro 4.15 ships Vite 5, which
-// predates recent Node majors; running it on a much newer runtime is the most
-// likely source of the intermittent compile-metadata race.
+// The Node the project pins. Astro 7 needs 22.12 or newer, so a mismatch here is
+// worth saying out loud before a confusing compile failure appears instead.
 async function warnOnNodeMismatch() {
   if (!existsSync('.nvmrc')) return
 
@@ -47,8 +46,7 @@ async function warnOnNodeMismatch() {
   if (wanted && wanted.split('.')[0] !== running) {
     console.warn(
       `! Node ${running} is running, but .nvmrc asks for ${wanted}.\n` +
-        `  Astro ${'4.x'} was not built for this runtime; if the page fails to compile,\n` +
-        `  run "nvm use" before "pnpm dev" and regenerate.`,
+        `  Run "nvm use" before "pnpm dev" if the page fails to compile.`,
     )
   }
 }
