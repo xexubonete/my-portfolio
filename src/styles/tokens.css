@@ -56,9 +56,9 @@
     Menlo, Consolas, monospace;
 
   /* ── Fluid type scale ────────────────────────────────────────────────────
-     Minor-third-ish steps at 390px growing to a major-third at 1280px, so the
-     page feels like a poster on desktop without breaking on a phone. Each
-     size carries its own line height (unitless) and tracking. */
+     Minor-third-ish steps at 390px growing to a major-third at 1280px. The
+     big sizes are capped so the hero fits beside the portrait and the whole
+     desktop home stays around two viewports tall. */
   --text-xs: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
   --text-sm: clamp(0.84rem, 0.81rem + 0.15vw, 0.9rem);
   --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
@@ -67,8 +67,8 @@
   --text-2xl: clamp(1.6rem, 1.35rem + 1.2vw, 2.1rem);
   --text-3xl: clamp(2rem, 1.6rem + 2vw, 2.9rem);
   --text-4xl: clamp(2.5rem, 1.8rem + 3.4vw, 4rem);
-  --text-5xl: clamp(3.25rem, 2rem + 6vw, 6rem);
-  --text-hero: clamp(4.5rem, 1rem + 18.5vw, 16rem);
+  --text-5xl: clamp(3rem, 1.75rem + 4.5vw, 5rem);
+  --text-hero: clamp(3.75rem, 1rem + 13.5vw, 8.5rem);
 
   --leading-tight: 0.92; /* display sizes */
   --leading-snug: 1.1; /* headings */
@@ -83,7 +83,8 @@
 
   /* ── Spacing ─────────────────────────────────────────────────────────────
      4px base. 1–8 are fixed; 9–12 are the section rhythm and grow with the
-     viewport so the vertical breathing matches the type. */
+     viewport. Deliberately tight: the home page is composed as a dense
+     sheet of columns (see DESIGN.md §4), not as a scroll of sections. */
   --space-1: 0.25rem; /* 4 */
   --space-2: 0.5rem; /* 8 */
   --space-3: 0.75rem; /* 12 */
@@ -92,10 +93,10 @@
   --space-6: 2rem; /* 32 */
   --space-7: 3rem; /* 48 */
   --space-8: 4rem; /* 64 */
-  --space-9: clamp(4rem, 2.5rem + 5vw, 6rem); /* 64 → 96 */
-  --space-10: clamp(5rem, 3rem + 7vw, 8rem); /* 80 → 128 */
-  --space-11: clamp(6rem, 3.5rem + 9vw, 10rem); /* 96 → 160 */
-  --space-12: clamp(7rem, 4rem + 12vw, 14rem); /* 112 → 224 */
+  --space-9: clamp(2.5rem, 1.5rem + 3vw, 4rem); /* 40 → 64 */
+  --space-10: clamp(3rem, 2rem + 4vw, 5rem); /* 48 → 80 */
+  --space-11: clamp(4rem, 2.5rem + 5vw, 6rem); /* 64 → 96 */
+  --space-12: clamp(5rem, 3rem + 7vw, 8rem); /* 80 → 128 */
 
   --content-max: 80rem; /* 1280 */
   --content-narrow: 44rem; /* measure for long prose, ~70ch */
