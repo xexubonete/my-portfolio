@@ -52,8 +52,8 @@
     'Instrument Serif', 'Instrument Serif Fallback', Georgia, 'Times New Roman',
     serif;
   --font-mono:
-    'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, 'SF Mono',
-    Menlo, Consolas, monospace;
+    'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, 'SF Mono', Menlo,
+    Consolas, monospace;
 
   /* ── Fluid type scale ────────────────────────────────────────────────────
      Minor-third-ish steps at 390px growing to a major-third at 1280px. The
@@ -109,7 +109,8 @@
   --radius-pill: 999px;
 
   --shadow-s: 0 1px 2px rgb(23 19 14 / 0.08), 0 1px 1px rgb(23 19 14 / 0.04);
-  --shadow-m: 0 6px 16px -6px rgb(23 19 14 / 0.18), 0 2px 4px rgb(23 19 14 / 0.06);
+  --shadow-m:
+    0 6px 16px -6px rgb(23 19 14 / 0.18), 0 2px 4px rgb(23 19 14 / 0.06);
   --shadow-l:
     0 24px 48px -16px rgb(23 19 14 / 0.28), 0 8px 16px -8px rgb(23 19 14 / 0.12);
   --shadow-sheet: 0 30px 60px -20px rgb(23 19 14 / 0.35); /* the CV paper */
@@ -152,7 +153,8 @@
 
   --shadow-s: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 1px rgb(0 0 0 / 0.3);
   --shadow-m: 0 6px 16px -6px rgb(0 0 0 / 0.6), 0 2px 4px rgb(0 0 0 / 0.4);
-  --shadow-l: 0 24px 48px -16px rgb(0 0 0 / 0.7), 0 8px 16px -8px rgb(0 0 0 / 0.5);
+  --shadow-l:
+    0 24px 48px -16px rgb(0 0 0 / 0.7), 0 8px 16px -8px rgb(0 0 0 / 0.5);
   --shadow-sheet: 0 30px 60px -20px rgb(0 0 0 / 0.8);
 }
 

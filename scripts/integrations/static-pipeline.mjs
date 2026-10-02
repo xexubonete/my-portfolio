@@ -38,6 +38,7 @@ import {
   nonAsciiCharacters,
   rewriteUrls,
   transformImages,
+  usedWeightRange,
 } from './lib/html.mjs'
 
 const FONT_EXTENSIONS = {
@@ -121,6 +122,14 @@ async function processFonts(dist, files, htmlFiles, cssFiles) {
   }
   const text = BASE_CHARSET + nonAsciiCharacters(extra)
 
+  // Variable fonts also carry every weight they were drawn with; the weight
+  // axis is cut down to the range the stylesheets use. Width and optical-size
+  // axes are left alone since the design uses them fluidly.
+  let css = ''
+  for (const file of [...htmlFiles, ...cssFiles])
+    css += await readFile(file, 'utf8')
+  const wght = usedWeightRange(css)
+
   const outDir = path.join(dist, '_astro', 'fonts')
   await mkdir(outDir, { recursive: true })
 
@@ -130,9 +139,12 @@ async function processFonts(dist, files, htmlFiles, cssFiles) {
   let after = 0
   for (const source of sources) {
     const original = await readFile(source)
+    const targetFormat = FONT_EXTENSIONS[path.extname(source)]
+    // A static font has no axes to instance and makes harfbuzz throw.
     const subset = await subsetFont(original, text, {
-      targetFormat: FONT_EXTENSIONS[path.extname(source)],
-    })
+      targetFormat,
+      variationAxes: { wght },
+    }).catch(() => subsetFont(original, text, { targetFormat }))
     const relative = path.relative(fontDir, source).split(path.sep).join('/')
     const name = hashedName(relative.replaceAll('/', '-'), subset)
     await writeFile(path.join(outDir, name), subset)

@@ -8,16 +8,16 @@
 This document is the source of truth for the look. The CSS is split so the
 Astro build and the static mockups load the very same files:
 
-| File                                                   | Holds                                                                    |
-| ------------------------------------------------------ | ------------------------------------------------------------------------ |
-| [`src/styles/tokens.css`](src/styles/tokens.css)       | Every token, light / dark / system blocks. Plain CSS.                    |
-| [`src/styles/fonts.css`](src/styles/fonts.css)         | `@font-face` for the four self-hosted families + metric fallbacks.       |
-| [`src/styles/base.css`](src/styles/base.css)           | Element defaults: margins, focus ring, selection, headings. Plain CSS.   |
-| [`src/styles/recipes.css`](src/styles/recipes.css)     | Component recipes **and** every section layout. Plain CSS.               |
-| [`src/styles/cv.css`](src/styles/cv.css)               | The A4 CV sheet (always paper, print-safe).                              |
-| [`src/styles/globals.css`](src/styles/globals.css)     | Tailwind entry: imports the above, maps tokens into `@theme`, `dark` variant. |
-| [`design/*.html`](design/)                             | High-fidelity mockups with the real content: `home`, `work`, `cv`, `404`, each also as `*-es.html`. |
-| [`design/build.mjs`](design/build.mjs)                 | Renders the mockups from `design/content.mjs` (which imports the real `src/lib/constants*.ts`). |
+| File                                               | Holds                                                                                               |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| [`src/styles/tokens.css`](src/styles/tokens.css)   | Every token, light / dark / system blocks. Plain CSS.                                               |
+| [`src/styles/fonts.css`](src/styles/fonts.css)     | `@font-face` for the four self-hosted families + metric fallbacks.                                  |
+| [`src/styles/base.css`](src/styles/base.css)       | Element defaults: margins, focus ring, selection, headings. Plain CSS.                              |
+| [`src/styles/recipes.css`](src/styles/recipes.css) | Component recipes **and** every section layout. Plain CSS.                                          |
+| [`src/styles/cv.css`](src/styles/cv.css)           | The A4 CV sheet (always paper, print-safe).                                                         |
+| [`src/styles/globals.css`](src/styles/globals.css) | Tailwind entry: imports the above, maps tokens into `@theme`, `dark` variant.                       |
+| [`design/*.html`](design/)                         | High-fidelity mockups with the real content: `home`, `work`, `cv`, `404`, each also as `*-es.html`. |
+| [`design/build.mjs`](design/build.mjs)             | Renders the mockups from `design/content.mjs` (which imports the real `src/lib/constants*.ts`).     |
 
 To review the mockups, serve the repository root (any static server, e.g.
 `python3 -m http.server 8787`) and open `/design/home.html`. With no
@@ -59,22 +59,22 @@ Two palettes that each stand on their own. Light is _paper_, dark is _night
 shift_: a blue-black, the complement of the orange, so the accent glows at
 night instead of just sitting there.
 
-| Token                            | Light (paper)       | Dark (night)        | Role                                                            |
-| -------------------------------- | ------------------- | ------------------- | --------------------------------------------------------------- |
-| `--color-bg`                     | `#F3EEE4`           | `#0C1117`           | Page.                                                           |
-| `--color-surface`                | `#FBF8F2`           | `#141B24`           | A sheet laid on the page (CV preview, panels).                  |
-| `--color-surface-2`              | `#E8E1D2`           | `#1C2531`           | Recessed wells: tags, code, hover washes.                       |
-| `--color-text`                   | `#17130E`           | `#EDE7DA`           | Ink. Warm, never pure black or white.                           |
-| `--color-text-muted`             | `#5E5649`           | `#A3ABB7`           | Secondary text. 6.3:1 / 8.2:1 on bg.                            |
-| `--color-border`                 | `#D2C9B6`           | `#283240`           | Hairline rules (decorative).                                    |
-| `--color-border-strong`          | = text              | = text              | Structural rules: section tops, the tape, the title block.      |
-| `--color-accent`                 | `#A8480A`           | `#FF8E3C`           | Orange **ink**: links, numbers, emphasis. AA on bg (5.0 / 8.3). |
-| `--color-accent-contrast`        | `#FBF8F2`           | `#17130E`           | Text on an accent fill.                                         |
-| `--color-accent-vivid`           | `#F26B1D`           | `#FF8E3C`           | Orange **paint**: large fills only (quote band, marks).         |
-| `--color-accent-vivid-contrast`  | `#17130E`           | `#17130E`           | Text on a vivid fill (6.1 / 8.1).                               |
-| `--color-focus`                  | `#1D4ED8`           | `#8DB8FF`           | Blueprint blue, focus ring only. 5.8 / 9.4 on bg.               |
-| `--color-success`                | `#1D7A3E`           | `#5BD37D`           | The "Available" beacon. 4.65 / 10 on bg.                        |
-| `--color-grid`                   | ink @ 7%            | paper @ 6%          | The drafting grid behind the hero.                              |
+| Token                           | Light (paper) | Dark (night) | Role                                                            |
+| ------------------------------- | ------------- | ------------ | --------------------------------------------------------------- |
+| `--color-bg`                    | `#F3EEE4`     | `#0C1117`    | Page.                                                           |
+| `--color-surface`               | `#FBF8F2`     | `#141B24`    | A sheet laid on the page (CV preview, panels).                  |
+| `--color-surface-2`             | `#E8E1D2`     | `#1C2531`    | Recessed wells: tags, code, hover washes.                       |
+| `--color-text`                  | `#17130E`     | `#EDE7DA`    | Ink. Warm, never pure black or white.                           |
+| `--color-text-muted`            | `#5E5649`     | `#A3ABB7`    | Secondary text. 6.3:1 / 8.2:1 on bg.                            |
+| `--color-border`                | `#D2C9B6`     | `#283240`    | Hairline rules (decorative).                                    |
+| `--color-border-strong`         | = text        | = text       | Structural rules: section tops, the tape, the title block.      |
+| `--color-accent`                | `#A8480A`     | `#FF8E3C`    | Orange **ink**: links, numbers, emphasis. AA on bg (5.0 / 8.3). |
+| `--color-accent-contrast`       | `#FBF8F2`     | `#17130E`    | Text on an accent fill.                                         |
+| `--color-accent-vivid`          | `#F26B1D`     | `#FF8E3C`    | Orange **paint**: large fills only (quote band, marks).         |
+| `--color-accent-vivid-contrast` | `#17130E`     | `#17130E`    | Text on a vivid fill (6.1 / 8.1).                               |
+| `--color-focus`                 | `#1D4ED8`     | `#8DB8FF`    | Blueprint blue, focus ring only. 5.8 / 9.4 on bg.               |
+| `--color-success`               | `#1D7A3E`     | `#5BD37D`    | The "Available" beacon. 4.65 / 10 on bg.                        |
+| `--color-grid`                  | ink @ 7%      | paper @ 6%   | The drafting grid behind the hero.                              |
 
 Rules:
 
@@ -91,12 +91,12 @@ Four self-hosted families, all under the SIL Open Font License, Latin subsets
 in WOFF2 (~240 KB total, `font-display: swap`, metric-matched fallbacks so the
 swap does not shift layout).
 
-| Role                | Family                                  | File                                       | Why                                                                                                   |
-| ------------------- | --------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `--font-display`    | **Bricolage Grotesque** (variable)      | `bricolage-grotesque-latin.woff2` (128 KB) | Optical size + width axes: condensed and heavy at poster size, with ink traps that give it character. |
-| `--font-body`       | **Instrument Sans** (variable)          | `instrument-sans-latin.woff2` (56 KB)      | Neutral, slightly narrow, excellent at 16–18 px; does not fight the display face.                     |
-| `--font-accent`     | **Instrument Serif** italic             | `instrument-serif-italic-latin.woff2` (15 KB) | One or two emphasised words per section (`go *well*`). The editorial counterpoint.                 |
-| `--font-mono`       | **JetBrains Mono** (variable)           | `jetbrains-mono-latin.woff2` (40 KB)       | The .NET developer's font (Rider). Every label, date, number and tag.                                 |
+| Role             | Family                             | File                                          | Why                                                                                                   |
+| ---------------- | ---------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `--font-display` | **Bricolage Grotesque** (variable) | `bricolage-grotesque-latin.woff2` (128 KB)    | Optical size + width axes: condensed and heavy at poster size, with ink traps that give it character. |
+| `--font-body`    | **Instrument Sans** (variable)     | `instrument-sans-latin.woff2` (56 KB)         | Neutral, slightly narrow, excellent at 16–18 px; does not fight the display face.                     |
+| `--font-accent`  | **Instrument Serif** italic        | `instrument-serif-italic-latin.woff2` (15 KB) | One or two emphasised words per section (`go *well*`). The editorial counterpoint.                    |
+| `--font-mono`    | **JetBrains Mono** (variable)      | `jetbrains-mono-latin.woff2` (40 KB)          | The .NET developer's font (Rider). Every label, date, number and tag.                                 |
 
 Licenses (all SIL OFL 1.1, which permits self-hosting, subsetting and bundling
 with this site):
@@ -115,18 +115,18 @@ characters.
 Fluid, `clamp()`-based, with the big sizes growing far more than the small
 ones so the desktop reads as a poster and the phone stays legible:
 
-| Token         | 390 px   | 1280 px  | Use                                        |
-| ------------- | -------- | -------- | ------------------------------------------ |
-| `--text-xs`   | 11.5 px  | 12.5 px  | Eyebrows, tags, title-block fields.        |
-| `--text-sm`   | 13.5 px  | 14.4 px  | Intro paragraphs on the sheet, captions, buttons. |
-| `--text-base` | 16 px    | 18 px    | Body; the intro paragraphs on phones.      |
-| `--text-lg`   | 18 px    | 20.8 px  | Company and project names, the tape.       |
-| `--text-xl`   | 20.8 px  | 25.6 px  | Hero lead, column titles, role titles.     |
-| `--text-2xl`  | 25.6 px  | 33.6 px  | Reserved; the sheet uses `xl` and below.   |
-| `--text-3xl`  | 32 px    | 46 px    | Contact links, the company on `/work`.     |
-| `--text-4xl`  | 40 px    | 64 px    | Page titles, the quote.                    |
-| `--text-5xl`  | 48 px    | 80 px    | Reserved for posters; unused on the home.  |
-| `--text-hero` | 68 px    | 136 px   | The name (60 px floor on a 320 px screen). |
+| Token         | 390 px  | 1280 px | Use                                               |
+| ------------- | ------- | ------- | ------------------------------------------------- |
+| `--text-xs`   | 11.5 px | 12.5 px | Eyebrows, tags, title-block fields.               |
+| `--text-sm`   | 13.5 px | 14.4 px | Intro paragraphs on the sheet, captions, buttons. |
+| `--text-base` | 16 px   | 18 px   | Body; the intro paragraphs on phones.             |
+| `--text-lg`   | 18 px   | 20.8 px | Company and project names, the tape.              |
+| `--text-xl`   | 20.8 px | 25.6 px | Hero lead, column titles, role titles.            |
+| `--text-2xl`  | 25.6 px | 33.6 px | Reserved; the sheet uses `xl` and below.          |
+| `--text-3xl`  | 32 px   | 46 px   | Contact links, the company on `/work`.            |
+| `--text-4xl`  | 40 px   | 64 px   | Page titles, the quote.                           |
+| `--text-5xl`  | 48 px   | 80 px   | Reserved for posters; unused on the home.         |
+| `--text-hero` | 68 px   | 136 px  | The name (60 px floor on a 320 px screen).        |
 
 Line heights: `0.86` on the hero, `0.92` on display, `1.1` on headings,
 `1.5` on body, `1.65` on the long intro paragraph. Tracking tightens as size
@@ -296,17 +296,17 @@ Motion is for **orientation**, never decoration. Every value reads a token so
 (`tokens.css`), and anything that starts hidden must start visible when motion
 is reduced or when JavaScript never runs.
 
-| Where                | What                                                                              | Token                             |
-| -------------------- | --------------------------------------------------------------------------------- | --------------------------------- |
-| Page load            | `.rise` elements in the hero rise 20 px and fade in, staggered 80 ms via `--reveal-delay`. | `--duration-reveal`, `--ease-out` |
-| Scroll               | `[data-reveal]` sections get `.is-visible` once from an IntersectionObserver (12 % bottom margin); their `.reveal` children rise. | `--duration-reveal`               |
-| Hover on links       | The arrow travels up-right 0.15 em; the colour turns orange.                      | `--duration-fast`                 |
-| Hover on buttons     | 1 px lift and the ink/orange swap.                                                | `--duration-fast`                 |
-| Theme switch         | Colours cross-fade; layout never moves. Opt-in via `html.theme-transition`.       | `--duration-base`, `--ease-in-out`|
-| Tape                 | 40 s linear loop; pauses on hover; static and wrapped under reduced motion.       | —                                 |
-| Chips and tags       | Border and text turn orange on hover; the arrow travels.                           | `--duration-fast`                 |
-| Beacon               | A 2.2 s pulse ring; off under reduced motion.                                     | —                                 |
-| CV sheet             | −1.5° → 0° on hover.                                                              | `--duration-base`, `--ease-spring`|
+| Where            | What                                                                                                                              | Token                              |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| Page load        | `.rise` elements in the hero rise 20 px and fade in, staggered 80 ms via `--reveal-delay`.                                        | `--duration-reveal`, `--ease-out`  |
+| Scroll           | `[data-reveal]` sections get `.is-visible` once from an IntersectionObserver (12 % bottom margin); their `.reveal` children rise. | `--duration-reveal`                |
+| Hover on links   | The arrow travels up-right 0.15 em; the colour turns orange.                                                                      | `--duration-fast`                  |
+| Hover on buttons | 1 px lift and the ink/orange swap.                                                                                                | `--duration-fast`                  |
+| Theme switch     | Colours cross-fade; layout never moves. Opt-in via `html.theme-transition`.                                                       | `--duration-base`, `--ease-in-out` |
+| Tape             | 40 s linear loop; pauses on hover; static and wrapped under reduced motion.                                                       | —                                  |
+| Chips and tags   | Border and text turn orange on hover; the arrow travels.                                                                          | `--duration-fast`                  |
+| Beacon           | A 2.2 s pulse ring; off under reduced motion.                                                                                     | —                                  |
+| CV sheet         | −1.5° → 0° on hover.                                                                                                              | `--duration-base`, `--ease-spring` |
 
 Not allowed: parallax, cursor followers, scroll-jacking, auto-playing
 anything louder than the tape, and animating `width`/`height`/`top`/`left`.

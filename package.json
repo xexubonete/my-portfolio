@@ -1,7 +1,7 @@
 {
   "name": "my-portfolio",
   "version": "1.0.0",
-  "description": "Jesus Bonete \u2014 backend developer portfolio. A fully static Astro site with Tailwind CSS.",
+  "description": "Jesus Bonete — backend developer portfolio. A fully static Astro site with Tailwind CSS.",
   "author": {
     "name": "Jesus Bonete"
   },
@@ -13,7 +13,7 @@
     "format": "prettier -w . --cache",
     "preview": "astro preview",
     "start": "astro dev",
-    "test": "node --test scripts/",
+    "test": "node --test scripts/ src/",
     "astro": "astro"
   },
   "dependencies": {

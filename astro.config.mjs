@@ -20,7 +20,11 @@ export default defineConfig({
     // Post-build pass over dist/: subsets and content-hashes the self-hosted
     // fonts, preloads the ones each page uses, and gives every raster <img>
     // AVIF/WebP sources with explicit dimensions. See scripts/integrations/.
-    staticPipeline(),
+    staticPipeline({
+      // Only the display and body faces are worth a preload: they shape the
+      // first paint. The mono and the serif italic can arrive with the swap.
+      preload: (url) => /bricolage|instrument-sans/.test(url),
+    }),
   ],
   vite: {
     // Tailwind 4 is a Vite plugin, not an Astro integration: @astrojs/tailwind

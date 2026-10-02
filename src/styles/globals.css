@@ -22,7 +22,10 @@
     @slot;
   }
   @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
+    &:where(
+      :root:not([data-theme='light']),
+      :root:not([data-theme='light']) *
+    ) {
       @slot;
     }
   }
@@ -141,4 +144,3 @@
   --color-input: var(--color-border);
   --color-ring: var(--color-focus);
 }
-

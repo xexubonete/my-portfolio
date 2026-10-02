@@ -113,3 +113,25 @@ export function imgTag(attrs) {
     .join(' ')
   return `<img ${body}>`
 }
+
+/**
+ * The range of font weights the stylesheets ask for, as `{ min, max }`.
+ * Two-value `font-weight: 200 800` declarations are @font-face ranges, not
+ * uses, so they are skipped. 400 and 700 are always inside the range because
+ * `normal` text and `<b>`/`<strong>` resolve to them whether or not a rule
+ * says so.
+ */
+export function usedWeightRange(css) {
+  const weights = [400, 700]
+  const KEYWORDS = { normal: 400, bold: 700 }
+  for (const m of css.matchAll(/font-weight\s*:\s*([^;}]+)/g)) {
+    const parts = m[1].trim().split(/\s+/)
+    if (parts.length !== 1) continue
+    const value = KEYWORDS[parts[0]] ?? Number(parts[0])
+    if (Number.isFinite(value)) weights.push(value)
+  }
+  for (const m of css.matchAll(/['"]wght['"]\s+(\d+(?:\.\d+)?)/g)) {
+    weights.push(Number(m[1]))
+  }
+  return { min: Math.min(...weights), max: Math.max(...weights) }
+}

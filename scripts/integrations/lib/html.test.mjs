@@ -10,6 +10,7 @@ import {
   parseAttributes,
   rewriteUrls,
   transformImages,
+  usedWeightRange,
 } from './html.mjs'
 
 describe('hashedName', () => {
@@ -165,5 +166,26 @@ describe('transformImages', () => {
       await transformImages('<p>no</p>', async () => 'x'),
       '<p>no</p>',
     )
+  })
+})
+
+describe('usedWeightRange', () => {
+  it('spans the single-value weights found in the CSS', () => {
+    const css = 'h1{font-weight:800}p{font-weight: 500;}em{font-weight:bold}'
+    assert.deepEqual(usedWeightRange(css), { min: 400, max: 800 })
+  })
+
+  it('ignores @font-face ranges and reads wght variation settings', () => {
+    const css =
+      "@font-face{font-weight:100 900}b{font-variation-settings:'wght' 650}"
+    assert.deepEqual(usedWeightRange(css), { min: 400, max: 700 })
+  })
+
+  it('always covers normal and bold', () => {
+    assert.deepEqual(usedWeightRange(''), { min: 400, max: 700 })
+    assert.deepEqual(usedWeightRange('x{font-weight:300}'), {
+      min: 300,
+      max: 700,
+    })
   })
 })

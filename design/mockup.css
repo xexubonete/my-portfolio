@@ -30,7 +30,8 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('../public/fonts/instrument-serif-italic-latin.woff2') format('woff2');
+  src: url('../public/fonts/instrument-serif-italic-latin.woff2')
+    format('woff2');
 }
 
 @font-face {

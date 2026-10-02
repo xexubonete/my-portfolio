@@ -18,8 +18,10 @@ const here = dirname(fileURLToPath(import.meta.url))
 
 /** Every link that leaves the page opens in a new tab. */
 const EXT = 'target="_blank" rel="noopener noreferrer"'
-const arrow = (cls = 'arrow') => `<svg class="${cls}" aria-hidden="true"><use href="#arrow" /></svg>`
-const tags = (items) => items.map((i) => `<span class="tag">${i}</span>`).join('')
+const arrow = (cls = 'arrow') =>
+  `<svg class="${cls}" aria-hidden="true"><use href="#arrow" /></svg>`
+const tags = (items) =>
+  items.map((i) => `<span class="tag">${i}</span>`).join('')
 const years = (roles) => `${roles[roles.length - 1].start} – ${roles[0].end}`
 
 const SYMBOLS = `
@@ -304,8 +306,10 @@ function home(c) {
         <div class="wrap contact reveal">
           <div class="contact__main">${colHead(c.contact)}
             <ul class="contact__links">${c.contact.links
-              .map(([label, small, href]) => `
-              <li><a href="${href}" ${EXT}><span class="contact__label">${label}</span><small>${small}</small>${arrow()}</a></li>`)
+              .map(
+                ([label, small, href]) => `
+              <li><a href="${href}" ${EXT}><span class="contact__label">${label}</span><small>${small}</small>${arrow()}</a></li>`,
+              )
               .join('')}
             </ul>
           </div>
