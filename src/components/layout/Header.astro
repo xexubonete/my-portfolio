@@ -16,7 +16,6 @@ const { nav, a11y } = t(lang)
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href={pagePath(lang, 'home')} aria-label={nav.home}>
-      <span class="brand__mark">JB</span>
       <span class="brand__label">{nav.brand}</span>
     </a>
     <nav class="site-nav" aria-label={a11y.mainNav}>
@@ -24,7 +23,7 @@ const { nav, a11y } = t(lang)
         class="link-arrow"
         href={LINKS.github}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
       >
         GitHub <Glyph name="arrow" class="arrow" />
         <span class="sr-only">{a11y.external}</span>
@@ -33,7 +32,7 @@ const { nav, a11y } = t(lang)
         class="link-arrow"
         href={LINKS.linkedin}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
       >
         LinkedIn <Glyph name="arrow" class="arrow" />
         <span class="sr-only">{a11y.external}</span>

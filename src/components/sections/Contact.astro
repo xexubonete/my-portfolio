@@ -10,7 +10,6 @@ interface Props {
 
 const { lang, num } = Astro.props
 const { contact } = t(lang)
-const external = (href: string) => /^https?:/.test(href)
 ---
 
 <section
@@ -31,11 +30,7 @@ const external = (href: string) => /^https?:/.test(href)
         <ul class="contact__links">
           {contact.items.map((item) => (
             <li>
-              <a
-                href={item.href}
-                target={external(item.href) ? '_blank' : undefined}
-                rel={external(item.href) ? 'noreferrer' : undefined}
-              >
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
                 {item.label} <small>{item.detail}</small>
                 <Glyph name="arrow" class="arrow" />
               </a>

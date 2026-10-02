@@ -24,7 +24,7 @@ const cvPath = pagePath(lang, 'cv')
           class="btn btn--accent"
           href={cvPath}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           {cv.download}
           <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
@@ -37,7 +37,7 @@ const cvPath = pagePath(lang, 'cv')
         class="cv__sheet"
         href={cvPath}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         aria-label={a11y.openCv}
       >
         <iframe

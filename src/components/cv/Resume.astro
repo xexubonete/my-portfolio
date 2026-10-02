@@ -2,6 +2,7 @@
 import '@/styles/globals.css'
 import '@/styles/cv.css'
 import ThemeScript from '@/components/layout/ThemeScript.astro'
+import LanguageSwitch from '@/components/layout/LanguageSwitch.astro'
 import Glyph from '@/components/ui/Glyph.astro'
 import Sprite from '@/components/ui/Sprite.astro'
 import { experienceByLang, LINKS, pagePath, t, type Lang } from '@/i18n'
@@ -13,7 +14,7 @@ interface Props {
 
 const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
-const { nav } = t(lang)
+const { nav, a11y } = t(lang)
 
 const T = {
   es: {
@@ -131,10 +132,17 @@ const profileText = T.profile.replace(
     <Sprite />
     <div class="cv-page">
       <div class="cv-toolbar">
-        <a class="btn btn--accent" href={T.pdf} download>
+        <a
+          class="btn btn--accent"
+          href={T.pdf}
+          download
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {T.download}
           <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
         </a>
+        <LanguageSwitch lang={lang} page="cv" label={a11y.switchLanguage} />
         <a class="btn btn--ghost" href={pagePath(lang, 'home')}>
           {nav.home}
         </a>
@@ -158,7 +166,9 @@ const profileText = T.profile.replace(
             </div>
             <div class="cv-contact">
               <Glyph name="mail" />
-              <a href={LINKS.mail}>xexubonete@gmail.com</a>
+              <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
+                xexubonete@gmail.com
+              </a>
             </div>
             <div class="cv-contact">
               <Glyph name="phone" />
@@ -166,19 +176,27 @@ const profileText = T.profile.replace(
             </div>
             <div class="cv-contact">
               <Glyph name="globe" />
-              <a href="https://xexubonete.dev" target="_blank" rel="noreferrer">
+              <a
+                href="https://xexubonete.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 xexubonete.dev
               </a>
             </div>
             <div class="cv-contact">
               <Glyph name="globe" />
-              <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 linkedin.com/in/jesus-bonete-sanchez
               </a>
             </div>
             <div class="cv-contact">
               <Glyph name="globe" />
-              <a href={LINKS.github} target="_blank" rel="noreferrer">
+              <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
                 github.com/xexubonete
               </a>
             </div>
@@ -234,7 +252,7 @@ const profileText = T.profile.replace(
                         class="cv-job-company"
                         href={group.link}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                       >
                         {group.company}
                       </a>
@@ -263,7 +281,7 @@ const profileText = T.profile.replace(
                       class="cv-job-title cv-job-company"
                       href={group.link}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                     >
                       {group.company}
                     </a>
