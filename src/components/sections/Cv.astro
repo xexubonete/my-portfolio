@@ -1,0 +1,50 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import { pagePath, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { cv, a11y } = t(lang)
+const cvPath = pagePath(lang, 'cv')
+---
+
+<div class="col col--cv reveal" id="cv">
+  <header class="section-head">
+    <span class="section-num">{cv.meta}</span>
+    <h2 class="section-title">{cv.title}</h2>
+  </header>
+  <div class="cv-plate">
+    {/* The real CV page, embedded at its native A4 width and scaled to the box
+        by the script in HomePage. `embed` hides its toolbar before paint. */}
+    <a
+      class="cv__sheet"
+      href={cvPath}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={a11y.openCv}
+    >
+      <iframe
+        src={`${cvPath}?embed=1`}
+        title={a11y.cvPreview}
+        tabindex="-1"
+        loading="lazy"
+      ></iframe>
+    </a>
+    <div class="cv-plate__copy">
+      <p>{cv.caption}</p>
+      <a
+        class="btn btn--accent"
+        href={cvPath}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {cv.download}
+        <Glyph name="arrow" class="arrow btn__arrow" />
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+    </div>
+  </div>
+</div>

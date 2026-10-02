@@ -1,0 +1,17 @@
+{/*
+  Runs before the first paint: a stored choice becomes `data-theme` on <html>,
+  so the token sheet resolves to the right palette on the very first frame.
+  With nothing stored the attribute stays off and the tokens follow the system
+  preference through their own `prefers-color-scheme` block. A legacy "system"
+  value from the old toggle falls through to that same default.
+*/}
+<script is:inline>
+  ;(function () {
+    try {
+      var theme = localStorage.getItem('theme')
+      if (theme === 'dark' || theme === 'light') {
+        document.documentElement.dataset.theme = theme
+      }
+    } catch (_) {}
+  })()
+</script>

@@ -1,57 +1,127 @@
 ---
-import { ClientRouter } from 'astro:transitions'
-import HeadSEO from '@/components/layout/HeadSEO.astro'
 import Footer from '@/components/layout/Footer.astro'
+import HeadSEO from '@/components/layout/HeadSEO.astro'
 import Header from '@/components/layout/Header.astro'
-import type { Lang } from '@/i18n'
+import ThemeScript from '@/components/layout/ThemeScript.astro'
+import Sprite from '@/components/ui/Sprite.astro'
+import { t, type Lang, type PageId } from '@/i18n'
 
 interface Props {
-  title?: string | undefined
-  description?: string | undefined
+  lang: Lang
+  page: PageId
+  title: string
+  description: string
   ogImage?: URL | undefined
-  lang?: Lang
 }
 
-const { title, description, ogImage, lang = 'en' } = Astro.props
+const { lang, page, title, description, ogImage } = Astro.props
+const { a11y } = t(lang)
 ---
 
 <html lang={lang}>
   <head>
-    <HeadSEO title={title} description={description} ogImage={ogImage} />
-    <ClientRouter />
+    <HeadSEO
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      alternates={{ lang, page }}
+    />
+    <ThemeScript />
+    <noscript>
+      <style>
+        /* Without JavaScript nothing would ever reveal: show it all. */
+        [data-reveal] .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      </style>
+    </noscript>
   </head>
-  <body class="min-h-screen bg-background font-sans antialiased">
-    <div class="flex w-full flex-col items-center justify-center">
-      <Header lang={lang} />
-      <slot />
-      <Footer lang={lang} />
-    </div>
+  <body>
+    <Sprite />
+    <a class="skip-link" href="#main">
+      {a11y.skip}
+    </a>
+    <Header lang={lang} page={page} />
+    <slot />
+    <Footer lang={lang} page={page} />
 
-    <script>
-      // Recompute years of experience on the client (from Feb 2022) so the
-      // value is always live, regardless of any HTTP/browser caching.
-      function updateExperienceYears() {
-        const now = new Date()
-        const month = now.getMonth() + 1
-        let years = now.getFullYear() - 2022
+    <script is:inline>
+      ;(function () {
+        // The build is static, so the years-of-experience figures are refreshed
+        // on the client: every element carries both of its phrasings, and `{n}`
+        // is the number of full years since February 2022.
+        var now = new Date()
+        var month = now.getMonth() + 1
+        var years = now.getFullYear() - 2022
         if (month < 2) years -= 1
-        const plus = month === 2 ? '' : '+'
-        const lang = document.documentElement.lang
-        document.querySelectorAll('.js-exp-card h2').forEach((el) => {
-          el.textContent =
-            lang === 'es'
-              ? `Experiencia (${plus}${years}a)`
-              : `Experience (${plus}${years}yr)`
+        var key = month === 2 ? 'expExact' : 'expPlus'
+        document.querySelectorAll('[data-exp-plus]').forEach(function (el) {
+          el.textContent = el.dataset[key].replace('{n}', years)
         })
-        document.querySelectorAll('.js-exp-title').forEach((el) => {
-          el.textContent =
-            lang === 'es'
-              ? `Experiencia laboral (${plus}${years} años)`
-              : `Work experience (${plus}${years} years)`
+
+        // Reveal on scroll: one IntersectionObserver, fires once per section.
+        var sections = document.querySelectorAll('[data-reveal]')
+        if (!('IntersectionObserver' in window)) {
+          sections.forEach(function (el) {
+            el.classList.add('is-visible')
+          })
+          return
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return
+              entry.target.classList.add('is-visible')
+              io.unobserve(entry.target)
+            })
+          },
+          { rootMargin: '0px 0px -12% 0px' },
+        )
+        sections.forEach(function (el) {
+          io.observe(el)
         })
-      }
-      updateExperienceYears()
-      document.addEventListener('astro:page-load', updateExperienceYears)
+      })()
     </script>
   </body>
 </html>
+
+<style is:global>
+  @view-transition {
+    navigation: auto;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  main {
+    flex: 1;
+  }
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--space-2);
+    inset-inline-start: var(--space-2);
+    z-index: 100;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-s);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    transform: translateY(-200%);
+  }
+  .skip-link:focus {
+    transform: none;
+  }
+  .sr-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

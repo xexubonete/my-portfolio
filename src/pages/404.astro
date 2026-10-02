@@ -1,26 +1,38 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-import { buttonVariants } from '@/components/ui/_button'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { t } from '@/i18n'
+
+// There is one 404 for every URL, so it speaks the site's default language.
+const lang = 'en'
+const { notFound } = t(lang)
 ---
 
 <BaseLayout
+  lang={lang}
+  page="home"
   title="404 - Not Found"
   description="404 Error — this page was not found"
 >
-  <main class="flex h-[80vh] flex-auto">
-    <div class="flex flex-col items-center justify-center px-8">
-      <img src="/me_chillin.png" alt="404" class="mb-8 size-64" />
-      <p class="text-sm text-muted-foreground">404</p>
-      <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Page not found
-      </h1>
-      <p class="mb-4 leading-7 [&:not(:first-child)]:mt-6">
-        Sorry, we couldn't find the page you're looking for.
-      </p>
-      <a href="/" rel="noreferrer" class={buttonVariants()}>
-        {' '}
-        Go back home
-      </a>
+  <main id="main" class="hero not-found">
+    <div class="wrap not-found__grid">
+      <div>
+        <p class="eyebrow eyebrow--accent">{notFound.eyebrow}</p>
+        <p class="display-hero display not-found__code">{notFound.code}</p>
+        <h1 class="not-found__title">{notFound.title}</h1>
+        <p class="not-found__text">{notFound.body}</p>
+        <p class="not-found__action">
+          <a class="btn" href="/">
+            {notFound.back}
+          </a>
+        </p>
+      </div>
+      <img
+        class="not-found__portrait"
+        src="/me_chillin.png"
+        alt={notFound.photoAlt}
+        width="420"
+        height="420"
+      />
     </div>
   </main>
 </BaseLayout>
