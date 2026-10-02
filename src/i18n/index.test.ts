@@ -1,4 +1,4 @@
-// Run with: node --test src/
+// Run with: pnpm test
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 import { CONTENT } from './content.ts'
