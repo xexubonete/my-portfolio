@@ -8,7 +8,8 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 - **Dark/Light Theme**: Toggle between dark and light modes
 - **Responsive Design**: A bento-style grid that reflows from 1 → 2 → 4 columns
 - **Modern Stack**: Built with Astro, React, and Tailwind CSS
-- **Performance Optimized**: Fast loading times and smooth animations
+- **Fully Static**: every page is prerendered at build time and served from Vercel's CDN — no server function runs per request
+- **Performance Optimized**: self-hosted subsetted fonts with preload, AVIF/WebP images with explicit sizes, and the CSS inlined into each page
 - **SEO Friendly**: Includes meta tags and proper SEO structure
 
 ## 🛠️ Tech Stack
@@ -25,12 +26,15 @@ A modern, responsive portfolio website built with Astro, React, and Tailwind CSS
 ## 🏗️ Project Structure
 
 ```
-├── astro.config.mjs
+├── astro.config.mjs              # output: 'static', inlined CSS, build pipeline
 ├── components.json
-├── netlify.toml
 ├── package.json
 ├── pnpm-lock.yaml
 ├── public/                       # static assets (CV PDF, images, memojis)
+├── scripts
+│   ├── generate-cv.mjs           # prints the CV PDFs from the production build
+│   ├── integrations/             # static-pipeline: font subsetting + image formats
+│   └── lib/                      # static file server used by the scripts
 ├── src
 │   ├── components
 │   │   ├── bento
@@ -77,12 +81,28 @@ pnpm install
 pnpm dev
 ```
 
-4. Type-check and build for production:
+4. Type-check, test and build for production:
 
 ```bash
 pnpm check
+pnpm test
 pnpm build
 ```
+
+5. Regenerate the CV PDFs (builds the site, serves `dist/` and prints `/cv` and `/en/cv` with headless Chromium):
+
+```bash
+pnpm cv:pdf
+```
+
+## ⚙️ Build pipeline
+
+`pnpm build` prerenders every route into `dist/`. A post-build integration (`scripts/integrations/static-pipeline.mjs`) then:
+
+- subsets every font under `public/fonts/` to the characters the site uses, writes it to `/_astro/fonts/` with a content hash in the name, rewrites the CSS to point at it and preloads it from the pages that use it;
+- gives every raster `<img>` served from `public/` AVIF and WebP sources at its displayed size (1x and 2x), wrapped in a `<picture>` with explicit `width`/`height`.
+
+`vercel.json` marks everything under `/_astro/` as immutable for a year, so hashed assets are cached by browsers and the CDN.
 
 ## 🎨 Customization
 

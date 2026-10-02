@@ -1,10 +1,9 @@
 // Generates pixel-perfect, margin-free CV PDFs from the /cv and /en/cv routes
-// using headless Chromium. Requires the dev (or preview) server to be running.
+// using headless Chromium. The site is static, so the script serves the
+// production build in dist/ itself: `pnpm cv:pdf` builds and then prints.
 //
-//   1) pnpm dev         (in another terminal)
-//   2) pnpm cv:pdf
-//
-// Override the base URL with CV_BASE_URL if the server runs elsewhere.
+// Set CV_BASE_URL to print from another server instead (a preview deployment,
+// a dev server), in which case dist/ is not needed.
 //
 // This script used to print whatever the page happened to show. That is how a
 // transient dev-server hiccup ended up inside a downloadable CV: Vite rendered its
@@ -14,8 +13,10 @@
 import { readFile, rename, unlink } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import puppeteer from 'puppeteer'
+import { serveStatic } from './lib/static-server.mjs'
 
-const BASE = process.env.CV_BASE_URL ?? 'http://localhost:4321'
+const server = process.env.CV_BASE_URL ? null : await serveDist()
+const BASE = process.env.CV_BASE_URL ?? server.url
 
 const targets = [
   { url: `${BASE}/cv`, out: 'public/CV_Jesus_Bonete_ES.pdf', expect: 'Bonete' },
@@ -35,6 +36,17 @@ const ERROR_MARKERS = [
   'LoadPluginContext',
 ]
 
+// Without CV_BASE_URL the PDFs come from dist/, which has to exist first.
+async function serveDist() {
+  if (!existsSync('dist/cv/index.html') && !existsSync('dist/cv.html')) {
+    console.error(
+      'dist/ has no CV page. Run "pnpm build" first (or "pnpm cv:pdf").',
+    )
+    process.exit(1)
+  }
+  return serveStatic('dist')
+}
+
 // The Node the project pins. Astro 7 needs 22.12 or newer, so a mismatch here is
 // worth saying out loud before a confusing compile failure appears instead.
 async function warnOnNodeMismatch() {
@@ -46,7 +58,7 @@ async function warnOnNodeMismatch() {
   if (wanted && wanted.split('.')[0] !== running) {
     console.warn(
       `! Node ${running} is running, but .nvmrc asks for ${wanted}.\n` +
-        `  Run "nvm use" before "pnpm dev" if the page fails to compile.`,
+        `  Run "nvm use" before "pnpm build" if the page fails to compile.`,
     )
   }
 }
@@ -149,6 +161,7 @@ try {
   }
 } finally {
   await browser.close()
+  await server?.close()
 }
 
 if (failures.length) {

@@ -1,14 +1,27 @@
 import { defineConfig } from 'astro/config'
-import vercel from '@astrojs/vercel'
-import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
+import staticPipeline from './scripts/integrations/static-pipeline.mjs'
 
 export default defineConfig({
-  output: 'server',
+  // Every page is prerendered at build time and served from Vercel's CDN as a
+  // plain file: no adapter, no serverless function, nothing runs per request.
+  // The two things that used to need a server (the language redirect at `/`
+  // and the years-of-experience counter) are a few lines of inline script.
+  output: 'static',
   site: 'https://xexubonete.dev',
-  adapter: vercel(),
-  integrations: [react()],
+  trailingSlash: 'ignore',
+  build: {
+    // The whole stylesheet travels inside the HTML, so the first paint never
+    // waits on a second request. It is small enough that this is a net win.
+    inlineStylesheets: 'always',
+  },
+  integrations: [
+    // Post-build pass over dist/: subsets and content-hashes the self-hosted
+    // fonts, preloads the ones each page uses, and gives every raster <img>
+    // AVIF/WebP sources with explicit dimensions. See scripts/integrations/.
+    staticPipeline(),
+  ],
   vite: {
     // Tailwind 4 is a Vite plugin, not an Astro integration: @astrojs/tailwind
     // was archived and never supported Astro 6 or 7.
