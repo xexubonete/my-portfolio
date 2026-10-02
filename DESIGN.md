@@ -16,13 +16,23 @@ Astro build and the static mockups load the very same files:
 | [`src/styles/recipes.css`](src/styles/recipes.css)     | Component recipes **and** every section layout. Plain CSS.               |
 | [`src/styles/cv.css`](src/styles/cv.css)               | The A4 CV sheet (always paper, print-safe).                              |
 | [`src/styles/globals.css`](src/styles/globals.css)     | Tailwind entry: imports the above, maps tokens into `@theme`, `dark` variant. |
-| [`design/*.html`](design/)                             | High-fidelity mockups with the real content: `home`, `work`, `cv`, `404`. |
+| [`design/*.html`](design/)                             | High-fidelity mockups with the real content: `home`, `work`, `cv`, `404`, each also as `*-es.html`. |
+| [`design/build.mjs`](design/build.mjs)                 | Renders the mockups from `design/content.mjs` (which imports the real `src/lib/constants*.ts`). |
 
 To review the mockups, serve the repository root (any static server, e.g.
-`python3 -m http.server 8787`) and open `/design/home.html?theme=light` or
-`?theme=dark`; the floating sun/moon button flips the theme in place. They
-load `src/styles/*.css` directly and the fonts from `public/fonts/`, so what
-you see is exactly what the build ships.
+`python3 -m http.server 8787`) and open `/design/home.html`. With no
+`?theme` parameter the page follows the OS colour scheme, exactly like the
+real site does for a visitor with no stored choice; `?theme=light|dark`
+forces one, and the sun/moon button in the header flips it in place. The
+`EN · ES` switch (and the language link in the footer) goes to the Spanish
+version of the same page, rendered from the real Spanish content. The
+mockups load `src/styles/*.css` directly and the fonts from `public/fonts/`,
+so what you see is exactly what the build ships. After editing a template or
+a string, run `node design/build.mjs` to re-render all eight files.
+
+Links: every link that leaves the site, plus the CV (view/download), opens in
+a new tab (`target="_blank" rel="noopener noreferrer"`). Internal navigation
+(the work page, the language switch, "back home") stays in the same tab.
 
 ---
 
@@ -108,15 +118,15 @@ ones so the desktop reads as a poster and the phone stays legible:
 | Token         | 390 px   | 1280 px  | Use                                        |
 | ------------- | -------- | -------- | ------------------------------------------ |
 | `--text-xs`   | 11.5 px  | 12.5 px  | Eyebrows, tags, title-block fields.        |
-| `--text-sm`   | 13.5 px  | 14.4 px  | Metadata, captions, buttons.               |
-| `--text-base` | 16 px    | 18 px    | Body.                                      |
-| `--text-lg`   | 18 px    | 20.8 px  | Lead paragraph lines, list items.          |
-| `--text-xl`   | 20.8 px  | 25.6 px  | Hero lead, role titles.                    |
-| `--text-2xl`  | 25.6 px  | 33.6 px  | Company names, project names.              |
-| `--text-3xl`  | 32 px    | 46 px    | Section titles.                            |
-| `--text-4xl`  | 40 px    | 64 px    | Page titles (`Work experience`).           |
-| `--text-5xl`  | 52 px    | 96 px    | The quote, contact links.                  |
-| `--text-hero` | 82 px    | 216 px   | The name.                                  |
+| `--text-sm`   | 13.5 px  | 14.4 px  | Intro paragraphs on the sheet, captions, buttons. |
+| `--text-base` | 16 px    | 18 px    | Body; the intro paragraphs on phones.      |
+| `--text-lg`   | 18 px    | 20.8 px  | Company and project names, the tape.       |
+| `--text-xl`   | 20.8 px  | 25.6 px  | Hero lead, column titles, role titles.     |
+| `--text-2xl`  | 25.6 px  | 33.6 px  | Reserved; the sheet uses `xl` and below.   |
+| `--text-3xl`  | 32 px    | 46 px    | Contact links, the company on `/work`.     |
+| `--text-4xl`  | 40 px    | 64 px    | Page titles, the quote.                    |
+| `--text-5xl`  | 48 px    | 80 px    | Reserved for posters; unused on the home.  |
+| `--text-hero` | 68 px    | 136 px   | The name (60 px floor on a 320 px screen). |
 
 Line heights: `0.86` on the hero, `0.92` on display, `1.1` on headings,
 `1.5` on body, `1.65` on the long intro paragraph. Tracking tightens as size
@@ -124,129 +134,160 @@ grows (`-0.04em` hero, `-0.02em` headings, `0` body) and opens on mono caps
 (`0.12em`).
 
 Measure: long prose sits in `--content-narrow` (44 rem, ~70 characters). The
-intro paragraph is the one place we break this: its first sentence is set as a
-lead at `--text-xl`, the rest flows in two columns on desktop.
+intro is the one place we break this: its first sentence is set as a lead at
+`--text-xl`, and the two paragraphs sit beside it as two more columns on the
+desktop sheet (at `--text-sm`; `--text-base` on phones).
 
 ## 4. Spacing and layout
 
 4 px base. `--space-1 … --space-8` are fixed (4 → 64 px); `--space-9 … --space-12`
-are the **section rhythm** and are fluid (64 → 224 px) so vertical breathing
-grows with the type. The page column is `--content-max` (80 rem) with a fluid
-`--gutter` (16 → 40 px); 16 px is the minimum at any width and nothing scrolls
+are the **section rhythm** and are fluid but deliberately tight (40 → 128 px).
+The page column is `--content-max` (80 rem) with a fluid `--gutter`
+(16 → 40 px); 16 px is the minimum at any width and nothing scrolls
 horizontally.
 
-The whole site is one 12-column grid on desktop that collapses to a single
-column under 48 rem (`768px`) with a 2-column intermediate for lists where it
-helps. Columns are separated by **rules, not cards**. A section always opens
-with the same header: a 1 px ink rule, a mono number in orange, the title.
+### The sheet
+
+The home page is **not** a scroll of full-width sections: it is composed like
+one drawing sheet. After the hero come two **bands** of three columns each,
+divided by hairlines, then the quote strip and the contact band. Each column
+carries its own compact head (`01 Experience`), so the page reads across as
+much as down. Measured at 1440 × 900 the whole home is ~2.5 viewports tall
+(the previous bento was 2.0, the first drafting-sheet cut was 7.4); on a
+390 px phone it is ~5 viewports.
 
 ```
-───────────────────────────────────────────────────────────
-01 — Stack                                            [5 groups]
+┌────────────────────────────────────────────────────────────┐
+│ HERO   Jesús / Bonete   ○ memoji   │ title block │ intro ×3 │  ≈ 560
+├────────────────────────────────────────────────────────────┤
+│ tape (one thin line of the stack)                          │  ≈ 44
+├──────────────┬──────────────────┬──────────────────────────┤
+│ CV sheet     │ 01 Experience    │ 02 Stack                 │  ≈ 540
+│ + download   │ 3 rows · view all│ 5 groups of tags         │
+├──────────────┼──────────────────┼──────────────────────────┤
+│ 03 Projects  │ 04 Goals (2×2)   │ 05 Profile (chips)       │  ≈ 430
+├──────────────┴──────────────────┴──────────────────────────┤
+│ “The only way to go fast, is to go well.”  (orange strip)  │  ≈ 150
+├─────────────────────────────────────────────┬──────────────┤
+│ 06 Contact   Call me · Email me · LinkedIn · GitHub │ memoji │  ≈ 260
+└─────────────────────────────────────────────┴──────────────┘
 ```
+
+Breakpoints: under 48 rem everything is one column in this order: hero, tape,
+**CV** (a compact ticket: thumbnail + caption + button), experience, stack,
+projects, goals, profile, quote, contact. From 48 rem each band is two
+columns with the third column spanning a row beneath. From 64 rem the full
+three-column sheet (`3fr 4fr 5fr` for the first band, `3fr 5fr 4fr` for the
+second).
+
+Why the CV sits first in the first band: a visitor already has LinkedIn; what
+the portfolio adds is context and the downloadable CV, so both come right
+after the intro. On desktop the sheet's top edge is visible at the fold.
 
 ### Shape and depth
 
 Small radii (4 / 8 / 16 px) — this is paper, not pebbles. Shadows are warm
 and only on things that are physically "on top" of the page: the CV sheet, the
-raised buttons on hover, the 404 panel. Flat everywhere else.
+raised buttons on hover. Flat everywhere else.
 
 ## 5. Layout direction, section by section
 
 ### Header
 
-A 56 px bar, not sticky-blurred-glass: a hairline underneath and the page
-behind. Left: `JB` monogram in display + the mono `dotnet developer` label.
-Right: `GitHub ↗`, `LinkedIn ↗`, a two-letter language switch `EN · ES`
-(mono, the active one in ink, the other muted) and a theme toggle drawn as a
-small sun/moon glyph. Everything is text; no icon library.
+A 52 px bar: a hairline underneath and the page behind, blurred. Left: the
+brand is the mono label `DOTNET DEVELOPER` in ink with a small orange square
+before it (no monogram). Right: `GitHub ↗`, `LinkedIn ↗` (hidden under 48 rem),
+the `EN · ES` pill (mono, the active one on an ink pill) and the round
+sun/moon toggle. Everything is vertically centred on one line.
 
 ### `/en` — Home
 
-00 · **Hero** (`design/home.html#hero`). Full-height on desktop. Behind it,
-the drafting grid fading downwards. Eyebrow `welcome` in mono. The name set as
-two stacked lines of `--text-hero` (`Jesús` / `Bonete`) in condensed Bricolage,
-the surname's dot of the `é` and the final line in orange. The laptop memoji sits
-in the right third, large, overlapping the baseline of the second line, cropped
-by a circle with registration marks at its corners. Under the name, a
-**title block** — four mono fields in a 4-up row with hairlines, like the box in
-the corner of a drawing:
+**Hero** (`design/home.html#hero`). Compact, not full-height. Behind it the
+drafting grid fading downwards. Left: eyebrow `welcome`, then the name as two
+stacked lines of `--text-hero` (60 → 136 px) in condensed Bricolage, `Bonete`
+in orange paint. Right, in its own grid column: the laptop memoji cropped by a
+circle with registration marks, sized to the two lines of the name
+(5.5 → 13 rem). The two are grid items, so they never overlap at any width.
+Under both, the full-width **title block**: four mono fields with hairlines
+(`ROLE · BASED · EXPERIENCE · STATUS ● Available`). Then the intro as three
+columns on desktop: the lead sentence in display type, and the two paragraphs
+at `--text-sm`.
 
-```
-ROLE                     BASED                EXPERIENCE         STATUS
-Senior .NET Developer    Elda, Alicante, ES   +4 yr              ● Available
-```
+**Tape.** One thin line (`--text-lg`) of the stack's headline items scrolling
+slowly between two ink rules. Pauses on hover; static and wrapped under
+reduced motion.
 
-Then the intro paragraph: first sentence as lead, the rest in two columns.
+**Band 1 — CV | 01 Experience | 02 Stack.**
 
-00b · **Tape**. A single line of the stack's headline items (`C#  .NET 10  gRPC
-CQRS  Clean Architecture  Azure  MSSQL  PostgreSQL …`) in display at
-`--text-2xl`, scrolling slowly between two ink rules. Pauses on hover; static
-and wrapped under reduced motion.
+- **CV** (3 cols). Eyebrow `A4 · PDF · EN / ES`, title `CV`, the A4 sheet
+  (the real `/en/cv` in an iframe, scaled, −1.5°, 0° on hover, `--shadow-sheet`),
+  the caption and the `.btn--accent` `View & download CV`. On phones it is a
+  ticket: a 7 rem thumbnail of the sheet on the left, caption and button on the
+  right.
+- **01 Experience** (4 cols). One row per company: the end year in the mono
+  margin, company in display `--text-lg` with the arrow, position (`· 3 roles`
+  when grouped), dates and city in mono, one line of description. The latest
+  row carries the Cafler mark. `View more` (outline button) goes to `/en/work`.
+- **02 Stack** (5 cols). Five groups, each a mono-numbered label and a run of
+  `.tag`s. No emoji prefixes: the number does that job.
 
-01 · **Stack**. The five groups as a definition list: label column (mono,
-muted, sticky on desktop) and the items as `.tag`s on the right. No emoji
-prefixes: the group number does that job. Dense on purpose; the tags are the
-texture of the page.
+**Band 2 — 03 Projects | 04 Goals | 05 Profile.**
 
-02 · **Experience**. Each company is a row: years in mono on the left
-(`2026`), company at `--text-2xl` with an arrow link, the position and the
-date range beneath, the description muted. Rows separated by hairlines. The
-latest row carries the `● Available` beacon and the Cafler mark. Ends with
-`View all →` to `/en/work`.
+- **03 Projects** (3 cols). Four rows: index, repo name in display, arrow
+  travelling on hover, the row washing `--color-surface-2`. `my-portfolio` gets
+  the live dot and `you are here`. Then `All repositories ↗`.
+- **04 Goals** (5 cols). The intro line and the four goals in a 2 × 2 grid of
+  cells divided by hairlines: mono index, title in display `--text-base`, text
+  at `--text-xs`.
+- **05 Profile** (4 cols). _About me_ (two short paragraphs, the emoji stay as
+  inline characters), then **chips** for _Study_ (arrow links with the date),
+  _Languages_ (level in mono) and _Soft skills_ (check mark). Chips are
+  body-type, bordered, no fill: a lighter texture than the mono tags of the
+  stack.
 
-03 · **Projects**. Four repos as full-width rows, the name at `--text-2xl` in
-display, the arrow travelling on hover, the row washing `--color-surface-2`.
-`my-portfolio` gets the green live dot and the mono note `you are here`.
+**Quote.** A compact full-bleed strip in `--color-accent-vivid`: the quote at
+`--text-4xl` with `go well` in Instrument Serif italic, the attribution in mono
+at the bottom-right.
 
-04 · **Goals**. The intro sentence, then the four goals in a 2×2 grid divided by
-hairlines (4 columns ≥ 64 rem). Each cell: a mono index `01`, the label in
-display at `--text-xl`, the text at `--text-sm`.
+**06 Contact.** Four links in two columns: the label in display `--text-3xl`,
+the detail in mono beneath, the arrow at the right spanning both lines. The
+chillin' memoji sits in its own column at the right (hidden margins, no
+negative offsets), so it never touches a rule, the links or the footer. On
+phones it is centred under the links at 8 rem.
 
-05 · **Quote**. The visual climax: a full-bleed band in `--color-accent-vivid`
-with the quote at `--text-5xl` in display, the words `go well` in Instrument
-Serif italic, the attribution in mono at the bottom-right of the band.
+**Footer** — one mono strip: `© 2026 Jesús Bonete`, `Built with Astro`,
+`GitHub · LinkedIn · ES`.
 
-06 · **Profile**. Three columns separated by rules — _About me_ (the two
-paragraphs, the emoji may stay here as inline characters: they are personality,
-not icons), _Study_ (the institutions as arrow links in a list) and _Languages
-+ Soft skills_ (two mono-labelled lists). Memoji-free.
+### `/es` — the same sheet in Spanish
 
-07 · **CV**. Left: eyebrow, title, the caption and a `.btn--accent` `View &
-download CV`. Right: the A4 sheet, scaled, slightly rotated (−1.5°, 0° on
-hover), with `--shadow-sheet`. On mobile the sheet comes first and is cropped
-to its top third.
-
-08 · **Contact**. Four links as giant lines at `--text-5xl` (`Call me`,
-`Email me`, `LinkedIn`, `GitHub`) each with an arrow; the chillin' memoji
-sits to the right at the bottom, cut by the footer rule.
-
-**Footer** — the title block, full width: `© 2026 Jesús Bonete`, `Built with
-Astro`, the GitHub and LinkedIn links, `EN · ES`. Mono, hairline above.
+`design/home-es.html` and the other `*-es.html` files are rendered from the
+same templates with the Spanish strings (`src/lib/constants-es.ts` for
+experience and studies; the card copy from the components). The layout is
+identical; Spanish runs ~8 % longer, which the columns absorb (desktop home
+2356 px vs 2283 px).
 
 ### `/en/work` — Work experience
 
-Page title at `--text-4xl` with the live years. Each company group is a
-two-column row: the company name sticky on the left (display, `--text-2xl`,
-arrow link, location in mono beneath), the roles stacked on the right, each
-with its date range in mono, position in display at `--text-xl`, description,
-responsibilities as a plain list with orange `▹` markers, and the stack as a
-run of `.tag`s. Groups separated by `--color-border-strong`.
+Page title at `--text-4xl` with the live years in the serif italic. Each
+company group is a two-column row: the company sticky on the left (display,
+`--text-3xl`, arrow link, dates and city in mono beneath), the roles stacked
+on the right, each with its date range in mono, position in display
+`--text-xl`, description, responsibilities with orange `▹` markers, and the
+stack as `.tag`s. Groups separated by `--color-border-strong`.
 
 ### `/en/cv` and `/cv` — CV
 
 The sheet is always **paper**, regardless of theme: it prints, and it is
-embedded as a preview. The page around it follows the theme. The sheet keeps
-its two-column structure (it fits A4 and the PDF generator), but is retyped:
-name in Bricolage, section titles in mono caps with an orange rule, body in
-Instrument Sans, the side column in ink (`--color-text`) with paper text
-instead of the orange gradient, so the orange is reserved for titles and
-markers. Chips become `.tag`s.
+embedded as a preview. The page around it follows the theme. Two columns (it
+fits A4 and the PDF generator): name in Bricolage, section titles with a mono
+number and an ink rule, body in Instrument Sans, the side column in ink with
+paper text, orange only for titles and markers. Chips become `.tag`-like
+`.cv-chip`s. The toolbar has `Download PDF` and `Back to site`.
 
 ### `404`
 
-The drafting grid, `404` at `--text-hero` in orange outline (`-webkit-text-stroke`),
-the chillin' memoji, `Page not found` and a `.btn` home.
+The drafting grid, `404` at `--text-hero` in orange paint, `Page not found`,
+one line of copy, a `.btn` home, and the chillin' memoji in the right column.
 
 ## 6. Motion
 
@@ -263,6 +304,7 @@ is reduced or when JavaScript never runs.
 | Hover on buttons     | 1 px lift and the ink/orange swap.                                                | `--duration-fast`                 |
 | Theme switch         | Colours cross-fade; layout never moves. Opt-in via `html.theme-transition`.       | `--duration-base`, `--ease-in-out`|
 | Tape                 | 40 s linear loop; pauses on hover; static and wrapped under reduced motion.       | —                                 |
+| Chips and tags       | Border and text turn orange on hover; the arrow travels.                           | `--duration-fast`                 |
 | Beacon               | A 2.2 s pulse ring; off under reduced motion.                                     | —                                 |
 | CV sheet             | −1.5° → 0° on hover.                                                              | `--duration-base`, `--ease-spring`|
 
@@ -276,7 +318,7 @@ anything louder than the tape, and animating `width`/`height`/`top`/`left`.
 - Focus: one global `:focus-visible` style, a 2 px `--color-focus` ring with a
   3 px offset, so it reads on paper, on ink and on orange.
 - Text stays readable at every width: minimum 16 px body on phones, a 16 px
-  gutter, no horizontal scroll, the hero shrinks to 82 px and still fits
+  gutter, no horizontal scroll, the hero shrinks to 60 px and still fits
   `Bonete` on a 320 px screen.
 - Hairlines are decorative; anything that must be perceived (section tops,
   the tape) uses `--color-border-strong` (= ink).
@@ -296,31 +338,38 @@ node -e 'const L=h=>{const c=h.slice(1);const[r,g,b]=[0,2,4].map(i=>parseInt(c.s
 - Set `data-theme="light|dark"` on `<html>` before first paint; leave it unset
   to follow the OS. Add `theme-transition` to `<html>` for the duration of a
   toggle if you want the cross-fade.
+- Every outbound link and the CV link: `target="_blank" rel="noopener noreferrer"`.
 - Tailwind utilities: `bg-canvas`, `bg-surface`, `bg-surface-2`, `text-ink`,
   `text-muted`, `text-accent`, `border-line`, `border-line-strong`,
   `font-display`, `font-mono`, `font-accent`, `text-hero … text-xs`,
   `p-s1 … p-s12`, `max-w-content`, `max-w-narrow`, `rounded-s/m/l/pill`,
   `shadow-s/m/l/sheet`, `ease-out-soft`, `duration-*`.
 - Recipes (`recipes.css`, Tailwind `components` layer): `.wrap`, `.display`,
-  `.display-hero`, `.accent-word`, `.eyebrow`, `.section-head`, `.section-num`,
+  `.display-hero`, `.accent-word`, `.eyebrow`, `.section-num`,
   `.section-title`, `.rule`, `.tag`, `.btn` (+ `--accent`, `--outline`,
-  `--ghost`), `.link-arrow`, `.link`, `.beacon`, `.sheet`, `.marks`,
-  `.grid-bg`, `.reveal`, `.tape`.
-- Section layouts (same file): `.site-header` / `.brand` / `.site-nav` /
-  `.lang-switch` / `.theme-toggle`, `.hero` / `.hero__name` / `.hero__portrait`
-  / `.title-block` / `.hero__intro` / `.lead` / `.prose`, `.section`,
-  `.stack`, `.exp`, `.projects` / `.project`, `.goals` / `.goal`,
-  `.quote-band`, `.profile` / `.list-plain`, `.cv` / `.cv__sheet`, `.contact`,
-  `.site-footer`, `.page-title` / `.work-group` / `.role`, and `cv.css` for
-  the sheet. Every one of them is exercised in `design/*.html`: copy the
-  markup from there, it is already semantic (`<dl>` title block, `<article>`
-  rows, `<figure>` quote, `<address>`-able contact list).
-- The CV preview embeds `/en/cv` in an iframe at its native 794 px and scales
-  it with `--cv-scale = wrapper width / 794` (10-line script in
-  `design/home.html`). The theme toggle swaps two inline SVG glyphs via
-  `.icon-sun` / `.icon-moon`.
+  `--ghost`, `.btn__arrow`), `.link-arrow`, `.link`, `.beacon`, `.sheet`,
+  `.marks`, `.grid-bg`, `.reveal`, `.tape`.
+- Layout (same file): `.site-header` / `.brand` / `.site-nav` / `.lang-switch`
+  / `.theme-toggle`; `.hero` / `.hero__top` / `.hero__name` / `.hero__portrait`
+  / `.title-block` / `.hero__intro` / `.lead` / `.prose`; `.band` /
+  `.band__grid` (+ `--second`) / `.col` / `.section-head` / `.col__foot`;
+  `.cv-plate` / `.cv__sheet`; `.exp` / `.exp__row`; `.stack` / `.stack__group`;
+  `.projects` / `.project`; `.goals__intro` / `.goals` / `.goal`; `.profile` /
+  `.profile__title` / `.chips`; `.quote-band`; `.contact` / `.contact__links` /
+  `.contact__label` / `.contact__aside`; `.site-footer`; `.page-title` /
+  `.work-group` / `.role` / `.page-foot`; `.not-found*`; and `cv.css` for the
+  sheet. Every one is exercised in `design/*.html`: copy the markup from
+  there, it is already semantic (`<dl>` title block, `<article>` rows,
+  `<figure>` quote, a list of links for contact). `design/build.mjs` shows
+  how each block is generated from the data, which maps one-to-one onto the
+  Astro components.
+- The CV preview embeds `/en/cv` (or `/cv`) in an iframe at its native 794 px
+  and scales it with `--cv-scale = wrapper width / 794` (10-line script in
+  `design/home.html`). On phones the wrapper is a 7 rem thumbnail.
+- The theme toggle swaps two inline SVG glyphs via `.icon-sun` / `.icon-moon`.
 - The language switch is the `EN · ES` pill: `aria-current="true"` marks the
-  active language; the footer repeats the other language as a plain link.
+  active language and the other letter links to the same page in the other
+  language; the footer repeats that link.
 - The legacy shadcn aliases (`bg-background`, `text-primary`, …) are mapped
   onto the tokens so the old components still compile; delete the alias block
   in `globals.css` once nothing uses them.
