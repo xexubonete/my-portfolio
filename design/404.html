@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup — 404</title>
+    <link rel="stylesheet" href="./mockup.css" />
+    <script>
+      const forced = new URLSearchParams(location.search).get('theme')
+      if (forced) document.documentElement.dataset.theme = forced
+    </script>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 17 17 7M8 7h9v9" />
+      </symbol>
+      <symbol id="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol id="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </symbol>
+      <symbol id="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="#">
+          <span class="brand__mark">JB</span>
+          <span class="brand__label">dotnet developer</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a class="link-arrow" href="https://github.com/xexubonete">GitHub <svg class="arrow"><use href="#arrow" /></svg></a>
+          <a class="link-arrow" href="https://www.linkedin.com/in/jesus-bonete-sanchez/">LinkedIn <svg class="arrow"><use href="#arrow" /></svg></a>
+          <span class="lang-switch" aria-label="Language">
+            <span aria-current="true">en</span>
+            <a href="#">es</a>
+          </span>
+          <button class="theme-toggle" type="button" aria-label="Toggle theme" onclick="toggleTheme()">
+            <svg class="icon-sun"><use href="#sun" /></svg>
+            <svg class="icon-moon"><use href="#moon" /></svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="hero" style="min-height: calc(100dvh - 3.5rem); display: grid; align-items: center">
+      <div class="wrap" style="display: grid; gap: var(--space-6); grid-template-columns: minmax(0, 1fr) auto; align-items: center">
+        <div>
+          <p class="eyebrow eyebrow--accent">error</p>
+          <p class="display-hero display" style="color: var(--color-accent-vivid); margin-top: var(--space-3)">404</p>
+          <h1 style="font-size: var(--text-3xl); margin-top: var(--space-5)">Page not found</h1>
+          <p style="color: var(--color-text-muted); margin-top: var(--space-3); max-width: 40ch">Sorry, we couldn't find the page you're looking for.</p>
+          <p style="margin-top: var(--space-6)"><a class="btn" href="home.html">Go back home</a></p>
+        </div>
+        <img src="../public/me_chillin.png" alt="memoji of Jesús taking it easy" width="420" height="420" style="width: clamp(10rem, 12rem + 10vw, 22rem)" />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© 2026 Jesús Bonete</span>
+        <span>Built with Astro · Elda, Alicante</span>
+        <span style="display: flex; gap: var(--space-4)">
+          <a href="https://github.com/xexubonete">GitHub</a>
+          <a href="https://www.linkedin.com/in/jesus-bonete-sanchez/">LinkedIn</a>
+          <a href="#">ES</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      function toggleTheme() {
+        const html = document.documentElement
+        const dark = html.dataset.theme === 'dark' || (!html.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches)
+        html.classList.add('theme-transition')
+        html.dataset.theme = dark ? 'light' : 'dark'
+        setTimeout(() => html.classList.remove('theme-transition'), 400)
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup — Home (/en)</title>
+    <link rel="stylesheet" href="./mockup.css" />
+    <script>
+      // Mockup-only: mirror what the frontend's inline script does before
+      // first paint. ?theme=dark|light in the URL forces a theme.
+      const forced = new URLSearchParams(location.search).get('theme')
+      if (forced) document.documentElement.dataset.theme = forced
+    </script>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 17 17 7M8 7h9v9" />
+      </symbol>
+      <symbol id="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol id="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </symbol>
+      <symbol id="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="#">
+          <span class="brand__mark">JB</span>
+          <span class="brand__label">dotnet developer</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a class="link-arrow" href="https://github.com/xexubonete">GitHub <svg class="arrow"><use href="#arrow" /></svg></a>
+          <a class="link-arrow" href="https://www.linkedin.com/in/jesus-bonete-sanchez/">LinkedIn <svg class="arrow"><use href="#arrow" /></svg></a>
+          <span class="lang-switch" aria-label="Language">
+            <span aria-current="true">en</span>
+            <a href="#">es</a>
+          </span>
+          <button class="theme-toggle" type="button" aria-label="Toggle theme" onclick="toggleTheme()">
+            <svg class="icon-sun"><use href="#sun" /></svg>
+            <svg class="icon-moon"><use href="#moon" /></svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- 00 · Hero -->
+      <section class="hero" id="hero">
+        <div class="wrap">
+          <div class="hero__top">
+            <div>
+              <p class="eyebrow eyebrow--accent">welcome</p>
+              <h1 class="hero__name">
+                <span>Jesús</span>
+                <span class="accent-line">Bonete</span>
+              </h1>
+            </div>
+            <div class="hero__portrait">
+              <img src="../public/me.png" alt="memoji of Jesús Bonete" width="420" height="420" />
+            </div>
+          </div>
+
+          <dl class="title-block">
+            <div class="title-block__field">
+              <dt class="eyebrow">Role</dt>
+              <dd class="title-block__value">Senior .NET Developer</dd>
+            </div>
+            <div class="title-block__field">
+              <dt class="eyebrow">Based</dt>
+              <dd class="title-block__value">Elda, Alicante, Spain</dd>
+            </div>
+            <div class="title-block__field">
+              <dt class="eyebrow">Experience</dt>
+              <dd class="title-block__value">+4 years</dd>
+            </div>
+            <div class="title-block__field">
+              <dt class="eyebrow">Status</dt>
+              <dd class="title-block__value"><span class="beacon">Available</span></dd>
+            </div>
+          </dl>
+
+          <div class="hero__intro">
+            <p class="lead">
+              Hi, I'm <b>Jesús Bonete</b>, a backend dev focused on building efficient and scalable applications.
+            </p>
+            <div class="prose prose--columns">
+              <p>
+                I specialize in robust, secure services, database optimization and seamless integration with the
+                frontend from the server side. AI is at the core of how I work: I weave it into my daily workflow to
+                build faster, automate repetitive tasks and raise code quality without compromising best practices.
+              </p>
+              <p>
+                I make the most of LLMs, agents and assistants like Claude or GitHub Copilot to speed up every phase,
+                from architecture to deployment, making better decisions in less time. I care about clean code, solid
+                architecture and growing with every project. Passionate about technology, I'm always after new
+                challenges.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 00b · Tape -->
+      <div class="tape" aria-hidden="true">
+        <div class="tape__track display tape__text">
+          <span>C#</span><span>.NET 10</span><span>gRPC</span><span>CQRS</span><span>Clean Architecture</span><span>Microservices</span><span>Entity Framework</span><span>Dapper</span><span>MediatR</span><span>Hangfire</span><span>Azure</span><span>MSSQL</span><span>PostgreSQL</span><span>CosmoDB</span><span>Claude</span><span>GitHub Copilot</span>
+        </div>
+        <div class="tape__track display tape__text">
+          <span>C#</span><span>.NET 10</span><span>gRPC</span><span>CQRS</span><span>Clean Architecture</span><span>Microservices</span><span>Entity Framework</span><span>Dapper</span><span>MediatR</span><span>Hangfire</span><span>Azure</span><span>MSSQL</span><span>PostgreSQL</span><span>CosmoDB</span><span>Claude</span><span>GitHub Copilot</span>
+        </div>
+      </div>
+
+      <!-- 01 · Stack -->
+      <section class="section" id="stack">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">01</span>
+            <h2 class="section-title">Stack</h2>
+            <span class="section-head__meta">5 groups · 42 items</span>
+          </header>
+          <div class="stack">
+            <div class="stack__group">
+              <h3 class="stack__label"><span class="section-num">01.1</span>Frameworks and libraries</h3>
+              <div class="stack__items">
+                <span class="tag">C#</span><span class="tag">SQL</span><span class="tag">.NET</span><span class="tag">.NET Core 3.1</span><span class="tag">.NET Framework 4.8</span><span class="tag">REST APIs</span><span class="tag">gRPC</span><span class="tag">Microservices</span><span class="tag">Dapper</span><span class="tag">Entity Framework Core</span><span class="tag">Entity Framework 6.0</span><span class="tag">Hangfire</span><span class="tag">MediatR</span><span class="tag">AutoMapper</span><span class="tag">FluentValidation</span><span class="tag">SignalR</span><span class="tag">xUnit / MSTest</span><span class="tag">Serilog</span><span class="tag">Swagger / OpenAPI</span><span class="tag">Angular</span>
+              </div>
+            </div>
+            <div class="stack__group">
+              <h3 class="stack__label"><span class="section-num">01.2</span>Design patterns</h3>
+              <div class="stack__items">
+                <span class="tag">Clean Architecture</span><span class="tag">DDD Domain-Driven Design</span><span class="tag">CQRS</span><span class="tag">MediatR pattern</span><span class="tag">Repository</span><span class="tag">Unit of Work</span>
+              </div>
+            </div>
+            <div class="stack__group">
+              <h3 class="stack__label"><span class="section-num">01.3</span>Databases</h3>
+              <div class="stack__items">
+                <span class="tag">PostgreSQL</span><span class="tag">MSSQL</span><span class="tag">CosmoDB</span><span class="tag">Stored Procedures</span>
+              </div>
+            </div>
+            <div class="stack__group">
+              <h3 class="stack__label"><span class="section-num">01.4</span>DevOps and Cloud</h3>
+              <div class="stack__items">
+                <span class="tag">Azure</span><span class="tag">Azure Blob Storage</span><span class="tag">Azure DevOps</span><span class="tag">Pipelines</span><span class="tag">CI/CD</span><span class="tag">Jenkins</span><span class="tag">Git</span>
+              </div>
+            </div>
+            <div class="stack__group">
+              <h3 class="stack__label"><span class="section-num">01.5</span>Tools</h3>
+              <div class="stack__items">
+                <span class="tag">Postman</span><span class="tag">Bruno</span><span class="tag">Team Explorer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 · Experience -->
+      <section class="section" id="experience">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">02</span>
+            <h2 class="section-title">Experience</h2>
+            <span class="section-head__meta">+4 years · 3 companies</span>
+          </header>
+          <div class="exp">
+            <article class="exp__row">
+              <div class="exp__year">2026</div>
+              <div class="exp__head">
+                <a class="exp__company link-arrow" href="https://cafler.com/">Cafler <svg class="arrow"><use href="#arrow" /></svg></a>
+                <div class="exp__position">Senior .NET Developer</div>
+                <div class="exp__dates">01/2026 – 09/2026 · Barcelona, Spain</div>
+              </div>
+              <div class="exp__body">
+                <p>AI-powered Operating System for the automotive industry and backend services for a car-services marketplace.</p>
+                <p>Design and development of backend services with microservices architecture and gRPC. AI-assisted development with Claude and GitHub Copilot PRO.</p>
+              </div>
+            </article>
+            <article class="exp__row">
+              <div class="exp__year">2024</div>
+              <div class="exp__head">
+                <a class="exp__company link-arrow" href="https://www.savia.net/">Savia by Berger-Levrault <svg class="arrow"><use href="#arrow" /></svg></a>
+                <div class="exp__position">.NET Developer</div>
+                <div class="exp__dates">05/2024 – 12/2025 · Madrid, Spain</div>
+              </div>
+              <div class="exp__body">
+                <p>Web application for human-resources management in public administration.</p>
+                <p>Development of enhancements and new features; optimization of database query times. Bug fixing, creation of different types of tests and best practices.</p>
+              </div>
+            </article>
+            <article class="exp__row">
+              <div class="exp__year">2022</div>
+              <div class="exp__head">
+                <a class="exp__company link-arrow" href="https://es.nttdata.com/">NTT DATA <svg class="arrow"><use href="#arrow" /></svg></a>
+                <div class="exp__position">.NET Developer · 3 roles</div>
+                <div class="exp__dates">02/2022 – 05/2024 · Alicante, Spain</div>
+              </div>
+              <div class="exp__body">
+                <p>Sole maintenance of the corrective service for a leading renewable-energy company; language literals for a web application in the fuel sector; backend for a wind-farm application.</p>
+              </div>
+            </article>
+          </div>
+          <p style="margin-top: var(--space-5)">
+            <a class="btn btn--outline" href="work.html">View all roles <svg class="arrow" style="width: 1em; height: 1em"><use href="#arrow" /></svg></a>
+          </p>
+        </div>
+      </section>
+
+      <!-- 03 · Projects -->
+      <section class="section" id="projects">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">03</span>
+            <h2 class="section-title">Projects</h2>
+            <span class="section-head__meta">github.com/xexubonete</span>
+          </header>
+          <div class="projects">
+            <a class="project" href="https://github.com/xexubonete/pilot-api">
+              <span class="project__index">01</span>
+              <span class="project__name">pilot-api</span>
+              <svg class="arrow"><use href="#arrow" /></svg>
+            </a>
+            <a class="project" href="https://github.com/xexubonete/mediator-api">
+              <span class="project__index">02</span>
+              <span class="project__name">mediator-api</span>
+              <svg class="arrow"><use href="#arrow" /></svg>
+            </a>
+            <a class="project" href="https://github.com/xexubonete/dapper-api">
+              <span class="project__index">03</span>
+              <span class="project__name">dapper-api</span>
+              <svg class="arrow"><use href="#arrow" /></svg>
+            </a>
+            <a class="project" href="https://github.com/xexubonete/my-portfolio" title="You are here">
+              <span class="project__index">04</span>
+              <span class="project__name"><span class="live-dot" aria-hidden="true"></span>my-portfolio <span class="project__note">you are here</span></span>
+              <svg class="arrow"><use href="#arrow" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 · Goals -->
+      <section class="section" id="goals">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">04</span>
+            <h2 class="section-title">Goals</h2>
+            <span class="section-head__meta">AI in the backend</span>
+          </header>
+          <p class="lead" style="margin-block: var(--space-5) var(--space-6); max-width: 24ch">
+            I want to specialize in integrating AI into the backend, mastering:
+          </p>
+          <div class="goals">
+            <div class="goal">
+              <span class="section-num">01</span>
+              <h3 class="goal__title">LLM integration</h3>
+              <p class="goal__text">Connecting models like Claude or GPT to backend services and APIs securely and efficiently.</p>
+            </div>
+            <div class="goal">
+              <span class="section-num">02</span>
+              <h3 class="goal__title">RAG &amp; vector databases</h3>
+              <p class="goal__text">Semantic search with embeddings and vector databases to ground models with your own data.</p>
+            </div>
+            <div class="goal">
+              <span class="section-num">03</span>
+              <h3 class="goal__title">Agents &amp; tool calling</h3>
+              <p class="goal__text">Orchestrating agents that call tools and APIs (function calling, MCP) to automate workflows.</p>
+            </div>
+            <div class="goal">
+              <span class="section-num">04</span>
+              <h3 class="goal__title">Evals &amp; observability</h3>
+              <p class="goal__text">Measuring quality, latency and cost of LLMs with evals and tracing to ship AI to production with confidence.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 · Quote -->
+      <section class="quote-band" id="quote">
+        <div class="wrap">
+          <figure style="margin: 0">
+            <blockquote>“The only way to go fast, is to <span class="accent-word">go well.</span>”</blockquote>
+            <figcaption>— Robert C. Martin</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 06 · Profile -->
+      <section class="section" id="profile">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">06</span>
+            <h2 class="section-title">Profile</h2>
+            <span class="section-head__meta">about · study · languages</span>
+          </header>
+          <div class="profile">
+            <div class="profile__col">
+              <h3 class="profile__title">About me</h3>
+              <div class="prose">
+                <p>Beyond coding, I'm passionate about the gym 🏋️‍♂️ and living a healthy lifestyle 🍏.</p>
+                <p>Another hobby of mine is playing airsoft 🎖️ on weekends.</p>
+              </div>
+            </div>
+            <div class="profile__col">
+              <h3 class="profile__title">Study</h3>
+              <ul class="list-plain">
+                <li><a class="link-arrow" href="#">DAW · Web Developer <svg class="arrow"><use href="#arrow" /></svg></a><span class="mono">2020 – 2022</span></li>
+                <li><a class="link-arrow" href="https://dometrain.com/">Dometrain <svg class="arrow"><use href="#arrow" /></svg></a></li>
+                <li><a class="link-arrow" href="https://www.udemy.com/">Udemy <svg class="arrow"><use href="#arrow" /></svg></a></li>
+                <li><span>Self-taught</span></li>
+                <li><span>Books</span></li>
+              </ul>
+            </div>
+            <div class="profile__col">
+              <h3 class="profile__title">Languages</h3>
+              <ul class="list-plain">
+                <li><span>Spanish</span><span class="mono">Native</span></li>
+                <li><span>English</span><span class="mono">B2</span></li>
+              </ul>
+              <h3 class="profile__title" style="margin-top: var(--space-3)">Soft skills</h3>
+              <ul class="list-plain list-plain--check">
+                <li><span><svg class="check"><use href="#check" /></svg> Self-learning</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Teamwork</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Problem solving</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Communication</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Adaptability</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Leadership</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Working under pressure</span></li>
+                <li><span><svg class="check"><use href="#check" /></svg> Proactivity</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 · CV -->
+      <section class="section" id="cv">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">07</span>
+            <h2 class="section-title">CV</h2>
+            <span class="section-head__meta">A4 · PDF</span>
+          </header>
+          <div class="cv" style="margin-top: var(--space-6)">
+            <div class="cv__copy">
+              <h3>Preview of my resume</h3>
+              <p>Click to view and download. Also available in Spanish.</p>
+              <a class="btn btn--accent" href="cv.html">View &amp; download CV <svg class="arrow" style="width: 1em; height: 1em"><use href="#arrow" /></svg></a>
+            </div>
+            <a class="cv__sheet" href="cv.html" aria-label="Open the CV">
+              <iframe src="./cv.html?embed=1" title="CV preview" tabindex="-1"></iframe>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 · Contact -->
+      <section class="section" id="contact">
+        <div class="wrap">
+          <header class="section-head">
+            <span class="section-num">08</span>
+            <h2 class="section-title">Contact</h2>
+            <span class="section-head__meta">let's talk</span>
+          </header>
+          <div class="contact" style="margin-top: var(--space-5)">
+            <ul class="contact__links">
+              <li><a href="tel:+34722243881">Call me <small>+34 722 243 881</small> <svg class="arrow"><use href="#arrow" /></svg></a></li>
+              <li><a href="mailto:xexubonete@gmail.com">Email me <small>xexubonete@gmail.com</small> <svg class="arrow"><use href="#arrow" /></svg></a></li>
+              <li><a href="https://www.linkedin.com/in/jesus-bonete-sanchez/">LinkedIn <small>jesus-bonete-sanchez</small> <svg class="arrow"><use href="#arrow" /></svg></a></li>
+              <li><a href="https://github.com/xexubonete">GitHub <small>xexubonete</small> <svg class="arrow"><use href="#arrow" /></svg></a></li>
+            </ul>
+            <img class="contact__portrait" src="../public/me_chillin.png" alt="memoji of Jesús taking it easy" width="420" height="420" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© 2026 Jesús Bonete</span>
+        <span>Built with Astro · Elda, Alicante</span>
+        <span style="display: flex; gap: var(--space-4)">
+          <a href="https://github.com/xexubonete">GitHub</a>
+          <a href="https://www.linkedin.com/in/jesus-bonete-sanchez/">LinkedIn</a>
+          <a href="#">ES</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      // Scale the embedded A4 CV (794px wide) to the preview box.
+      const sheet = document.querySelector('.cv__sheet')
+      const fitCv = () => sheet.style.setProperty('--cv-scale', sheet.clientWidth / 794)
+      fitCv()
+      new ResizeObserver(fitCv).observe(sheet)
+
+      function toggleTheme() {
+        const html = document.documentElement
+        const dark = html.dataset.theme === 'dark' || (!html.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches)
+        html.classList.add('theme-transition')
+        html.dataset.theme = dark ? 'light' : 'dark'
+        setTimeout(() => html.classList.remove('theme-transition'), 400)
+      }
+    </script>
+  </body>
+</html>
