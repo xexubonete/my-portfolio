@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { lang } = Astro.props
-const { experience, nav, a11y } = t(lang)
+const { experience, a11y } = t(lang)
 const description = { es: WORK_ES, en: WORK_EN }[lang].DESCRIPTION
 const groups = groupByCompany(experienceByLang[lang])
 ---
@@ -26,8 +26,8 @@ const groups = groupByCompany(experienceByLang[lang])
   <main id="main">
     <div class="wrap">
       <header class="page-title">
-        <p class="eyebrow eyebrow--accent">02 — {experience.sectionTitle}</p>
-        <h1 class="page-title__h1">
+        <p class="eyebrow eyebrow--accent">{experience.eyebrow}</p>
+        <h1>
           {experience.pageLead}{' '}
           <span class="accent-word">
             <ExpYears template={experience.years} />
@@ -41,7 +41,7 @@ const groups = groupByCompany(experienceByLang[lang])
           <div class="work-group__company">
             <span class="section-num">{String(i + 1).padStart(2, '0')}</span>{' '}
             <a
-              class="exp__company link-arrow work-group__link"
+              class="exp__company link-arrow"
               href={group.link}
               target="_blank"
               rel="noopener noreferrer"
@@ -77,24 +77,11 @@ const groups = groupByCompany(experienceByLang[lang])
         </section>
       ))}
 
-      <p class="work-back">
+      <p class="page-foot">
         <a class="btn btn--outline" href={pagePath(lang, 'home')}>
-          {nav.home}
+          {experience.back}
         </a>
       </p>
     </div>
   </main>
 </BaseLayout>
-
-<style>
-  .page-title__h1 {
-    margin-top: var(--space-3);
-  }
-  .work-group__link {
-    margin-top: var(--space-2);
-  }
-  .work-back {
-    padding-block: var(--space-7);
-    border-top: 1px solid var(--color-border-strong);
-  }
-</style>

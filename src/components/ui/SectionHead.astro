@@ -1,5 +1,5 @@
 ---
-/** The header every section opens with: a rule, a mono number, the title. */
+/** The compact head every column opens with: a mono number, the title, a note. */
 interface Props {
   num: string
   title: string
@@ -12,7 +12,7 @@ const { num, title, meta, id } = Astro.props
 const hasMeta = meta !== undefined || Astro.slots.has('meta')
 ---
 
-<header class="section-head reveal">
+<header class="section-head">
   <span class="section-num">{num}</span>
   <h2 class="section-title" id={id}>
     <slot name="title">{title}</slot>

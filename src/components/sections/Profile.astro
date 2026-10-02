@@ -11,88 +11,68 @@ interface Props {
 const { lang, num } = Astro.props
 const { profile, about, study, languages, softSkills, a11y } = t(lang)
 const studies = studiesByLang[lang]
-
-// "DAW · Web Developer"; the placeholder titles of the other entries are dropped.
-const studyLabel = (item: (typeof studies)[number]) =>
-  item.title && item.title !== '...'
-    ? `${item.institution} · ${item.title}`
-    : item.institution
 ---
 
-<section
-  class="section"
-  data-reveal
+<div
+  class="col col--profile reveal"
+  style="--reveal-delay: 200ms"
   id="profile"
   aria-labelledby="profile-title"
 >
-  <div class="wrap">
-    <SectionHead
-      num={num}
-      title={profile.title}
-      meta={profile.meta}
-      id="profile-title"
-    />
-    <div class="profile reveal" style="--reveal-delay: 120ms">
-      <div class="profile__col">
-        <h3 class="profile__title">{about.title}</h3>
-        <div class="prose">
-          {about.paragraphs.map((paragraph) => (
-            <p>{paragraph}</p>
-          ))}
-        </div>
-      </div>
-
-      <div class="profile__col">
-        <h3 class="profile__title">{study.title}</h3>
-        <ul class="list-plain">
-          {studies.map((item) => (
+  <SectionHead
+    num={num}
+    title={profile.title}
+    meta={profile.meta}
+    id="profile-title"
+  />
+  <div class="profile">
+    <div class="profile__about">
+      <h3 class="profile__title">{about.title}</h3>
+      {about.paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+    <div>
+      <h3 class="profile__title">{study.title}</h3>
+      <ul class="chips">
+        {studies.map((item) =>
+          item.link ? (
             <li>
-              {item.link ? (
-                <a
-                  class="link-arrow"
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {studyLabel(item)} <Glyph name="arrow" class="arrow" />
-                  <span class="sr-only">{a11y.external}</span>
-                </a>
-              ) : (
-                <span>{studyLabel(item)}</span>
-              )}
-              {item.date && <span class="mono">{item.date}</span>}
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                {item.institution}
+                {item.date && (
+                  <span class="mono">{item.date.replace(' - ', ' – ')}</span>
+                )}
+                <Glyph name="arrow" class="arrow" />
+                <span class="sr-only">{a11y.external}</span>
+              </a>
             </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="profile__col">
-        <h3 class="profile__title">{languages.title}</h3>
-        <ul class="list-plain">
-          {languages.items.map((item) => (
-            <li>
-              <span>{item.name}</span>
-              <span class="mono">{item.level}</span>
-            </li>
-          ))}
-        </ul>
-        <h3 class="profile__title profile__title--next">{softSkills.title}</h3>
-        <ul class="list-plain list-plain--check">
-          {softSkills.items.map((item) => (
-            <li>
-              <span>
-                <Glyph name="check" class="check" /> {item}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+          ) : (
+            <li>{item.institution}</li>
+          ),
+        )}
+      </ul>
+    </div>
+    <div>
+      <h3 class="profile__title">{languages.title}</h3>
+      <ul class="chips">
+        {languages.items.map((item) => (
+          <li>
+            {item.name} <span class="mono">{item.level}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h3 class="profile__title">{softSkills.title}</h3>
+      <ul class="chips">
+        {softSkills.items.map((item) => (
+          <li>
+            <Glyph name="check" class="check" />
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
-</section>
-
-<style>
-  .profile__title--next {
-    margin-top: var(--space-3);
-  }
-</style>
+</div>

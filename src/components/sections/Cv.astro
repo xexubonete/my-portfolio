@@ -1,71 +1,50 @@
 ---
 import Glyph from '@/components/ui/Glyph.astro'
-import SectionHead from '@/components/ui/SectionHead.astro'
 import { pagePath, t, type Lang } from '@/i18n'
 
 interface Props {
   lang: Lang
-  num: string
 }
 
-const { lang, num } = Astro.props
+const { lang } = Astro.props
 const { cv, a11y } = t(lang)
 const cvPath = pagePath(lang, 'cv')
 ---
 
-<section class="section" data-reveal id="cv" aria-labelledby="cv-title">
-  <div class="wrap">
-    <SectionHead num={num} title={cv.title} meta={cv.meta} id="cv-title" />
-    <div class="cv cv--spaced reveal" style="--reveal-delay: 120ms">
-      <div class="cv__copy">
-        <h3>{cv.heading}</h3>
-        <p>{cv.caption}</p>
-        <a
-          class="btn btn--accent"
-          href={cvPath}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {cv.download}
-          <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
-          <span class="sr-only">{a11y.external}</span>
-        </a>
-      </div>
-      {/* The real CV page, embedded at its native A4 width and scaled by the
-          script below to the box. `embed` hides its toolbar before paint. */}
+<div class="col col--cv reveal" id="cv">
+  <header class="section-head">
+    <span class="section-num">{cv.meta}</span>
+    <h2 class="section-title">{cv.title}</h2>
+  </header>
+  <div class="cv-plate">
+    {/* The real CV page, embedded at its native A4 width and scaled to the box
+        by the script in HomePage. `embed` hides its toolbar before paint. */}
+    <a
+      class="cv__sheet"
+      href={cvPath}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={a11y.openCv}
+    >
+      <iframe
+        src={`${cvPath}?embed=1`}
+        title={a11y.cvPreview}
+        tabindex="-1"
+        loading="lazy"
+      ></iframe>
+    </a>
+    <div class="cv-plate__copy">
+      <p>{cv.caption}</p>
       <a
-        class="cv__sheet"
+        class="btn btn--accent"
         href={cvPath}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={a11y.openCv}
       >
-        <iframe
-          src={`${cvPath}?embed=1`}
-          title={cv.title}
-          tabindex="-1"
-          loading="lazy"
-        ></iframe>
+        {cv.download}
+        <Glyph name="arrow" class="arrow btn__arrow" />
+        <span class="sr-only">{a11y.external}</span>
       </a>
     </div>
   </div>
-</section>
-
-<script is:inline>
-  // Scale the embedded A4 CV (794px wide) to the preview box.
-  ;(function () {
-    var sheet = document.querySelector('.cv__sheet')
-    if (!sheet) return
-    var fit = function () {
-      sheet.style.setProperty('--cv-scale', String(sheet.clientWidth / 794))
-    }
-    fit()
-    new ResizeObserver(fit).observe(sheet)
-  })()
-</script>
-
-<style>
-  .cv--spaced {
-    margin-top: var(--space-6);
-  }
-</style>
+</div>

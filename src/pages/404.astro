@@ -19,7 +19,7 @@ const { notFound } = t(lang)
         <p class="eyebrow eyebrow--accent">{notFound.eyebrow}</p>
         <p class="display-hero display not-found__code">{notFound.code}</p>
         <h1 class="not-found__title">{notFound.title}</h1>
-        <p class="not-found__body">{notFound.body}</p>
+        <p class="not-found__text">{notFound.body}</p>
         <p class="not-found__action">
           <a class="btn" href="/">
             {notFound.back}
@@ -29,51 +29,10 @@ const { notFound } = t(lang)
       <img
         class="not-found__portrait"
         src="/me_chillin.png"
-        alt=""
+        alt={notFound.photoAlt}
         width="420"
         height="420"
       />
     </div>
   </main>
 </BaseLayout>
-
-<style>
-  .not-found {
-    min-height: calc(100dvh - 3.5rem);
-    display: grid;
-    align-items: center;
-  }
-  .not-found__grid {
-    display: grid;
-    gap: var(--space-6);
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-  }
-  .not-found__code {
-    color: var(--color-accent-vivid);
-    margin-top: var(--space-3);
-  }
-  .not-found__title {
-    font-size: var(--text-3xl);
-    margin-top: var(--space-5);
-  }
-  .not-found__body {
-    color: var(--color-text-muted);
-    margin-top: var(--space-3);
-    max-width: 40ch;
-  }
-  .not-found__action {
-    margin-top: var(--space-6);
-  }
-  .not-found__portrait {
-    width: clamp(10rem, 12rem + 10vw, 22rem);
-  }
-  @media (max-width: 47.99rem) {
-    .not-found__grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .not-found__portrait {
-      justify-self: center;
-    }
-  }
-</style>

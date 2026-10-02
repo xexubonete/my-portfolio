@@ -10,41 +10,49 @@ interface Props {
 
 const { lang, num } = Astro.props
 const { projects, a11y } = t(lang)
-const meta = LINKS.github.replace(/^https?:\/\//, '')
 ---
 
-<section
-  class="section"
-  data-reveal
+<div
+  class="col col--projects reveal"
   id="projects"
   aria-labelledby="projects-title"
 >
-  <div class="wrap">
-    <SectionHead
-      num={num}
-      title={projects.title}
-      meta={meta}
-      id="projects-title"
-    />
-    <div class="projects reveal" style="--reveal-delay: 120ms">
-      {PROJECT_LINKS.map((project, i) => (
-        <a
-          class="project"
-          href={project.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={project.live ? projects.here : undefined}
-        >
-          <span class="project__index">{String(i + 1).padStart(2, '0')}</span>
-          <span class="project__name">
-            {project.live && <span class="live-dot" aria-hidden="true" />}
-            {project.label}
-            {project.live && <span class="project__note">{projects.here}</span>}
-          </span>
-          <Glyph name="arrow" class="arrow" />
-          <span class="sr-only">{a11y.external}</span>
-        </a>
-      ))}
-    </div>
+  <SectionHead
+    num={num}
+    title={projects.title}
+    meta={projects.meta}
+    id="projects-title"
+  />
+  <div class="projects">
+    {PROJECT_LINKS.map((project, i) => (
+      <a
+        class="project"
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={project.live ? projects.here : undefined}
+      >
+        <span class="project__index">{String(i + 1).padStart(2, '0')}</span>
+        <span class="project__name">
+          {project.live && <span class="live-dot" aria-hidden="true" />}
+          {project.label}
+          {project.live && <span class="project__note">{projects.here}</span>}
+        </span>
+        <Glyph name="arrow" class="arrow" />
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+    ))}
   </div>
-</section>
+  <p class="col__foot">
+    <a
+      class="btn btn--outline"
+      href={`${LINKS.github}?tab=repositories`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {projects.all}
+      <Glyph name="arrow" class="arrow btn__arrow" />
+      <span class="sr-only">{a11y.external}</span>
+    </a>
+  </p>
+</div>

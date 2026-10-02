@@ -14,12 +14,13 @@ interface Props {
 
 const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
-const { nav, a11y } = t(lang)
+const { a11y } = t(lang)
 
 const T = {
   es: {
     role: 'Desarrollador .NET Senior',
     download: 'Descargar PDF',
+    back: 'Volver a la web',
     pdf: '/CV_Jesus_Bonete_ES.pdf',
     location: 'Elda, Alicante, España',
     profileTitle: 'Perfil',
@@ -54,6 +55,7 @@ const T = {
   en: {
     role: 'Senior .NET Developer',
     download: 'Download PDF',
+    back: 'Back to site',
     pdf: '/CV_Jesus_Bonete_EN.pdf',
     location: 'Elda, Alicante, Spain',
     profileTitle: 'Profile',
@@ -144,7 +146,7 @@ const profileText = T.profile.replace(
         </a>
         <LanguageSwitch lang={lang} page="cv" label={a11y.switchLanguage} />
         <a class="btn btn--ghost" href={pagePath(lang, 'home')}>
-          {nav.home}
+          {T.back}
         </a>
       </div>
 

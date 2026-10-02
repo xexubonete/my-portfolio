@@ -11,98 +11,72 @@ interface Props {
 }
 
 const { lang, num } = Astro.props
-const { experience, titleBlock, a11y } = t(lang)
+const { experience, a11y } = t(lang)
 const groups = groupByCompany(experienceByLang[lang])
-const startYear = (date: string) => date.slice(-4)
+const endYear = (date: string) => date.slice(-4)
 ---
 
-<section
-  class="section"
-  data-reveal
+<div
+  class="col col--exp reveal"
+  style="--reveal-delay: 100ms"
   id="experience"
   aria-labelledby="experience-title"
 >
-  <div class="wrap">
-    <SectionHead
-      num={num}
-      title={experience.sectionTitle}
-      id="experience-title"
-    >
-      <Fragment slot="meta">
-        <ExpYears template={experience.years} /> · {groups.length}{' '}
-        {experience.companies}
-      </Fragment>
-    </SectionHead>
-    <div class="exp reveal" style="--reveal-delay: 120ms">
-      {groups.map((group, i) => {
-        const [latest] = group.roles
-        const position =
-          group.roles.length > 1
-            ? `${latest.position} · ${group.roles.length} ${experience.roles}`
-            : latest.position
-        return (
-          <article class="exp__row">
-            <div class="exp__year">{startYear(group.start)}</div>
-            <div class="exp__head">
-              <a
-                class="exp__company link-arrow"
-                href={group.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {group.company} <Glyph name="arrow" class="arrow" />
-                <span class="sr-only">{a11y.external}</span>
-              </a>
-              <div class="exp__position">{position}</div>
-              <div class="exp__dates">
-                {group.start} – {group.end} · {group.location}
-              </div>
-              {i === 0 && (
-                <div class="exp__status">
-                  <img
-                    class="exp__logo"
-                    src="/cafler-logo.png"
-                    alt=""
-                    width="32"
-                    height="32"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span class="beacon">{titleBlock.available}</span>
-                </div>
+  <SectionHead num={num} title={experience.sectionTitle} id="experience-title">
+    <Fragment slot="meta">
+      <ExpYears template={experience.years} /> · {groups.length}{' '}
+      {experience.companies}
+    </Fragment>
+  </SectionHead>
+  <div class="exp">
+    {groups.map((group, i) => {
+      const [latest] = group.roles
+      return (
+        <article class="exp__row">
+          <div class="exp__year">{endYear(group.end)}</div>
+          <div class="exp__head">
+            <a
+              class="exp__company link-arrow"
+              href={group.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {group.company} <Glyph name="arrow" class="arrow" />
+              <span class="sr-only">{a11y.external}</span>
+            </a>
+            <div class="exp__position">
+              {latest.position}
+              {group.roles.length > 1 && (
+                <span class="exp__count">
+                  {' '}
+                  · {group.roles.length} {experience.roles}
+                </span>
               )}
             </div>
-            <div class="exp__body">
-              {group.roles.length > 1 ? (
-                group.roles.map((role) => <p>{role.description}</p>)
-              ) : (
-                <>
-                  <p>{latest.description}</p>
-                  <p>{latest.responsibilities.join(' ')}</p>
-                </>
-              )}
+            <div class="exp__dates">
+              {group.start} – {group.end} · {group.location}
             </div>
-          </article>
-        )
-      })}
-    </div>
-    <p class="exp__more reveal" style="--reveal-delay: 200ms">
-      <a class="btn btn--outline" href={pagePath(lang, 'work')}>
-        {experience.viewMore}
-        <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
-      </a>
-    </p>
+            <p class="exp__body">{latest.description}</p>
+          </div>
+          {i === 0 && (
+            <img
+              class="exp__logo"
+              src="/cafler-logo.png"
+              alt=""
+              width="40"
+              height="40"
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </article>
+      )
+    })}
   </div>
-</section>
-
-<style>
-  .exp__status {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-2);
-  }
-  .exp__more {
-    margin-top: var(--space-5);
-  }
-</style>
+  <p class="col__foot">
+    <a class="btn btn--outline" href={pagePath(lang, 'work')}>
+      {experience.viewMore}
+      <Glyph name="arrow" class="arrow btn__arrow" />
+    </a>
+  </p>
+</div>

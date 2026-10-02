@@ -12,6 +12,7 @@ type Content = {
     switchLanguage: string
     external: string
     openCv: string
+    cvPreview: string
   }
   nav: { brand: string; home: string }
   intro: {
@@ -46,6 +47,8 @@ type Content = {
     roles: string
     viewMore: string
     stack: string
+    eyebrow: string
+    back: string
   }
   skills: {
     title: string
@@ -53,7 +56,7 @@ type Content = {
     itemsLabel: string
     groups: (Labelled & { items: string[] })[]
   }
-  projects: { title: string; here: string }
+  projects: { title: string; meta: string; here: string; all: string }
   about: { title: string; paragraphs: string[] }
   goals: {
     title: string
@@ -66,13 +69,7 @@ type Content = {
   study: { title: string }
   profile: { title: string; meta: string }
   quote: { text: string; accent: string; author: string }
-  cv: {
-    title: string
-    meta: string
-    heading: string
-    caption: string
-    download: string
-  }
+  cv: { title: string; meta: string; caption: string; download: string }
   contact: {
     title: string
     meta: string
@@ -86,6 +83,7 @@ type Content = {
     title: string
     body: string
     back: string
+    photoAlt: string
   }
 }
 
@@ -179,6 +177,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       switchLanguage: 'Idioma',
       external: '(se abre en una pestaña nueva)',
       openCv: 'Abrir el CV',
+      cvPreview: 'Vista previa del CV',
     },
     nav: { brand: 'dotnet developer', home: 'Inicio' },
     intro: {
@@ -213,6 +212,8 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       roles: 'puestos',
       viewMore: 'Ver más',
       stack: 'Stack:',
+      eyebrow: '01 — Experiencia',
+      back: 'Volver al inicio',
     },
     skills: {
       title: 'Stack',
@@ -230,7 +231,12 @@ export const CONTENT: Record<'es' | 'en', Content> = {
         { emoji: '🧰', label: 'Herramientas', items: tools },
       ],
     },
-    projects: { title: 'Proyectos', here: 'estás aquí' },
+    projects: {
+      title: 'Proyectos',
+      meta: '@xexubonete',
+      here: 'estás aquí',
+      all: 'Todos los repos',
+    },
     about: {
       title: 'Sobre mí',
       paragraphs: [
@@ -287,18 +293,17 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       ],
     },
     study: { title: 'Aprendizaje' },
-    profile: { title: 'Perfil', meta: 'sobre mí · aprendizaje · idiomas' },
+    profile: { title: 'Perfil', meta: 'sobre mí · idiomas' },
     quote,
     cv: {
       title: 'CV',
-      meta: 'A4 · PDF',
-      heading: 'Vista previa de mi CV',
-      caption: 'Haz clic para verlo y descargarlo.',
+      meta: 'A4 · PDF · ES / EN',
+      caption: 'Vista previa de mi CV — haz clic para verlo y descargarlo',
       download: 'Ver y descargar CV',
     },
     contact: {
       title: 'Contacto',
-      meta: 'hablamos',
+      meta: 'hablemos',
       items: [
         { emoji: '🤙', label: 'Llámame', href: PHONE, detail: PHONE_TEXT },
         { emoji: '📧', label: 'Escríbeme', href: MAIL, detail: MAIL_TEXT },
@@ -310,15 +315,16 @@ export const CONTENT: Record<'es' | 'en', Content> = {
         },
         { emoji: '🎖️', label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
       ],
-      photoAlt: 'memoji de Jesús tomándoselo con calma',
+      photoAlt: 'memoji de Jesús relajado',
     },
     footer: { builtWith: 'Hecho con Astro · Elda, Alicante' },
     notFound: {
       eyebrow: 'error',
       code: '404',
       title: 'Página no encontrada',
-      body: 'Lo sentimos, no hemos encontrado la página que buscas.',
+      body: 'Lo sentimos, no encontramos la página que buscas.',
       back: 'Volver al inicio',
+      photoAlt: 'memoji de Jesús relajado',
     },
   },
   en: {
@@ -334,6 +340,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       switchLanguage: 'Language',
       external: '(opens in a new tab)',
       openCv: 'Open the CV',
+      cvPreview: 'CV preview',
     },
     nav: { brand: 'dotnet developer', home: 'Home' },
     intro: {
@@ -366,8 +373,10 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       pageLead: 'Work experience',
       companies: 'companies',
       roles: 'roles',
-      viewMore: 'View More',
+      viewMore: 'View more',
       stack: 'Stack:',
+      eyebrow: '01 — Experience',
+      back: 'Back home',
     },
     skills: {
       title: 'Stack',
@@ -376,16 +385,21 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       groups: [
         {
           emoji: '📚',
-          label: 'Frameworks and Libraries',
+          label: 'Frameworks and libraries',
           items: frameworks('Microservices'),
         },
-        { emoji: '🧑‍🎨', label: 'Design Patterns', items: patterns },
+        { emoji: '🧑‍🎨', label: 'Design patterns', items: patterns },
         { emoji: '📊', label: 'Databases', items: databases },
         { emoji: '☁️', label: 'DevOps and Cloud', items: devops },
         { emoji: '🧰', label: 'Tools', items: tools },
       ],
     },
-    projects: { title: 'Projects', here: 'you are here' },
+    projects: {
+      title: 'Projects',
+      meta: '@xexubonete',
+      here: 'you are here',
+      all: 'All repositories',
+    },
     about: {
       title: 'About me',
       paragraphs: [
@@ -442,13 +456,12 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       ],
     },
     study: { title: 'Study' },
-    profile: { title: 'Profile', meta: 'about · study · languages' },
+    profile: { title: 'Profile', meta: 'about · languages' },
     quote,
     cv: {
       title: 'CV',
-      meta: 'A4 · PDF',
-      heading: 'Preview of my resume',
-      caption: 'Click to view and download.',
+      meta: 'A4 · PDF · EN / ES',
+      caption: 'Preview of my resume — click to view and download',
       download: 'View & download CV',
     },
     contact: {
@@ -474,6 +487,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       title: 'Page not found',
       body: "Sorry, we couldn't find the page you're looking for.",
       back: 'Go back home',
+      photoAlt: 'memoji of Jesús taking it easy',
     },
   },
 }

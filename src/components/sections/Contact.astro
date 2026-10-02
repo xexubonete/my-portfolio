@@ -12,32 +12,28 @@ const { lang, num } = Astro.props
 const { contact } = t(lang)
 ---
 
-<section
-  class="section"
-  data-reveal
-  id="contact"
-  aria-labelledby="contact-title"
->
-  <div class="wrap">
-    <SectionHead
-      num={num}
-      title={contact.title}
-      meta={contact.meta}
-      id="contact-title"
-    />
-    <div class="contact contact--spaced reveal" style="--reveal-delay: 120ms">
-      <address>
-        <ul class="contact__links">
-          {contact.items.map((item) => (
-            <li>
-              <a href={item.href} target="_blank" rel="noopener noreferrer">
-                {item.label} <small>{item.detail}</small>
-                <Glyph name="arrow" class="arrow" />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </address>
+<section class="band" data-reveal id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact reveal">
+    <div class="contact__main">
+      <SectionHead
+        num={num}
+        title={contact.title}
+        meta={contact.meta}
+        id="contact-title"
+      />
+      <ul class="contact__links">
+        {contact.items.map((item) => (
+          <li>
+            <a href={item.href} target="_blank" rel="noopener noreferrer">
+              <span class="contact__label">{item.label}</span>
+              <small>{item.detail}</small>
+              <Glyph name="arrow" class="arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="contact__aside">
       <img
         class="contact__portrait"
         src="/me_chillin.png"
@@ -50,12 +46,3 @@ const { contact } = t(lang)
     </div>
   </div>
 </section>
-
-<style>
-  .contact--spaced {
-    margin-top: var(--space-5);
-  }
-  address {
-    font-style: normal;
-  }
-</style>

@@ -16,7 +16,7 @@ const [latest] = experienceByLang[lang]
 <section class="hero" id="hero" aria-labelledby="hero-title">
   <div class="wrap">
     <div class="hero__top">
-      <div>
+      <div class="hero__name-block">
         <p class="eyebrow eyebrow--accent rise">{intro.eyebrow}</p>
         <h1 class="hero__name" id="hero-title">
           <span class="rise" style="--reveal-delay: 80ms">
@@ -64,11 +64,9 @@ const [latest] = experienceByLang[lang]
 
     <div class="hero__intro rise" style="--reveal-delay: 440ms">
       <p class="lead" set:html={intro.lead} />
-      <div class="prose prose--columns">
-        {intro.paragraphs.map((paragraph) => (
-          <p>{paragraph}</p>
-        ))}
-      </div>
+      {intro.paragraphs.map((paragraph) => (
+        <p class="prose">{paragraph}</p>
+      ))}
     </div>
   </div>
 </section>

@@ -20,6 +20,8 @@ const { lang } = Astro.props
 const { meta } = t(lang)
 ---
 
+{/* The home is composed like one drawing sheet: the hero, the tape, two
+    three-column bands, the quote strip and the contact band. */}
 <BaseLayout
   lang={lang}
   page="home"
@@ -29,13 +31,38 @@ const { meta } = t(lang)
   <main id="main">
     <Hero lang={lang} />
     <Tape lang={lang} />
-    <Stack lang={lang} num="01" />
-    <Experience lang={lang} num="02" />
-    <Projects lang={lang} num="03" />
-    <Goals lang={lang} num="04" />
+
+    <section class="band band--sheet" data-reveal id="sheet-1">
+      <div class="wrap band__grid">
+        <Cv lang={lang} />
+        <Experience lang={lang} num="01" />
+        <Stack lang={lang} num="02" />
+      </div>
+    </section>
+
+    <section class="band band--sheet" data-reveal id="sheet-2">
+      <div class="wrap band__grid band__grid--second">
+        <Projects lang={lang} num="03" />
+        <Goals lang={lang} num="04" />
+        <Profile lang={lang} num="05" />
+      </div>
+    </section>
+
     <Quote lang={lang} />
-    <Profile lang={lang} num="06" />
-    <Cv lang={lang} num="07" />
-    <Contact lang={lang} num="08" />
+    <Contact lang={lang} num="06" />
   </main>
+
+  <script is:inline>
+    // Scale the embedded A4 CV (794px wide) to the preview box. Lives here,
+    // not in the column, so no element sits between the sheet's columns.
+    ;(function () {
+      var sheet = document.querySelector('.cv__sheet')
+      if (!sheet) return
+      var fit = function () {
+        sheet.style.setProperty('--cv-scale', String(sheet.clientWidth / 794))
+      }
+      fit()
+      new ResizeObserver(fit).observe(sheet)
+    })()
+  </script>
 </BaseLayout>
