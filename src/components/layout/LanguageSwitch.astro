@@ -1,0 +1,62 @@
+---
+import Icon from '@/components/ui/Icon.astro'
+import { otherLang, pagePath, type Lang, type PageId } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  page: PageId
+  label: string
+}
+
+const { lang, page, label } = Astro.props
+const target = otherLang(lang)
+const names: Record<Lang, string> = { es: 'Español', en: 'English' }
+---
+
+{/* A plain link to the same page in the other language: no script, works
+    before hydration would have, and crawlers follow it. */}
+<a
+  class="lang-switch"
+  href={pagePath(target, page)}
+  hreflang={target}
+  lang={target}
+  aria-label={`${label}: ${names[target]}`}
+  title={names[target]}
+>
+  <Icon name="globe" />
+  <span class="lang-switch__code">{target.toUpperCase()}</span>
+</a>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    block-size: 2.5rem;
+    padding-inline: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+  .lang-switch:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .lang-switch:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  .lang-switch :global(svg) {
+    inline-size: 1.1rem;
+    block-size: 1.1rem;
+  }
+</style>

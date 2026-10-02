@@ -1,0 +1,111 @@
+---
+import Icon from '@/components/ui/Icon.astro'
+
+interface Props {
+  label: string
+}
+
+const { label } = Astro.props
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  aria-label={label}
+  title={label}
+>
+  <Icon name="sun" class="theme-toggle__sun" />
+  <Icon name="moon" class="theme-toggle__moon" />
+</button>
+
+<script>
+  // The effective theme is whatever the tokens are resolving right now: the
+  // stored override when there is one, otherwise the system preference.
+  const root = document.documentElement
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+
+  function current(): 'light' | 'dark' {
+    const set = root.dataset.theme
+    if (set === 'light' || set === 'dark') return set
+    return prefersDark.matches ? 'dark' : 'light'
+  }
+
+  for (const button of document.querySelectorAll('[data-theme-toggle]')) {
+    button.addEventListener('click', () => {
+      const next = current() === 'dark' ? 'light' : 'dark'
+      root.dataset.theme = next
+      try {
+        localStorage.setItem('theme', next)
+      } catch (_) {}
+    })
+  }
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+  .theme-toggle:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  .theme-toggle:active {
+    transform: scale(0.94);
+  }
+
+  /* Both icons share one cell; the sheet decides which one shows, with the
+     same precedence the tokens use: explicit attribute first, then system. */
+  .theme-toggle :global(svg) {
+    grid-area: 1 / 1;
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+  /* The icons are rendered by <Icon>, so their classes need :global() here. */
+  .theme-toggle :global(.theme-toggle__moon) {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  :global(:root[data-theme='dark']) .theme-toggle :global(.theme-toggle__sun) {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+  :global(:root[data-theme='dark']) .theme-toggle :global(.theme-toggle__moon) {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light']))
+      .theme-toggle
+      :global(.theme-toggle__sun) {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.6);
+    }
+    :global(:root:not([data-theme='light']))
+      .theme-toggle
+      :global(.theme-toggle__moon) {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

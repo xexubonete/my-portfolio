@@ -1,0 +1,204 @@
+---
+import Icon from '@/components/ui/Icon.astro'
+import Section from '@/components/ui/Section.astro'
+import { studiesByLang, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  index?: number
+}
+
+const { lang, index } = Astro.props
+const { about, goals, softSkills, languages, study, quote, a11y } = t(lang)
+const studies = studiesByLang[lang]
+---
+
+<Section id="about" title={about.title} index={index}>
+  <div class="about">
+    <article class="card about__bio">
+      {about.paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+      <blockquote class="quote">
+        <p>“{quote.text}”</p>
+        <footer>— {quote.author}</footer>
+      </blockquote>
+    </article>
+
+    <article class="card about__goals">
+      <h3 class="card__title">{goals.title}</h3>
+      <p class="about__goals-intro">{goals.intro}</p>
+      <ul class="goals">
+        {goals.items.map((item) => (
+          <li>
+            <span class="goals__emoji" aria-hidden="true">
+              {item.emoji}
+            </span>
+            <div>
+              <strong>{item.label}</strong>
+              <p>{item.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="card">
+      <h3 class="card__title">{softSkills.title}</h3>
+      <ul class="soft-skills">
+        {softSkills.items.map((item) => (
+          <li>
+            <Icon name="check" size={16} />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    <div class="about__stack">
+      <article class="card">
+        <h3 class="card__title">{languages.title}</h3>
+        <ul class="languages">
+          {languages.items.map((item) => (
+            <li>
+              <span>{item.name}</span>
+              <span class="badge">{item.level}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3 class="card__title">{study.title}</h3>
+        <ul class="studies">
+          {studies.map((item) =>
+            item.link ? (
+              <li>
+                <a
+                  class="chip"
+                  href={item.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.institution}
+                  <span class="sr-only">{a11y.external}</span>
+                </a>
+              </li>
+            ) : (
+              <li class="chip">{item.institution}</li>
+            ),
+          )}
+        </ul>
+      </article>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+  @media (min-width: 60rem) {
+    .about {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .about p {
+    margin: 0;
+  }
+  .about__bio {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+  .quote {
+    margin: var(--space-3) 0 0;
+    padding-inline-start: var(--space-4);
+    border-inline-start: 3px solid var(--color-accent);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-lg);
+  }
+  .quote footer {
+    margin-block-start: var(--space-2);
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .about__goals-intro {
+    color: var(--color-text-muted);
+  }
+  .goals {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+  .goals li {
+    display: flex;
+    gap: var(--space-3);
+  }
+  .goals__emoji {
+    flex-shrink: 0;
+    font-size: var(--text-lg);
+    line-height: 1.3;
+  }
+  .goals p {
+    color: var(--color-text-muted);
+  }
+  .soft-skills,
+  .languages,
+  .studies {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .soft-skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+  .soft-skills li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-s);
+    background: var(--color-surface-2);
+  }
+  .soft-skills :global(svg) {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+  .about__stack {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+  .languages {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+  .languages li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .studies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .studies a {
+    text-decoration: none;
+  }
+</style>

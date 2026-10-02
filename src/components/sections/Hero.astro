@@ -1,0 +1,217 @@
+---
+import Icon from '@/components/ui/Icon.astro'
+import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { intro, lastRole, nav, cv, a11y } = t(lang)
+
+// The "last role" card mirrors the most recent entry of the experience list, so
+// company, position and dates stay in sync with constants*.ts automatically.
+const [latest] = experienceByLang[lang]
+const city = latest.location.split(',')[0]
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">{intro.eyebrow}</p>
+      <h1 id="hero-title" class="hero__title">
+        {intro.name}
+      </h1>
+      <p class="hero__role">{latest.position}</p>
+      {intro.paragraphs.map((paragraph, i) => (
+        <p
+          class:list={['hero__text', { 'hero__text--lead': i === 0 }]}
+          set:html={paragraph}
+        />
+      ))}
+      <div class="hero__actions">
+        <a class="button button--primary" href="#contact">
+          {nav.contact}
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a
+          class="button"
+          href={pagePath(lang, 'cv')}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Icon name="file" size={18} />
+          {cv.title}
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+      </div>
+    </div>
+
+    <figure class="hero__visual">
+      <img
+        class="hero__photo"
+        src="/me.png"
+        width="420"
+        height="420"
+        alt={intro.photoAlt}
+        fetchpriority="high"
+        decoding="async"
+      />
+      <figcaption class="last-role">
+        <div class="last-role__head">
+          <span class="last-role__title">{lastRole.title}</span>
+          <span class="badge badge--live">
+            <span class="badge__dot" aria-hidden="true"></span>
+            {lastRole.available}
+          </span>
+        </div>
+        <div class="last-role__body">
+          <img
+            src="/cafler-logo.png"
+            alt=""
+            width="40"
+            height="40"
+            class="last-role__logo"
+            loading="lazy"
+            decoding="async"
+          />
+          <div>
+            <a
+              class="last-role__company"
+              href={latest.link}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {latest.company}
+              <span class="sr-only">{a11y.external}</span>
+            </a>
+            <p class="last-role__position">{latest.position}</p>
+            <p class="last-role__meta">
+              {latest.start} – {latest.end} · {city}
+            </p>
+          </div>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-12) var(--space-10);
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: center;
+    max-inline-size: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+  }
+  @media (min-width: 60rem) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+  }
+  .hero__eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .hero__title {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .hero__role {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+  }
+  .hero__text {
+    margin: var(--space-4) 0 0;
+    max-inline-size: 60ch;
+    color: var(--color-text-muted);
+  }
+  .hero__text--lead {
+    margin-block-start: var(--space-6);
+    font-size: var(--text-lg);
+    color: var(--color-text);
+  }
+  .hero__text :global(strong) {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-6);
+  }
+
+  .hero__visual {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: center;
+    margin: 0;
+  }
+  .hero__photo {
+    inline-size: min(100%, 20rem);
+    block-size: auto;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .last-role {
+    inline-size: 100%;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-l);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-s);
+  }
+  .last-role__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .last-role__title {
+    font-weight: 700;
+  }
+  .last-role__body {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-block-start: var(--space-3);
+  }
+  .last-role__logo {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    border-radius: var(--radius-s);
+  }
+  .last-role__company {
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .last-role__company:hover {
+    color: var(--color-accent);
+  }
+  .last-role__position,
+  .last-role__meta {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+  .last-role__meta {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+</style>

@@ -1,0 +1,132 @@
+---
+import ExpYears from '@/components/ui/ExpYears.astro'
+import Icon from '@/components/ui/Icon.astro'
+import Section from '@/components/ui/Section.astro'
+import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
+import { groupByCompany } from '@/lib/experience'
+
+interface Props {
+  lang: Lang
+  index?: number
+}
+
+const { lang, index } = Astro.props
+const { experience, a11y } = t(lang)
+const groups = groupByCompany(experienceByLang[lang])
+---
+
+<Section id="experience" title={experience.title.plus} index={index}>
+  <Fragment slot="title">
+    <ExpYears template={experience.title} />
+  </Fragment>
+  <a slot="aside" class="button button--ghost" href={pagePath(lang, 'work')}>
+    {experience.viewMore}
+    <Icon name="arrow-right" size={18} />
+  </a>
+
+  <ol class="timeline">
+    {groups.map((group) => (
+      <li class="timeline__item">
+        <div class="timeline__period">
+          <time>{group.start}</time> – <time>{group.end}</time>
+        </div>
+        <div class="timeline__body">
+          <h3 class="timeline__position">{group.roles[0].position}</h3>
+          <a
+            class="timeline__company"
+            href={group.link}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {group.company}
+            <span class="sr-only">{a11y.external}</span>
+          </a>
+          <p class="timeline__location">{group.location}</p>
+          <p class="timeline__summary">{group.roles[0].description}</p>
+          {group.roles.length > 1 && (
+            <ul class="timeline__stages">
+              {group.roles.map((role) => (
+                <li>
+                  <span>{role.position}</span>
+                  <span class="timeline__stage-dates">
+                    {role.start} – {role.end}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+</Section>
+
+<style>
+  .timeline {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .timeline__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2) var(--space-6);
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--color-border);
+  }
+  @media (min-width: 48rem) {
+    .timeline__item {
+      grid-template-columns: 12rem minmax(0, 1fr);
+    }
+  }
+  .timeline__period {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .timeline__position {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .timeline__company {
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .timeline__company:hover {
+    text-decoration: underline;
+  }
+  .timeline__location {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .timeline__summary {
+    margin: var(--space-2) 0 0;
+    max-inline-size: 65ch;
+  }
+  .timeline__stages {
+    display: grid;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    padding: 0 0 0 var(--space-4);
+    border-inline-start: 2px solid var(--color-border);
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+  .timeline__stages li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .timeline__stage-dates {
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+  }
+</style>

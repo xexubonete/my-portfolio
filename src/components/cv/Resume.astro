@@ -1,34 +1,15 @@
 ---
 import '@/styles/fonts.css'
-import { experienceByLang, LINKS, yearsOfExperience } from '@/i18n'
-import type { Lang } from '@/i18n'
+import '@/styles/tokens.css'
+import { experienceByLang, LINKS, type Lang } from '@/i18n'
+import { formatYears, groupByCompany } from '@/lib/experience'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
-const experience = experienceByLang[lang]
-
-// Group consecutive roles at the same company (e.g. NTT DATA's 3 stages).
-type Role = (typeof experience)[number]
-const companyGroups: {
-  company: string
-  location: string
-  link?: string
-  roles: Role[]
-}[] = []
-for (const role of experience) {
-  const last = companyGroups[companyGroups.length - 1]
-  if (last && last.company === role.company) last.roles.push(role)
-  else
-    companyGroups.push({
-      company: role.company,
-      location: role.location,
-      link: role.link,
-      roles: [role],
-    })
-}
+const companyGroups = groupByCompany(experienceByLang[lang])
 
 const T = {
   es: {
@@ -101,33 +82,34 @@ const T = {
   },
 }[lang]
 
-const { years, exact } = yearsOfExperience()
-const expPhrase =
-  lang === 'es'
-    ? exact
-      ? `${years} años`
-      : `más de ${years} años`
-    : exact
-      ? `${years} years`
-      : `${years}+ years`
+// The years figure is rendered at build time and refreshed by the script at
+// the bottom, which reads both phrasings from the data attributes.
+const expTemplate = {
+  es: { plus: 'más de {n} años', exact: '{n} años' },
+  en: { plus: '{n}+ years', exact: '{n} years' },
+}[lang]
 const profileText = T.profile.replace(
   '{EXP}',
-  `<span class="js-exp-phrase">${expPhrase}</span>`,
+  `<span data-exp-plus="${expTemplate.plus}" data-exp-exact="${expTemplate.exact}">${formatYears(expTemplate)}</span>`,
 )
 ---
 
-<html lang={lang}>
+{/* The CV is a printed document: it is pinned to the light palette so the
+    PDF looks the same whatever theme the visitor browses with. */}
+<html lang={lang} data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CV — Jesús Bonete Sánchez</title>
     <style is:global>
       :root {
-        --brand: #da8b37;
-        --brand-dark: #b9722a;
-        --ink: #1f2937;
-        --muted: #6b7280;
-        --line: #e5e7eb;
+        --brand: var(--color-accent);
+        --brand-dark: color-mix(in oklab, var(--color-accent) 85%, black);
+        --brand-ink: var(--color-accent-contrast);
+        --ink: var(--color-text);
+        --muted: var(--color-text-muted);
+        --line: var(--color-border);
+        --paper: var(--color-surface);
       }
       * {
         box-sizing: border-box;
@@ -135,9 +117,9 @@ const profileText = T.profile.replace(
         padding: 0;
       }
       body {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: var(--font-body);
         color: var(--ink);
-        background: #f3f4f6;
+        background: var(--color-bg);
         line-height: 1.45;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -152,11 +134,11 @@ const profileText = T.profile.replace(
         border: none;
         border-radius: 0.5rem;
         background: var(--brand);
-        color: #fff;
+        color: var(--brand-ink);
         font: inherit;
         font-weight: 700;
         padding: 0.6rem 1.4rem;
-        box-shadow: 0 4px 12px rgba(218, 139, 55, 0.35);
+        box-shadow: var(--shadow-m);
       }
       .btn:hover {
         background: var(--brand-dark);
@@ -165,15 +147,15 @@ const profileText = T.profile.replace(
         width: 210mm;
         min-height: 297mm;
         margin: 0 auto 2rem;
-        background: #fff;
+        background: var(--paper);
         display: grid;
         grid-template-columns: 66mm 1fr;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--shadow-l);
         overflow: hidden;
       }
       .aside {
         background: linear-gradient(160deg, var(--brand), var(--brand-dark));
-        color: #fff;
+        color: var(--brand-ink);
         padding: 9mm 7mm;
       }
       .photo {
@@ -183,11 +165,12 @@ const profileText = T.profile.replace(
         object-fit: cover;
         display: block;
         margin: 0 auto 4mm;
-        background: #fff;
-        border: 2px solid #6b7280;
-        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        background: var(--paper);
+        border: 2px solid var(--muted);
+        box-shadow: var(--shadow-m);
       }
       .name {
+        font-family: var(--font-display);
         text-align: center;
         font-size: 16pt;
         font-weight: 700;
@@ -205,10 +188,11 @@ const profileText = T.profile.replace(
         letter-spacing: 0.08em;
         margin: 5mm 0 2mm;
         padding-bottom: 1mm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+        border-bottom: 1px solid
+          color-mix(in oklab, var(--brand-ink) 35%, transparent);
       }
       .aside a {
-        color: #fff;
+        color: var(--brand-ink);
         text-decoration: none;
         word-break: break-word;
       }
@@ -250,7 +234,7 @@ const profileText = T.profile.replace(
       }
       .chip {
         font-size: 7.5pt;
-        background: rgba(255, 255, 255, 0.18);
+        background: color-mix(in oklab, var(--brand-ink) 18%, transparent);
         border-radius: 999px;
         padding: 0.8mm 2mm;
       }
@@ -271,7 +255,7 @@ const profileText = T.profile.replace(
       }
       .summary {
         font-size: 9pt;
-        color: #374151;
+        color: color-mix(in oklab, var(--ink) 85%, var(--muted));
       }
       .job {
         position: relative;
@@ -327,7 +311,7 @@ const profileText = T.profile.replace(
       .job-summary {
         font-size: 8.5pt;
         font-style: italic;
-        color: #4b5563;
+        color: color-mix(in oklab, var(--ink) 70%, var(--muted));
         margin: 0.4mm 0;
       }
       .job ul {
@@ -353,7 +337,7 @@ const profileText = T.profile.replace(
         line-height: 1.3;
       }
       .stack b {
-        color: #374151;
+        color: var(--ink);
       }
       /* Same company, multiple stages: one company header + nested roles. */
       .company-name {
@@ -374,7 +358,7 @@ const profileText = T.profile.replace(
       }
       @media print {
         body {
-          background: #fff;
+          background: var(--paper);
         }
         .toolbar {
           display: none;
@@ -530,8 +514,7 @@ const profileText = T.profile.replace(
                     {group.company}
                   </a>
                   <span class="job-period">
-                    {group.roles[group.roles.length - 1].start} –{' '}
-                    {group.roles[0].end}
+                    {group.start} – {group.end}
                   </span>
                 </div>
                 <div class="job-place">{group.location}</div>
@@ -576,30 +559,19 @@ const profileText = T.profile.replace(
       </main>
     </div>
 
-    <script>
-      // Hide the download toolbar when the CV is embedded as a preview (iframe).
-      if (window.self !== window.top) {
-        const toolbar = document.querySelector('.toolbar')
-        if (toolbar instanceof HTMLElement) toolbar.style.display = 'none'
-      }
-      // Keep the years-of-experience phrase live (from Feb 2022), immune to caching.
-      const now = new Date()
-      const month = now.getMonth() + 1
-      let years = now.getFullYear() - 2022
-      if (month < 2) years -= 1
-      const exact = month === 2
-      const lang = document.documentElement.lang
-      const phrase = document.querySelector('.js-exp-phrase')
-      if (phrase) {
-        phrase.textContent =
-          lang === 'es'
-            ? exact
-              ? `${years} años`
-              : `más de ${years} años`
-            : exact
-              ? `${years} years`
-              : `${years}+ years`
-      }
+    <script is:inline>
+      // The build is static: keep the years-of-experience phrase live (from
+      // February 2022). Same contract as the site layout's script.
+      ;(function () {
+        var now = new Date()
+        var month = now.getMonth() + 1
+        var years = now.getFullYear() - 2022
+        if (month < 2) years -= 1
+        var key = month === 2 ? 'expExact' : 'expPlus'
+        document.querySelectorAll('[data-exp-plus]').forEach(function (el) {
+          el.textContent = el.dataset[key].replace('{n}', years)
+        })
+      })()
     </script>
   </body>
 </html>

@@ -1,0 +1,33 @@
+---
+import About from '@/components/sections/About.astro'
+import Contact from '@/components/sections/Contact.astro'
+import Experience from '@/components/sections/Experience.astro'
+import Hero from '@/components/sections/Hero.astro'
+import Projects from '@/components/sections/Projects.astro'
+import Skills from '@/components/sections/Skills.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { meta } = t(lang)
+---
+
+<BaseLayout
+  lang={lang}
+  page="home"
+  title={meta.title}
+  description={meta.description}
+>
+  <main id="main">
+    <Hero lang={lang} />
+    <Experience lang={lang} index={1} />
+    <Skills lang={lang} index={2} />
+    <Projects lang={lang} index={3} />
+    <About lang={lang} index={4} />
+    <Contact lang={lang} index={5} />
+  </main>
+</BaseLayout>

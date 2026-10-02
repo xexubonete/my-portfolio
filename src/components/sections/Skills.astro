@@ -1,0 +1,62 @@
+---
+import Section from '@/components/ui/Section.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  index?: number
+}
+
+const { lang, index } = Astro.props
+const { skills } = t(lang)
+---
+
+<Section id="skills" title={skills.title} index={index}>
+  <div class="skills">
+    {skills.groups.map((group) => (
+      <div class="skills__group">
+        <h3 class="skills__label">
+          <span aria-hidden="true">{group.emoji}</span> {group.label}
+        </h3>
+        <ul class="skills__list">
+          {group.items.map((item) => (
+            <li class="chip">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</Section>
+
+<style>
+  .skills {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .skills__group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2) var(--space-6);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--color-border);
+  }
+  @media (min-width: 48rem) {
+    .skills__group {
+      grid-template-columns: 14rem minmax(0, 1fr);
+    }
+  }
+  .skills__label {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  .skills__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

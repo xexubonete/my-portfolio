@@ -1,74 +1,126 @@
 ---
-import { buttonVariants } from '@/components/ui/_button'
-import { ModeToggle } from '@/components/ui/_ThemeToggle'
-import { LanguageSwitcher } from '@/components/ui/_RedirectToggle'
-import type { Lang } from '@/i18n'
+import LanguageSwitch from './LanguageSwitch.astro'
+import ThemeToggle from './ThemeToggle.astro'
+import { pagePath, t, type Lang, type PageId } from '@/i18n'
 
 interface Props {
-  lang?: Lang
+  lang: Lang
+  page: PageId
 }
 
-const { lang = 'en' } = Astro.props
+const { lang, page } = Astro.props
+const { nav, a11y } = t(lang)
+const home = pagePath(lang, 'home')
+
+// Section anchors live on the home page; from any other page they lead back.
+const anchor = (id: string) => (page === 'home' ? `#${id}` : `${home}#${id}`)
+const items = [
+  { href: anchor('experience'), label: nav.experience },
+  { href: anchor('skills'), label: nav.skills },
+  { href: anchor('projects'), label: nav.projects },
+  { href: anchor('about'), label: nav.about },
+  { href: anchor('contact'), label: nav.contact },
+]
 ---
 
-<script is:inline>
-  // Apply the theme as early as possible to avoid a flash.
-  // Default to light; only go dark if the user explicitly chose "dark",
-  // or chose "system" and their OS is in dark mode. Their choice is persisted
-  // in localStorage by the theme toggle.
-  function applyStoredTheme() {
-    const stored = localStorage.getItem('theme')
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const isDark = stored === 'dark' || (stored === 'system' && systemDark)
-    document.documentElement.classList.toggle('dark', isDark)
-  }
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href={home} aria-label={nav.home}>
+      <span class="brand__mark" aria-hidden="true">
+        &lt;/&gt;
+      </span>
+      <span class="brand__text">{nav.brand}</span>
+    </a>
 
-  applyStoredTheme()
-  document.addEventListener('astro:after-swap', applyStoredTheme)
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', function () {
-      // Only track the OS when the user explicitly picked "system".
-      if (localStorage.getItem('theme') === 'system') applyStoredTheme()
-    })
-</script>
+    <nav class="site-nav" aria-label={a11y.mainNav}>
+      <ul class="site-nav__list">
+        {items.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
 
-<header class="sticky top-0 z-50 w-full border-b bg-primary backdrop-blur supports-[backdrop-filter]:bg-background/90">
-  <div class="container flex h-16 items-center">
-    <div class="flex gap-6">
-      <a href="/" class="flex items-center space-x-1">
-        <span class="inline-block text-xs font-bold sm:text-sm">
-          dotnet developer
-        </span>
-      </a>
-    </div>
-    <div class="flex flex-1 items-center justify-end space-x-4">
-      <nav class="flex items-center space-x-1">
-        <a
-          href="https://github.com/xexubonete"
-          target="_blank"
-          rel="noreferrer"
-          class=`text-xs sm:text-sm ${buttonVariants({ variant: 'ghost' })}`
-        >
-          GitHub
-        </a>
-      </nav>
-      <nav class="flex items-center space-x-1 text-xs sm:text-lg">
-        <a
-          href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
-          target="_blank"
-          rel="noreferrer"
-          class=`text-xs sm:text-sm ${buttonVariants({ variant: 'ghost' })}`
-        >
-          LinkedIn
-        </a>
-      </nav>
-      <nav class="flex items-center space-x-1">
-        <LanguageSwitcher transition:persist client:load />
-      </nav>
-      <nav class="flex items-center space-x-1">
-        <ModeToggle lang={lang} client:load />
-      </nav>
+    <div class="site-header__controls">
+      <LanguageSwitch lang={lang} page={page} label={a11y.switchLanguage} />
+      <ThemeToggle label={a11y.toggleTheme} />
     </div>
   </div>
 </header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    inline-size: 100%;
+    background: color-mix(in oklab, var(--color-bg) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-block-end: 1px solid var(--color-border);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    max-inline-size: var(--content-max);
+    margin-inline: auto;
+    padding: var(--space-3) var(--space-5);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: var(--text-sm);
+    letter-spacing: -0.01em;
+  }
+  .brand__mark {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+  }
+  .site-nav {
+    margin-inline-start: auto;
+  }
+  .site-nav__list {
+    display: flex;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .site-nav a {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-s);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+  .site-nav a:hover {
+    color: var(--color-text);
+    background: var(--color-surface-2);
+  }
+  .site-nav a:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  .site-header__controls {
+    display: flex;
+    gap: var(--space-2);
+  }
+  @media (max-width: 47.99rem) {
+    .site-nav {
+      display: none;
+    }
+    .site-header__controls {
+      margin-inline-start: auto;
+    }
+  }
+</style>
