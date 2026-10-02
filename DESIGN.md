@@ -257,8 +257,8 @@ is reduced or when JavaScript never runs.
 
 | Where                | What                                                                              | Token                             |
 | -------------------- | --------------------------------------------------------------------------------- | --------------------------------- |
-| Page load            | Hero lines rise 20 px and fade in, staggered 80 ms; the memoji 120 ms later.      | `--duration-reveal`, `--ease-out` |
-| Scroll               | Sections reveal once (`.reveal` + `.is-visible` from an IntersectionObserver).    | `--duration-reveal`               |
+| Page load            | `.rise` elements in the hero rise 20 px and fade in, staggered 80 ms via `--reveal-delay`. | `--duration-reveal`, `--ease-out` |
+| Scroll               | `[data-reveal]` sections get `.is-visible` once from an IntersectionObserver (12 % bottom margin); their `.reveal` children rise. | `--duration-reveal`               |
 | Hover on links       | The arrow travels up-right 0.15 em; the colour turns orange.                      | `--duration-fast`                 |
 | Hover on buttons     | 1 px lift and the ink/orange swap.                                                | `--duration-fast`                 |
 | Theme switch         | Colours cross-fade; layout never moves. Opt-in via `html.theme-transition`.       | `--duration-base`, `--ease-in-out`|

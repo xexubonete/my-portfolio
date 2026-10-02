@@ -744,6 +744,34 @@ html.theme-transition *::after {
   color: var(--color-text-muted);
 }
 
+@media (max-width: 47.99rem) {
+  .section-head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .section-head__meta {
+    grid-column: 2;
+  }
+}
+
+/* Hero entrance: lines rise and fade on load, staggered through
+   --reveal-delay. Skipped under reduced motion (durations are 0ms). */
+.hero .rise {
+  animation: rise var(--duration-reveal) var(--ease-out) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Stack: a definition list, label column + tag cloud. */
 .stack {
   display: grid;
