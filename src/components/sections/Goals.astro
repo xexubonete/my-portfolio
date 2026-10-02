@@ -1,0 +1,42 @@
+---
+import SectionHead from '@/components/ui/SectionHead.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  num: string
+}
+
+const { lang, num } = Astro.props
+const { goals } = t(lang)
+---
+
+<section class="section" data-reveal id="goals" aria-labelledby="goals-title">
+  <div class="wrap">
+    <SectionHead
+      num={num}
+      title={goals.title}
+      meta={goals.meta}
+      id="goals-title"
+    />
+    <p class="lead goals__intro reveal" style="--reveal-delay: 120ms">
+      {goals.intro}
+    </p>
+    <div class="goals reveal" style="--reveal-delay: 200ms">
+      {goals.items.map((item, i) => (
+        <div class="goal">
+          <span class="section-num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="goal__title">{item.label}</h3>
+          <p class="goal__text">{item.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .goals__intro {
+    margin-block: var(--space-5) var(--space-6);
+    max-width: 24ch;
+  }
+</style>

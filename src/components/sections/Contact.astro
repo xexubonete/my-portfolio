@@ -1,99 +1,66 @@
 ---
-import Icon from '@/components/ui/Icon.astro'
-import Section from '@/components/ui/Section.astro'
-import { pagePath, t, type Lang } from '@/i18n'
+import Glyph from '@/components/ui/Glyph.astro'
+import SectionHead from '@/components/ui/SectionHead.astro'
+import { t, type Lang } from '@/i18n'
 
 interface Props {
   lang: Lang
-  index?: number
+  num: string
 }
 
-const { lang, index } = Astro.props
-const { contact, cv, a11y } = t(lang)
-const cvPath = pagePath(lang, 'cv')
+const { lang, num } = Astro.props
+const { contact } = t(lang)
+const external = (href: string) => /^https?:/.test(href)
 ---
 
-<Section id="contact" title={contact.title} index={index}>
-  <div class="contact">
-    <address class="contact__links">
-      {contact.items.map((item) => (
-        <a
-          class="button contact__link"
-          href={item.href}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span aria-hidden="true">{item.emoji}</span>
-          {item.label}
-          <span class="sr-only">{a11y.external}</span>
-        </a>
-      ))}
-    </address>
-
-    <div class="card cv">
-      <h3 class="card__title">{cv.title}</h3>
-      <p class="cv__caption">{cv.caption}</p>
-      <a
-        class="button button--primary"
-        href={cvPath}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <Icon name="file" size={18} />
-        {cv.download}
-        <span class="sr-only">{a11y.external}</span>
-      </a>
-    </div>
-
-    <img
-      class="contact__photo"
-      src="/me_chillin.png"
-      width="420"
-      height="420"
-      alt={contact.photoAlt}
-      loading="lazy"
-      decoding="async"
+<section
+  class="section"
+  data-reveal
+  id="contact"
+  aria-labelledby="contact-title"
+>
+  <div class="wrap">
+    <SectionHead
+      num={num}
+      title={contact.title}
+      meta={contact.meta}
+      id="contact-title"
     />
+    <div class="contact contact--spaced reveal" style="--reveal-delay: 120ms">
+      <address>
+        <ul class="contact__links">
+          {contact.items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                target={external(item.href) ? '_blank' : undefined}
+                rel={external(item.href) ? 'noreferrer' : undefined}
+              >
+                {item.label} <small>{item.detail}</small>
+                <Glyph name="arrow" class="arrow" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </address>
+      <img
+        class="contact__portrait"
+        src="/me_chillin.png"
+        alt={contact.photoAlt}
+        width="420"
+        height="420"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
   </div>
-</Section>
+</section>
 
 <style>
-  .contact {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-6);
-    align-items: center;
+  .contact--spaced {
+    margin-top: var(--space-5);
   }
-  @media (min-width: 60rem) {
-    .contact {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
-    }
-  }
-  .contact__links {
-    display: grid;
-    gap: var(--space-3);
+  address {
     font-style: normal;
-  }
-  .contact__link {
-    justify-content: flex-start;
-    min-block-size: 3.25rem;
-    font-size: var(--text-base);
-  }
-  .cv {
-    display: grid;
-    gap: var(--space-3);
-    justify-items: start;
-  }
-  .cv__caption {
-    margin: 0;
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-  .contact__photo {
-    inline-size: min(100%, 15rem);
-    block-size: auto;
-    margin-inline: auto;
-    pointer-events: none;
-    user-select: none;
   }
 </style>

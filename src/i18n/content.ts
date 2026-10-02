@@ -1,6 +1,6 @@
 import type { YearsTemplate } from '@/lib/experience'
 
-/** A label with its emoji kept apart, so the emoji can be hidden from readers. */
+/** A label with its emoji kept apart; the design renders labels without it. */
 type Labelled = { emoji: string; label: string }
 
 type Content = {
@@ -11,52 +11,82 @@ type Content = {
     toggleTheme: string
     switchLanguage: string
     external: string
+    openCv: string
   }
-  /** Name of the other language, shown in the language switch. */
-  nav: {
-    brand: string
-    home: string
-    experience: string
-    skills: string
-    projects: string
-    about: string
-    contact: string
-  }
+  nav: { brand: string; home: string }
   intro: {
     eyebrow: string
-    name: string
+    /** The name, one line per word, so the surname can be set in orange. */
+    name: [string, string]
+    /** The first sentence, set as the lead. */
+    lead: string
+    /** The rest of the introduction, flowed in columns. */
     paragraphs: string[]
     photoAlt: string
   }
-  lastRole: { title: string; available: string }
+  /** The title block under the name: the fields of a drawing's corner box. */
+  titleBlock: {
+    role: string
+    based: string
+    basedValue: string
+    experience: string
+    status: string
+    available: string
+  }
+  /** Headline items of the stack, looping on the tape. */
+  tape: string[]
   experience: {
     title: YearsTemplate
     pageTitle: YearsTemplate
+    /** The bare figure: "+4 years". */
+    years: YearsTemplate
+    sectionTitle: string
+    pageLead: string
+    companies: string
+    roles: string
     viewMore: string
     stack: string
   }
   skills: {
     title: string
+    groupsLabel: string
+    itemsLabel: string
     groups: (Labelled & { items: string[] })[]
   }
   projects: { title: string; here: string }
   about: { title: string; paragraphs: string[] }
   goals: {
     title: string
+    meta: string
     intro: string
     items: (Labelled & { text: string })[]
   }
   softSkills: { title: string; items: string[] }
   languages: { title: string; items: { name: string; level: string }[] }
   study: { title: string }
-  quote: { text: string; author: string }
-  cv: { title: string; caption: string; download: string }
+  profile: { title: string; meta: string }
+  quote: { text: string; accent: string; author: string }
+  cv: {
+    title: string
+    meta: string
+    heading: string
+    caption: string
+    download: string
+  }
   contact: {
     title: string
-    items: (Labelled & { href: string })[]
+    meta: string
+    items: (Labelled & { href: string; detail: string })[]
     photoAlt: string
   }
-  notFound: { code: string; title: string; body: string; back: string }
+  footer: { builtWith: string }
+  notFound: {
+    eyebrow: string
+    code: string
+    title: string
+    body: string
+    back: string
+  }
 }
 
 const frameworks = (microservices: string) => [
@@ -103,13 +133,37 @@ const tools = ['Postman', 'Bruno', 'Team Explorer']
 
 const quote = {
   text: 'The only way to go fast, is to go well.',
+  accent: 'go well.',
   author: 'Robert C. Martin',
 }
 
+const tape = [
+  'C#',
+  '.NET 10',
+  'gRPC',
+  'CQRS',
+  'Clean Architecture',
+  'Microservices',
+  'Entity Framework',
+  'Dapper',
+  'MediatR',
+  'Hangfire',
+  'Azure',
+  'MSSQL',
+  'PostgreSQL',
+  'CosmoDB',
+  'Claude',
+  'GitHub Copilot',
+]
+
 const PHONE = 'tel:+34722243881'
+const PHONE_TEXT = '+34 722 243 881'
 const MAIL = 'mailto:xexubonete@gmail.com'
+const MAIL_TEXT = 'xexubonete@gmail.com'
 const LINKEDIN = 'https://www.linkedin.com/in/jesus-bonete-sanchez/'
+const LINKEDIN_TEXT = 'jesus-bonete-sanchez'
 const GITHUB = 'https://github.com/xexubonete'
+const GITHUB_TEXT = 'xexubonete'
 
 export const CONTENT: Record<'es' | 'en', Content> = {
   es: {
@@ -122,52 +176,61 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       skip: 'Saltar al contenido',
       mainNav: 'Principal',
       toggleTheme: 'Cambiar tema',
-      switchLanguage: 'Cambiar idioma',
+      switchLanguage: 'Idioma',
       external: '(se abre en una pestaña nueva)',
+      openCv: 'Abrir el CV',
     },
-    nav: {
-      brand: 'dotnet developer',
-      home: 'Inicio',
-      experience: 'Experiencia',
-      skills: 'Habilidades',
-      projects: 'Proyectos',
-      about: 'Sobre mí',
-      contact: 'Contacto',
-    },
+    nav: { brand: 'dotnet developer', home: 'Inicio' },
     intro: {
       eyebrow: 'bienvenido',
-      name: 'Jesús Bonete',
+      name: ['Jesús', 'Bonete'],
+      lead: 'Hola, soy <b>Jesús Bonete</b>, desarrollador backend enfocado en crear aplicaciones eficientes y escalables.',
       paragraphs: [
-        'Hola, soy <strong>Jesús Bonete</strong>, desarrollador backend enfocado en crear aplicaciones eficientes y escalables. Me especializo en servicios robustos y seguros, optimización de bases de datos e integración impecable con el frontend desde el servidor. La IA es el núcleo de mi forma de trabajar: la integro en mi día a día para desarrollar más rápido, automatizar tareas repetitivas y elevar la calidad del código sin sacrificar buenas prácticas. Saco el máximo partido de LLMs, agentes y asistentes como Claude o GitHub Copilot para acelerar cada fase, de la arquitectura al despliegue, tomando mejores decisiones en menos tiempo.',
-        'Cuido el código limpio, la arquitectura sólida y el crecimiento en cada proyecto. Apasionado de la tecnología, siempre busco nuevos retos.',
+        'Me especializo en servicios robustos y seguros, optimización de bases de datos e integración impecable con el frontend desde el servidor. La IA es el núcleo de mi forma de trabajar: la integro en mi día a día para desarrollar más rápido, automatizar tareas repetitivas y elevar la calidad del código sin sacrificar buenas prácticas.',
+        'Saco el máximo partido de LLMs, agentes y asistentes como Claude o GitHub Copilot para acelerar cada fase, de la arquitectura al despliegue, tomando mejores decisiones en menos tiempo. Cuido el código limpio, la arquitectura sólida y el crecimiento en cada proyecto. Apasionado de la tecnología, siempre busco nuevos retos.',
       ],
       photoAlt: 'memoji de Jesús Bonete',
     },
-    lastRole: { title: 'Último trabajo', available: 'Disponible' },
+    titleBlock: {
+      role: 'Puesto',
+      based: 'Ubicación',
+      basedValue: 'Elda, Alicante, España',
+      experience: 'Experiencia',
+      status: 'Estado',
+      available: 'Disponible',
+    },
+    tape,
     experience: {
       title: { plus: 'Experiencia (+{n}a)', exact: 'Experiencia ({n}a)' },
       pageTitle: {
         plus: 'Experiencia laboral (+{n} años)',
         exact: 'Experiencia laboral ({n} años)',
       },
+      years: { plus: '+{n} años', exact: '{n} años' },
+      sectionTitle: 'Experiencia',
+      pageLead: 'Experiencia laboral',
+      companies: 'empresas',
+      roles: 'puestos',
       viewMore: 'Ver más',
       stack: 'Stack:',
     },
     skills: {
-      title: 'Habilidades',
+      title: 'Stack',
+      groupsLabel: 'grupos',
+      itemsLabel: 'elementos',
       groups: [
         {
           emoji: '📚',
-          label: 'Frameworks y librerías:',
+          label: 'Frameworks y librerías',
           items: frameworks('Microservicios'),
         },
-        { emoji: '🧑‍🎨', label: 'Patrones de diseño:', items: patterns },
-        { emoji: '📊', label: 'Bases de datos:', items: databases },
-        { emoji: '☁️', label: 'DevOps y Cloud:', items: devops },
-        { emoji: '🧰', label: 'Herramientas:', items: tools },
+        { emoji: '🧑‍🎨', label: 'Patrones de diseño', items: patterns },
+        { emoji: '📊', label: 'Bases de datos', items: databases },
+        { emoji: '☁️', label: 'DevOps y Cloud', items: devops },
+        { emoji: '🧰', label: 'Herramientas', items: tools },
       ],
     },
-    projects: { title: 'Proyectos', here: 'Estás aquí' },
+    projects: { title: 'Proyectos', here: 'estás aquí' },
     about: {
       title: 'Sobre mí',
       paragraphs: [
@@ -177,6 +240,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     goals: {
       title: 'Objetivos',
+      meta: 'IA en el backend',
       intro:
         'Quiero especializarme en integrar la IA en el backend, dominando:',
       items: [
@@ -223,23 +287,34 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       ],
     },
     study: { title: 'Aprendizaje' },
+    profile: { title: 'Perfil', meta: 'sobre mí · aprendizaje · idiomas' },
     quote,
     cv: {
       title: 'CV',
-      caption: 'Vista previa de mi CV — haz clic para verlo y descargarlo',
+      meta: 'A4 · PDF',
+      heading: 'Vista previa de mi CV',
+      caption: 'Haz clic para verlo y descargarlo.',
       download: 'Ver y descargar CV',
     },
     contact: {
       title: 'Contacto',
+      meta: 'hablamos',
       items: [
-        { emoji: '🤙', label: 'Llámame', href: PHONE },
-        { emoji: '📧', label: 'Escríbeme', href: MAIL },
-        { emoji: '👔', label: 'LinkedIn', href: LINKEDIN },
-        { emoji: '🎖️', label: 'Github', href: GITHUB },
+        { emoji: '🤙', label: 'Llámame', href: PHONE, detail: PHONE_TEXT },
+        { emoji: '📧', label: 'Escríbeme', href: MAIL, detail: MAIL_TEXT },
+        {
+          emoji: '👔',
+          label: 'LinkedIn',
+          href: LINKEDIN,
+          detail: LINKEDIN_TEXT,
+        },
+        { emoji: '🎖️', label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
       ],
       photoAlt: 'memoji de Jesús tomándoselo con calma',
     },
+    footer: { builtWith: 'Hecho con Astro · Elda, Alicante' },
     notFound: {
+      eyebrow: 'error',
       code: '404',
       title: 'Página no encontrada',
       body: 'Lo sentimos, no hemos encontrado la página que buscas.',
@@ -254,54 +329,63 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     a11y: {
       skip: 'Skip to content',
-      mainNav: 'Main',
+      mainNav: 'Primary',
       toggleTheme: 'Toggle theme',
-      switchLanguage: 'Switch language',
+      switchLanguage: 'Language',
       external: '(opens in a new tab)',
+      openCv: 'Open the CV',
     },
-    nav: {
-      brand: 'dotnet developer',
-      home: 'Home',
-      experience: 'Experience',
-      skills: 'Skills',
-      projects: 'Projects',
-      about: 'About me',
-      contact: 'Contact',
-    },
+    nav: { brand: 'dotnet developer', home: 'Home' },
     intro: {
       eyebrow: 'welcome',
-      name: 'Jesús Bonete',
+      name: ['Jesús', 'Bonete'],
+      lead: "Hi, I'm <b>Jesús Bonete</b>, a backend dev focused on building efficient and scalable applications.",
       paragraphs: [
-        "Hi, I'm <strong>Jesús Bonete</strong>, a backend dev focused on building efficient and scalable applications. I specialize in robust, secure services, database optimization and seamless integration with the frontend from the server side. AI is at the core of how I work: I weave it into my daily workflow to build faster, automate repetitive tasks and raise code quality without compromising best practices. I make the most of LLMs, agents and assistants like Claude or GitHub Copilot to speed up every phase, from architecture to deployment, making better decisions in less time.",
-        "I care about clean code, solid architecture and growing with every project. Passionate about technology, I'm always after new challenges.",
+        'I specialize in robust, secure services, database optimization and seamless integration with the frontend from the server side. AI is at the core of how I work: I weave it into my daily workflow to build faster, automate repetitive tasks and raise code quality without compromising best practices.',
+        "I make the most of LLMs, agents and assistants like Claude or GitHub Copilot to speed up every phase, from architecture to deployment, making better decisions in less time. I care about clean code, solid architecture and growing with every project. Passionate about technology, I'm always after new challenges.",
       ],
       photoAlt: 'memoji of Jesús Bonete',
     },
-    lastRole: { title: 'Last role', available: 'Available' },
+    titleBlock: {
+      role: 'Role',
+      based: 'Based',
+      basedValue: 'Elda, Alicante, Spain',
+      experience: 'Experience',
+      status: 'Status',
+      available: 'Available',
+    },
+    tape,
     experience: {
       title: { plus: 'Experience (+{n}yr)', exact: 'Experience ({n}yr)' },
       pageTitle: {
         plus: 'Work experience (+{n} years)',
         exact: 'Work experience ({n} years)',
       },
+      years: { plus: '+{n} years', exact: '{n} years' },
+      sectionTitle: 'Experience',
+      pageLead: 'Work experience',
+      companies: 'companies',
+      roles: 'roles',
       viewMore: 'View More',
       stack: 'Stack:',
     },
     skills: {
-      title: 'Skills',
+      title: 'Stack',
+      groupsLabel: 'groups',
+      itemsLabel: 'items',
       groups: [
         {
           emoji: '📚',
-          label: 'Frameworks and Libraries:',
+          label: 'Frameworks and Libraries',
           items: frameworks('Microservices'),
         },
-        { emoji: '🧑‍🎨', label: 'Design Patterns:', items: patterns },
-        { emoji: '📊', label: 'Databases:', items: databases },
-        { emoji: '☁️', label: 'DevOps and Cloud:', items: devops },
-        { emoji: '🧰', label: 'Tools:', items: tools },
+        { emoji: '🧑‍🎨', label: 'Design Patterns', items: patterns },
+        { emoji: '📊', label: 'Databases', items: databases },
+        { emoji: '☁️', label: 'DevOps and Cloud', items: devops },
+        { emoji: '🧰', label: 'Tools', items: tools },
       ],
     },
-    projects: { title: 'Projects', here: 'You are here' },
+    projects: { title: 'Projects', here: 'you are here' },
     about: {
       title: 'About me',
       paragraphs: [
@@ -311,6 +395,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     goals: {
       title: 'Goals',
+      meta: 'AI in the backend',
       intro:
         'I want to specialize in integrating AI into the backend, mastering:',
       items: [
@@ -357,23 +442,34 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       ],
     },
     study: { title: 'Study' },
+    profile: { title: 'Profile', meta: 'about · study · languages' },
     quote,
     cv: {
       title: 'CV',
-      caption: 'Preview of my resume — click to view and download',
+      meta: 'A4 · PDF',
+      heading: 'Preview of my resume',
+      caption: 'Click to view and download.',
       download: 'View & download CV',
     },
     contact: {
       title: 'Contact',
+      meta: "let's talk",
       items: [
-        { emoji: '🤙', label: 'Call me', href: PHONE },
-        { emoji: '📧', label: 'Email me', href: MAIL },
-        { emoji: '👔', label: 'LinkedIn', href: LINKEDIN },
-        { emoji: '🎖️', label: 'Github', href: GITHUB },
+        { emoji: '🤙', label: 'Call me', href: PHONE, detail: PHONE_TEXT },
+        { emoji: '📧', label: 'Email me', href: MAIL, detail: MAIL_TEXT },
+        {
+          emoji: '👔',
+          label: 'LinkedIn',
+          href: LINKEDIN,
+          detail: LINKEDIN_TEXT,
+        },
+        { emoji: '🎖️', label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
       ],
       photoAlt: 'memoji of Jesús taking it easy',
     },
+    footer: { builtWith: 'Built with Astro · Elda, Alicante' },
     notFound: {
+      eyebrow: 'error',
       code: '404',
       title: 'Page not found',
       body: "Sorry, we couldn't find the page you're looking for.",

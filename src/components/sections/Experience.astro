@@ -1,132 +1,108 @@
 ---
 import ExpYears from '@/components/ui/ExpYears.astro'
-import Icon from '@/components/ui/Icon.astro'
-import Section from '@/components/ui/Section.astro'
+import Glyph from '@/components/ui/Glyph.astro'
+import SectionHead from '@/components/ui/SectionHead.astro'
 import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
 import { groupByCompany } from '@/lib/experience'
 
 interface Props {
   lang: Lang
-  index?: number
+  num: string
 }
 
-const { lang, index } = Astro.props
-const { experience, a11y } = t(lang)
+const { lang, num } = Astro.props
+const { experience, titleBlock, a11y } = t(lang)
 const groups = groupByCompany(experienceByLang[lang])
+const startYear = (date: string) => date.slice(-4)
 ---
 
-<Section id="experience" title={experience.title.plus} index={index}>
-  <Fragment slot="title">
-    <ExpYears template={experience.title} />
-  </Fragment>
-  <a slot="aside" class="button button--ghost" href={pagePath(lang, 'work')}>
-    {experience.viewMore}
-    <Icon name="arrow-right" size={18} />
-  </a>
-
-  <ol class="timeline">
-    {groups.map((group) => (
-      <li class="timeline__item">
-        <div class="timeline__period">
-          <time>{group.start}</time> – <time>{group.end}</time>
-        </div>
-        <div class="timeline__body">
-          <h3 class="timeline__position">{group.roles[0].position}</h3>
-          <a
-            class="timeline__company"
-            href={group.link}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {group.company}
-            <span class="sr-only">{a11y.external}</span>
-          </a>
-          <p class="timeline__location">{group.location}</p>
-          <p class="timeline__summary">{group.roles[0].description}</p>
-          {group.roles.length > 1 && (
-            <ul class="timeline__stages">
-              {group.roles.map((role) => (
-                <li>
-                  <span>{role.position}</span>
-                  <span class="timeline__stage-dates">
-                    {role.start} – {role.end}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </li>
-    ))}
-  </ol>
-</Section>
+<section
+  class="section"
+  data-reveal
+  id="experience"
+  aria-labelledby="experience-title"
+>
+  <div class="wrap">
+    <SectionHead
+      num={num}
+      title={experience.sectionTitle}
+      id="experience-title"
+    >
+      <Fragment slot="meta">
+        <ExpYears template={experience.years} /> · {groups.length}{' '}
+        {experience.companies}
+      </Fragment>
+    </SectionHead>
+    <div class="exp reveal" style="--reveal-delay: 120ms">
+      {groups.map((group, i) => {
+        const [latest] = group.roles
+        const position =
+          group.roles.length > 1
+            ? `${latest.position} · ${group.roles.length} ${experience.roles}`
+            : latest.position
+        return (
+          <article class="exp__row">
+            <div class="exp__year">{startYear(group.start)}</div>
+            <div class="exp__head">
+              <a
+                class="exp__company link-arrow"
+                href={group.link}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {group.company} <Glyph name="arrow" class="arrow" />
+                <span class="sr-only">{a11y.external}</span>
+              </a>
+              <div class="exp__position">{position}</div>
+              <div class="exp__dates">
+                {group.start} – {group.end} · {group.location}
+              </div>
+              {i === 0 && (
+                <div class="exp__status">
+                  <img
+                    class="exp__logo"
+                    src="/cafler-logo.png"
+                    alt=""
+                    width="32"
+                    height="32"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="beacon">{titleBlock.available}</span>
+                </div>
+              )}
+            </div>
+            <div class="exp__body">
+              {group.roles.length > 1 ? (
+                group.roles.map((role) => <p>{role.description}</p>)
+              ) : (
+                <>
+                  <p>{latest.description}</p>
+                  <p>{latest.responsibilities.join(' ')}</p>
+                </>
+              )}
+            </div>
+          </article>
+        )
+      })}
+    </div>
+    <p class="exp__more reveal" style="--reveal-delay: 200ms">
+      <a class="btn btn--outline" href={pagePath(lang, 'work')}>
+        {experience.viewMore}
+        <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
+      </a>
+    </p>
+  </div>
+</section>
 
 <style>
-  .timeline {
-    display: grid;
-    gap: var(--space-6);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .timeline__item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2) var(--space-6);
-    padding-block-start: var(--space-5);
-    border-block-start: 1px solid var(--color-border);
-  }
-  @media (min-width: 48rem) {
-    .timeline__item {
-      grid-template-columns: 12rem minmax(0, 1fr);
-    }
-  }
-  .timeline__period {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-  .timeline__position {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .timeline__company {
-    color: var(--color-accent);
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .timeline__company:hover {
-    text-decoration: underline;
-  }
-  .timeline__location {
-    margin: 0;
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-  .timeline__summary {
-    margin: var(--space-2) 0 0;
-    max-inline-size: 65ch;
-  }
-  .timeline__stages {
-    display: grid;
-    gap: var(--space-1);
-    margin: var(--space-3) 0 0;
-    padding: 0 0 0 var(--space-4);
-    border-inline-start: 2px solid var(--color-border);
-    list-style: none;
-    font-size: var(--text-sm);
-  }
-  .timeline__stages li {
+  .exp__status {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-2);
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
-  .timeline__stage-dates {
-    font-family: var(--font-mono);
-    color: var(--color-text-muted);
+  .exp__more {
+    margin-top: var(--space-5);
   }
 </style>

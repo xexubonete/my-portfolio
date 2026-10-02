@@ -1,5 +1,4 @@
 ---
-import Icon from '@/components/ui/Icon.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { t } from '@/i18n'
 
@@ -14,55 +13,67 @@ const { notFound } = t(lang)
   title="404 - Not Found"
   description="404 Error — this page was not found"
 >
-  <main id="main" class="not-found">
-    <img
-      src="/me_chillin.png"
-      width="420"
-      height="420"
-      alt=""
-      class="not-found__photo"
-    />
-    <p class="not-found__code">{notFound.code}</p>
-    <h1 class="not-found__title">{notFound.title}</h1>
-    <p class="not-found__body">{notFound.body}</p>
-    <a class="button button--primary" href="/">
-      <Icon name="arrow-left" size={18} />
-      {notFound.back}
-    </a>
+  <main id="main" class="hero not-found">
+    <div class="wrap not-found__grid">
+      <div>
+        <p class="eyebrow eyebrow--accent">{notFound.eyebrow}</p>
+        <p class="display-hero display not-found__code">{notFound.code}</p>
+        <h1 class="not-found__title">{notFound.title}</h1>
+        <p class="not-found__body">{notFound.body}</p>
+        <p class="not-found__action">
+          <a class="btn" href="/">
+            {notFound.back}
+          </a>
+        </p>
+      </div>
+      <img
+        class="not-found__portrait"
+        src="/me_chillin.png"
+        alt=""
+        width="420"
+        height="420"
+      />
+    </div>
   </main>
 </BaseLayout>
 
 <style>
   .not-found {
+    min-height: calc(100dvh - 3.5rem);
     display: grid;
-    justify-items: center;
-    align-content: center;
-    gap: var(--space-3);
-    min-block-size: 70vh;
-    padding: var(--space-10) var(--space-5);
-    text-align: center;
+    align-items: center;
   }
-  .not-found__photo {
-    inline-size: min(100%, 14rem);
-    block-size: auto;
-    margin-block-end: var(--space-4);
+  .not-found__grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
   }
   .not-found__code {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: 0.2em;
-    color: var(--color-accent);
+    color: var(--color-accent-vivid);
+    margin-top: var(--space-3);
   }
   .not-found__title {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-size: var(--text-3xl);
+    margin-top: var(--space-5);
   }
   .not-found__body {
-    margin: 0 0 var(--space-4);
     color: var(--color-text-muted);
+    margin-top: var(--space-3);
+    max-width: 40ch;
+  }
+  .not-found__action {
+    margin-top: var(--space-6);
+  }
+  .not-found__portrait {
+    width: clamp(10rem, 12rem + 10vw, 22rem);
+  }
+  @media (max-width: 47.99rem) {
+    .not-found__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .not-found__portrait {
+      justify-self: center;
+    }
   }
 </style>

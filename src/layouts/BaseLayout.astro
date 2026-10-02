@@ -1,9 +1,9 @@
 ---
-import '@/components/ui/primitives.css'
 import Footer from '@/components/layout/Footer.astro'
 import HeadSEO from '@/components/layout/HeadSEO.astro'
 import Header from '@/components/layout/Header.astro'
 import ThemeScript from '@/components/layout/ThemeScript.astro'
+import Sprite from '@/components/ui/Sprite.astro'
 import { t, type Lang, type PageId } from '@/i18n'
 
 interface Props {
@@ -27,20 +27,30 @@ const { a11y } = t(lang)
       alternates={{ lang, page }}
     />
     <ThemeScript />
+    <noscript>
+      <style>
+        /* Without JavaScript nothing would ever reveal: show it all. */
+        [data-reveal] .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
+    <Sprite />
     <a class="skip-link" href="#main">
       {a11y.skip}
     </a>
     <Header lang={lang} page={page} />
     <slot />
-    <Footer lang={lang} />
+    <Footer lang={lang} page={page} />
 
     <script is:inline>
-      // The build is static, so the years-of-experience figures are refreshed on
-      // the client: every element carries both of its phrasings, and `{n}` is the
-      // number of full years since February 2022.
       ;(function () {
+        // The build is static, so the years-of-experience figures are refreshed
+        // on the client: every element carries both of its phrasings, and `{n}`
+        // is the number of full years since February 2022.
         var now = new Date()
         var month = now.getMonth() + 1
         var years = now.getFullYear() - 2022
@@ -48,6 +58,28 @@ const { a11y } = t(lang)
         var key = month === 2 ? 'expExact' : 'expPlus'
         document.querySelectorAll('[data-exp-plus]').forEach(function (el) {
           el.textContent = el.dataset[key].replace('{n}', years)
+        })
+
+        // Reveal on scroll: one IntersectionObserver, fires once per section.
+        var sections = document.querySelectorAll('[data-reveal]')
+        if (!('IntersectionObserver' in window)) {
+          sections.forEach(function (el) {
+            el.classList.add('is-visible')
+          })
+          return
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return
+              entry.target.classList.add('is-visible')
+              io.unobserve(entry.target)
+            })
+          },
+          { rootMargin: '0px 0px -12% 0px' },
+        )
+        sections.forEach(function (el) {
+          io.observe(el)
         })
       })()
     </script>
@@ -58,21 +90,9 @@ const { a11y } = t(lang)
   @view-transition {
     navigation: auto;
   }
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
-  }
   body {
-    min-block-size: 100dvh;
     display: flex;
     flex-direction: column;
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
   main {
     flex: 1;
@@ -86,8 +106,8 @@ const { a11y } = t(lang)
     border-radius: var(--radius-s);
     background: var(--color-accent);
     color: var(--color-accent-contrast);
-    font-weight: 600;
-    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
     transform: translateY(-200%);
   }
   .skip-link:focus {
@@ -103,17 +123,5 @@ const { a11y } = t(lang)
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    ::before,
-    ::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
   }
 </style>

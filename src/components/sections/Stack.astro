@@ -1,0 +1,37 @@
+---
+import SectionHead from '@/components/ui/SectionHead.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  num: string
+}
+
+const { lang, num } = Astro.props
+const { skills } = t(lang)
+const itemCount = skills.groups.reduce((n, group) => n + group.items.length, 0)
+const meta = `${skills.groups.length} ${skills.groupsLabel} · ${itemCount} ${skills.itemsLabel}`
+---
+
+<section class="section" data-reveal id="stack" aria-labelledby="stack-title">
+  <div class="wrap">
+    <SectionHead num={num} title={skills.title} meta={meta} id="stack-title" />
+    <div class="stack reveal" style="--reveal-delay: 120ms">
+      {skills.groups.map((group, i) => (
+        <div class="stack__group">
+          <h3 class="stack__label">
+            <span class="section-num">
+              {num}.{i + 1}
+            </span>
+            {group.label}
+          </h3>
+          <ul class="stack__items list-reset">
+            {group.items.map((item) => (
+              <li class="tag">{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

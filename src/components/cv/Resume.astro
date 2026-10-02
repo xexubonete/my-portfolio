@@ -1,7 +1,10 @@
 ---
-import '@/styles/fonts.css'
-import '@/styles/tokens.css'
-import { experienceByLang, LINKS, type Lang } from '@/i18n'
+import '@/styles/globals.css'
+import '@/styles/cv.css'
+import ThemeScript from '@/components/layout/ThemeScript.astro'
+import Glyph from '@/components/ui/Glyph.astro'
+import Sprite from '@/components/ui/Sprite.astro'
+import { experienceByLang, LINKS, pagePath, t, type Lang } from '@/i18n'
 import { formatYears, groupByCompany } from '@/lib/experience'
 
 interface Props {
@@ -10,11 +13,12 @@ interface Props {
 
 const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
+const { nav } = t(lang)
 
 const T = {
   es: {
     role: 'Desarrollador .NET Senior',
-    download: '⤓ Descargar PDF',
+    download: 'Descargar PDF',
     pdf: '/CV_Jesus_Bonete_ES.pdf',
     location: 'Elda, Alicante, España',
     profileTitle: 'Perfil',
@@ -48,7 +52,7 @@ const T = {
   },
   en: {
     role: 'Senior .NET Developer',
-    download: '⤓ Download PDF',
+    download: 'Download PDF',
     pdf: '/CV_Jesus_Bonete_EN.pdf',
     location: 'Elda, Alicante, Spain',
     profileTitle: 'Profile',
@@ -90,473 +94,227 @@ const expTemplate = {
 }[lang]
 const profileText = T.profile.replace(
   '{EXP}',
-  `<span data-exp-plus="${expTemplate.plus}" data-exp-exact="${expTemplate.exact}">${formatYears(expTemplate)}</span>`,
+  `<b data-exp-plus="${expTemplate.plus}" data-exp-exact="${expTemplate.exact}">${formatYears(expTemplate)}</b>`,
 )
 ---
 
-{/* The CV is a printed document: it is pinned to the light palette so the
-    PDF looks the same whatever theme the visitor browses with. */}
-<html lang={lang} data-theme="light">
+{/* The sheet is always paper (cv.css), whatever the theme: it prints, it is
+    rendered to PDF and it is embedded as a preview. The page around it follows
+    the theme like the rest of the site. */}
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CV — Jesús Bonete Sánchez</title>
+    <link rel="icon" type="image/png" href="/me.png" />
+    <ThemeScript />
+    <script is:inline>
+      // Embedded as the home-page preview: no toolbar, no padding, no shadow.
+      if (new URLSearchParams(location.search).get('embed')) {
+        document.documentElement.classList.add('is-embed')
+      }
+    </script>
     <style is:global>
-      :root {
-        --brand: var(--color-accent);
-        --brand-dark: color-mix(in oklab, var(--color-accent) 85%, black);
-        --brand-ink: var(--color-accent-contrast);
-        --ink: var(--color-text);
-        --muted: var(--color-text-muted);
-        --line: var(--color-border);
-        --paper: var(--color-surface);
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
+      .is-embed .cv-page {
         padding: 0;
+        min-height: 0;
       }
-      body {
-        font-family: var(--font-body);
-        color: var(--ink);
-        background: var(--color-bg);
-        line-height: 1.45;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .toolbar {
-        display: flex;
-        justify-content: center;
-        padding: 1rem;
-      }
-      .btn {
-        cursor: pointer;
-        border: none;
-        border-radius: 0.5rem;
-        background: var(--brand);
-        color: var(--brand-ink);
-        font: inherit;
-        font-weight: 700;
-        padding: 0.6rem 1.4rem;
-        box-shadow: var(--shadow-m);
-      }
-      .btn:hover {
-        background: var(--brand-dark);
-      }
-      .page {
-        width: 210mm;
-        min-height: 297mm;
-        margin: 0 auto 2rem;
-        background: var(--paper);
-        display: grid;
-        grid-template-columns: 66mm 1fr;
-        box-shadow: var(--shadow-l);
-        overflow: hidden;
-      }
-      .aside {
-        background: linear-gradient(160deg, var(--brand), var(--brand-dark));
-        color: var(--brand-ink);
-        padding: 9mm 7mm;
-      }
-      .photo {
-        width: 32mm;
-        height: 32mm;
-        border-radius: 50%;
-        object-fit: cover;
-        display: block;
-        margin: 0 auto 4mm;
-        background: var(--paper);
-        border: 2px solid var(--muted);
-        box-shadow: var(--shadow-m);
-      }
-      .name {
-        font-family: var(--font-display);
-        text-align: center;
-        font-size: 16pt;
-        font-weight: 700;
-        line-height: 1.15;
-      }
-      .role {
-        text-align: center;
-        font-size: 9.5pt;
-        opacity: 0.92;
-        margin-top: 1mm;
-      }
-      .aside h2 {
-        font-size: 9pt;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        margin: 5mm 0 2mm;
-        padding-bottom: 1mm;
-        border-bottom: 1px solid
-          color-mix(in oklab, var(--brand-ink) 35%, transparent);
-      }
-      .aside a {
-        color: var(--brand-ink);
-        text-decoration: none;
-        word-break: break-word;
-      }
-      .field {
-        font-size: 8.5pt;
-        margin-bottom: 1.6mm;
-        line-height: 1.35;
-      }
-      .field .label {
-        display: block;
-        font-weight: 700;
-        opacity: 0.85;
-        font-size: 7.5pt;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-      .contact {
-        display: flex;
-        align-items: flex-start;
-        gap: 2mm;
-        font-size: 8.5pt;
-        margin-bottom: 2mm;
-        line-height: 1.3;
-      }
-      .contact svg {
-        width: 3.8mm;
-        height: 3.8mm;
-        flex-shrink: 0;
-        margin-top: 0.2mm;
-        fill: currentColor;
-      }
-      .contact a {
-        word-break: break-word;
-      }
-      .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.2mm;
-      }
-      .chip {
-        font-size: 7.5pt;
-        background: color-mix(in oklab, var(--brand-ink) 18%, transparent);
-        border-radius: 999px;
-        padding: 0.8mm 2mm;
-      }
-      .main {
-        padding: 8mm 9mm;
-      }
-      .main h2 {
-        font-size: 11pt;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--brand-dark);
-        border-bottom: 2px solid var(--brand);
-        padding-bottom: 1mm;
-        margin-bottom: 2.2mm;
-      }
-      .section + .section {
-        margin-top: 3.5mm;
-      }
-      .summary {
-        font-size: 9pt;
-        color: color-mix(in oklab, var(--ink) 85%, var(--muted));
-      }
-      .job {
-        position: relative;
-        padding-left: 5mm;
-        margin-bottom: 2.6mm;
-      }
-      .job::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 1.4mm;
-        width: 2.2mm;
-        height: 2.2mm;
-        border-radius: 50%;
-        background: var(--brand);
-      }
-      .job::after {
-        content: '';
-        position: absolute;
-        left: 0.9mm;
-        top: 4mm;
-        bottom: -2.5mm;
-        width: 0.4mm;
-        background: var(--line);
-      }
-      .job:last-child::after {
+      .is-embed .cv-toolbar {
         display: none;
       }
-      .job-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 4mm;
-      }
-      .job-title {
-        font-size: 10pt;
-        font-weight: 700;
-      }
-      .job-company {
-        color: var(--brand-dark);
-        font-weight: 700;
-        text-decoration: none;
-      }
-      .job-period {
-        font-size: 8pt;
-        color: var(--muted);
-        white-space: nowrap;
-      }
-      .job-place {
-        font-size: 8pt;
-        color: var(--muted);
-      }
-      .job-summary {
-        font-size: 8.5pt;
-        font-style: italic;
-        color: color-mix(in oklab, var(--ink) 70%, var(--muted));
-        margin: 0.4mm 0;
-      }
-      .job ul {
-        list-style: none;
-        font-size: 8.5pt;
-      }
-      .job li {
-        position: relative;
-        padding-left: 3.5mm;
-        margin-bottom: 0.4mm;
-        line-height: 1.28;
-      }
-      .job li::before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: var(--brand);
-      }
-      .stack {
-        font-size: 8pt;
-        color: var(--muted);
-        margin-top: 0.8mm;
-        line-height: 1.3;
-      }
-      .stack b {
-        color: var(--ink);
-      }
-      /* Same company, multiple stages: one company header + nested roles. */
-      .company-name {
-        font-size: 11pt;
-      }
-      .roles {
-        margin-top: 2mm;
-        margin-left: 0.4mm;
-        padding-left: 4mm;
-        border-left: 1.5px solid var(--line);
-        display: flex;
-        flex-direction: column;
-        gap: 2.8mm;
-      }
-      .exp-role .job-title {
-        font-weight: 700;
-        font-size: 9.5pt;
-      }
-      @media print {
-        body {
-          background: var(--paper);
-        }
-        .toolbar {
-          display: none;
-        }
-        .page {
-          margin: 0;
-          box-shadow: none;
-          width: 100%;
-          min-height: 100vh;
-        }
-      }
-      @page {
-        size: A4;
-        margin: 0;
-      }
-      html,
-      body {
-        margin: 0;
-        padding: 0;
+      .is-embed .cv-sheet {
+        box-shadow: none;
       }
     </style>
   </head>
   <body>
-    <div class="toolbar">
-      <a class="btn" href={T.pdf} download>
-        {T.download}
-      </a>
-    </div>
+    <Sprite />
+    <div class="cv-page">
+      <div class="cv-toolbar">
+        <a class="btn btn--accent" href={T.pdf} download>
+          {T.download}
+          <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
+        </a>
+        <a class="btn btn--ghost" href={pagePath(lang, 'home')}>
+          {nav.home}
+        </a>
+      </div>
 
-    <div class="page">
-      <aside class="aside">
-        <img class="photo" src="/me.png" alt="Jesús Bonete" />
-        <div class="name">Jesús Bonete Sánchez</div>
-        <div class="role">{T.role}</div>
+      <article class="cv-sheet">
+        <aside class="cv-aside">
+          <div>
+            <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
+            <h1 class="cv-name">
+              Jesús <span>Bonete Sánchez</span>
+            </h1>
+            <p class="cv-role">{T.role}</p>
+          </div>
 
-        <h2>{T.contactTitle}</h2>
-        <div class="contact">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
-          </svg>
-          <span>{T.location}</span>
-        </div>
-        <div class="contact">
-          <svg viewBox="0 0 24 24">
-            <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"></path>
-          </svg>
-          <a href={LINKS.mail}>xexubonete@gmail.com</a>
-        </div>
-        <div class="contact">
-          <svg viewBox="0 0 24 24">
-            <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1l-2.23 2.2z"></path>
-          </svg>
-          <span>(+34) 722 243 881</span>
-        </div>
-        <div class="contact">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.7 15.7 0 0 0-1.38-3.56A8 8 0 0 1 18.93 8zM12 4c.83 1.2 1.48 2.53 1.91 4h-3.82c.43-1.47 1.08-2.8 1.91-4zM4.26 14a7.8 7.8 0 0 1 0-4h3.38a16.6 16.6 0 0 0 0 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8 8 0 0 1 5.07 16zm2.95-8H5.07a8 8 0 0 1 4.33-3.56A15.7 15.7 0 0 0 8.02 8zM12 20c-.83-1.2-1.48-2.53-1.91-4h3.82A13.9 13.9 0 0 1 12 20zm2.34-6H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.27 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8 8 0 0 1-4.33 3.56zM16.36 14a16.6 16.6 0 0 0 0-4h3.38a7.8 7.8 0 0 1 0 4h-3.38z"></path>
-          </svg>
-          <a href="https://xexubonete.dev" target="_blank" rel="noreferrer">
-            xexubonete.dev
-          </a>
-        </div>
-        <div class="contact">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.9H5.67v8.44h2.67zM7 8.67a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.67v-4.63c0-2.47-1.32-3.62-3.08-3.62-1.42 0-2.06.78-2.42 1.33V9.9h-2.67v8.44h2.67v-4.45c0-.24.02-.47.09-.64.18-.47.61-.96 1.33-.96.94 0 1.31.71 1.31 1.76v4.33h2.67z"></path>
-          </svg>
-          <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
-            jesus-bonete-sanchez
-          </a>
-        </div>
-        <div class="contact">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2z"></path>
-          </svg>
-          <a href={LINKS.github} target="_blank" rel="noreferrer">
-            xexubonete
-          </a>
-        </div>
+          <section>
+            <h2>{T.contactTitle}</h2>
+            <div class="cv-contact">
+              <Glyph name="pin" />
+              <span>{T.location}</span>
+            </div>
+            <div class="cv-contact">
+              <Glyph name="mail" />
+              <a href={LINKS.mail}>xexubonete@gmail.com</a>
+            </div>
+            <div class="cv-contact">
+              <Glyph name="phone" />
+              <span>(+34) 722 243 881</span>
+            </div>
+            <div class="cv-contact">
+              <Glyph name="globe" />
+              <a href="https://xexubonete.dev" target="_blank" rel="noreferrer">
+                xexubonete.dev
+              </a>
+            </div>
+            <div class="cv-contact">
+              <Glyph name="globe" />
+              <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
+                linkedin.com/in/jesus-bonete-sanchez
+              </a>
+            </div>
+            <div class="cv-contact">
+              <Glyph name="globe" />
+              <a href={LINKS.github} target="_blank" rel="noreferrer">
+                github.com/xexubonete
+              </a>
+            </div>
+          </section>
 
-        <h2>{T.dataTitle}</h2>
-        <div class="field">
-          <span class="label">{T.nat}</span>
-          {T.natValue}
-        </div>
-        <div class="field">
-          <span class="label">{T.license}</span>B
-        </div>
+          <section>
+            <h2>{T.dataTitle}</h2>
+            <div class="cv-field">
+              <span class="label">{T.nat}</span>
+              {T.natValue}
+            </div>
+            <div class="cv-field">
+              <span class="label">{T.license}</span>B
+            </div>
+          </section>
 
-        <h2>{T.langTitle}</h2>
-        <div class="field">
-          <span class="label">{T.spanish}</span>
-          {T.spanishLevel}
-        </div>
-        <div class="field">
-          <span class="label">{T.english}</span>B2
-        </div>
+          <section>
+            <h2>{T.langTitle}</h2>
+            <div class="cv-field">
+              <span class="label">{T.spanish}</span>
+              {T.spanishLevel}
+            </div>
+            <div class="cv-field">
+              <span class="label">{T.english}</span>B2
+            </div>
+          </section>
 
-        <h2>{T.skillsTitle}</h2>
-        <div class="chips">
-          {T.softSkills.map((skill) => (
-            <span class="chip">{skill}</span>
-          ))}
-        </div>
-      </aside>
+          <section>
+            <h2>{T.skillsTitle}</h2>
+            <div class="cv-chips">
+              {T.softSkills.map((skill) => (
+                <span class="cv-chip">{skill}</span>
+              ))}
+            </div>
+          </section>
+        </aside>
 
-      <main class="main">
-        <section class="section">
-          <h2>{T.profileTitle}</h2>
-          <p class="summary" set:html={profileText} />
-        </section>
+        <main class="cv-main">
+          <section>
+            <h2 data-num="01">{T.profileTitle}</h2>
+            <p class="cv-summary" set:html={profileText} />
+          </section>
 
-        <section class="section">
-          <h2>{T.expTitle}</h2>
-          {companyGroups.map((group) =>
-            group.roles.length === 1 ? (
-              <div class="job">
-                <div class="job-head">
-                  <span class="job-title">
-                    {group.roles[0].position} ·{' '}
+          <section>
+            <h2 data-num="02">{T.expTitle}</h2>
+            {companyGroups.map((group) =>
+              group.roles.length === 1 ? (
+                <div class="cv-job">
+                  <div class="cv-job-head">
+                    <span class="cv-job-title">
+                      {group.roles[0].position} ·{' '}
+                      <a
+                        class="cv-job-company"
+                        href={group.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {group.company}
+                      </a>
+                    </span>
+                    <span class="cv-job-period">
+                      {group.roles[0].start} – {group.roles[0].end}
+                    </span>
+                  </div>
+                  <div class="cv-job-place">{group.location}</div>
+                  <p class="cv-job-summary">{group.roles[0].description}</p>
+                  <ul>
+                    {group.roles[0].responsibilities.map((task) => (
+                      <li>{task}</li>
+                    ))}
+                  </ul>
+                  <div class="cv-stack">
+                    {group.roles[0].stack.map((item) => (
+                      <span>{item}</span>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div class="cv-job">
+                  <div class="cv-job-head">
                     <a
-                      class="job-company"
+                      class="cv-job-title cv-job-company"
                       href={group.link}
                       target="_blank"
                       rel="noreferrer"
                     >
                       {group.company}
                     </a>
-                  </span>
-                  <span class="job-period">
-                    {group.roles[0].start} – {group.roles[0].end}
-                  </span>
-                </div>
-                <div class="job-place">{group.location}</div>
-                <p class="job-summary">{group.roles[0].description}</p>
-                <ul>
-                  {group.roles[0].responsibilities.map((task) => (
-                    <li>{task}</li>
-                  ))}
-                </ul>
-                <p class="stack">
-                  <b>Stack:</b> {group.roles[0].stack.join(' · ')}
-                </p>
-              </div>
-            ) : (
-              <div class="job">
-                <div class="job-head">
-                  <a
-                    class="job-company company-name"
-                    href={group.link}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {group.company}
-                  </a>
-                  <span class="job-period">
-                    {group.start} – {group.end}
-                  </span>
-                </div>
-                <div class="job-place">{group.location}</div>
-                <div class="roles">
-                  {group.roles.map((role) => (
-                    <div class="exp-role">
-                      <div class="job-head">
-                        <span class="job-title">{role.position}</span>
-                        <span class="job-period">
-                          {role.start} – {role.end}
-                        </span>
+                    <span class="cv-job-period">
+                      {group.start} – {group.end}
+                    </span>
+                  </div>
+                  <div class="cv-job-place">{group.location}</div>
+                  <div class="cv-roles">
+                    {group.roles.map((role) => (
+                      <div>
+                        <div class="cv-job-head">
+                          <span class="cv-job-title">{role.position}</span>
+                          <span class="cv-job-period">
+                            {role.start} – {role.end}
+                          </span>
+                        </div>
+                        <p class="cv-job-summary">{role.description}</p>
+                        <ul>
+                          {role.responsibilities.map((task) => (
+                            <li>{task}</li>
+                          ))}
+                        </ul>
+                        <div class="cv-stack">
+                          {role.stack.map((item) => (
+                            <span>{item}</span>
+                          ))}
+                        </div>
                       </div>
-                      <p class="job-summary">{role.description}</p>
-                      <ul>
-                        {role.responsibilities.map((task) => (
-                          <li>{task}</li>
-                        ))}
-                      </ul>
-                      <p class="stack">
-                        <b>Stack:</b> {role.stack.join(' · ')}
-                      </p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ),
-          )}
-        </section>
+              ),
+            )}
+          </section>
 
-        <section class="section">
-          <h2>{T.eduTitle}</h2>
-          <div class="job">
-            <div class="job-head">
-              <span class="job-title">
-                {T.eduName} · <span class="job-company">IES Mare Nostrum</span>
-              </span>
-              <span class="job-period">2020 – 2022</span>
+          <section>
+            <h2 data-num="03">{T.eduTitle}</h2>
+            <div class="cv-job">
+              <div class="cv-job-head">
+                <span class="cv-job-title">
+                  {T.eduName} ·{' '}
+                  <span class="cv-job-company">IES Mare Nostrum</span>
+                </span>
+                <span class="cv-job-period">2020 – 2022</span>
+              </div>
+              <div class="cv-job-place">{T.eduPlace}</div>
             </div>
-            <div class="job-place">{T.eduPlace}</div>
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </article>
     </div>
 
     <script is:inline>

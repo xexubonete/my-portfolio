@@ -1,10 +1,14 @@
 ---
-import About from '@/components/sections/About.astro'
 import Contact from '@/components/sections/Contact.astro'
+import Cv from '@/components/sections/Cv.astro'
 import Experience from '@/components/sections/Experience.astro'
+import Goals from '@/components/sections/Goals.astro'
 import Hero from '@/components/sections/Hero.astro'
+import Profile from '@/components/sections/Profile.astro'
 import Projects from '@/components/sections/Projects.astro'
-import Skills from '@/components/sections/Skills.astro'
+import Quote from '@/components/sections/Quote.astro'
+import Stack from '@/components/sections/Stack.astro'
+import Tape from '@/components/sections/Tape.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { t, type Lang } from '@/i18n'
 
@@ -24,10 +28,14 @@ const { meta } = t(lang)
 >
   <main id="main">
     <Hero lang={lang} />
-    <Experience lang={lang} index={1} />
-    <Skills lang={lang} index={2} />
-    <Projects lang={lang} index={3} />
-    <About lang={lang} index={4} />
-    <Contact lang={lang} index={5} />
+    <Tape lang={lang} />
+    <Stack lang={lang} num="01" />
+    <Experience lang={lang} num="02" />
+    <Projects lang={lang} num="03" />
+    <Goals lang={lang} num="04" />
+    <Quote lang={lang} />
+    <Profile lang={lang} num="06" />
+    <Cv lang={lang} num="07" />
+    <Contact lang={lang} num="08" />
   </main>
 </BaseLayout>

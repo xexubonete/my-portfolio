@@ -1,124 +1,50 @@
 ---
-import Icon from '@/components/ui/Icon.astro'
-import Section from '@/components/ui/Section.astro'
-import { PROJECT_LINKS, t, type Lang } from '@/i18n'
+import Glyph from '@/components/ui/Glyph.astro'
+import SectionHead from '@/components/ui/SectionHead.astro'
+import { LINKS, PROJECT_LINKS, t, type Lang } from '@/i18n'
 
 interface Props {
   lang: Lang
-  index?: number
+  num: string
 }
 
-const { lang, index } = Astro.props
+const { lang, num } = Astro.props
 const { projects, a11y } = t(lang)
+const meta = LINKS.github.replace(/^https?:\/\//, '')
 ---
 
-<Section id="projects" title={projects.title} index={index}>
-  <ul class="projects">
-    {PROJECT_LINKS.map((project) => (
-      <li>
+<section
+  class="section"
+  data-reveal
+  id="projects"
+  aria-labelledby="projects-title"
+>
+  <div class="wrap">
+    <SectionHead
+      num={num}
+      title={projects.title}
+      meta={meta}
+      id="projects-title"
+    />
+    <div class="projects reveal" style="--reveal-delay: 120ms">
+      {PROJECT_LINKS.map((project, i) => (
         <a
-          class:list={['project', { 'project--live': project.live }]}
+          class="project"
           href={project.href}
           target="_blank"
           rel="noreferrer"
           title={project.live ? projects.here : undefined}
         >
-          {project.live ? (
-            <span class="project__live" aria-hidden="true" />
-          ) : (
-            <Icon name="github" size={18} class="project__icon" />
-          )}
-          <span class="project__name">{project.label}</span>
-          <Icon name="arrow-up-right" size={18} class="project__arrow" />
+          <span class="project__index">{String(i + 1).padStart(2, '0')}</span>
+          <span class="project__name">
+            {project.live && <span class="live-dot" aria-hidden="true" />}
+            {project.label}
+            {project.live && <span class="project__note">{projects.here}</span>}
+          </span>
+          <Glyph name="arrow" class="arrow" />
           <span class="sr-only">{a11y.external}</span>
         </a>
-      </li>
-    ))}
-  </ul>
-</Section>
-
-<style>
-  .projects {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
-    gap: var(--space-3);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .project {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-m);
-    background: var(--color-surface);
-    color: var(--color-text);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    text-decoration: none;
-    transition:
-      transform var(--duration-fast) var(--ease-out),
-      box-shadow var(--duration-fast) var(--ease-out),
-      border-color var(--duration-fast) var(--ease-out),
-      background-color var(--duration-fast) var(--ease-out),
-      color var(--duration-fast) var(--ease-out);
-  }
-  .project:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent);
-    background: var(--color-accent);
-    color: var(--color-accent-contrast);
-    box-shadow: var(--shadow-m);
-  }
-  .project:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 2px;
-  }
-  .project__name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .project :global(.project__arrow) {
-    margin-inline-start: auto;
-    flex-shrink: 0;
-    opacity: 0.5;
-    transition:
-      opacity var(--duration-fast) var(--ease-out),
-      transform var(--duration-fast) var(--ease-out);
-  }
-  .project:hover :global(.project__arrow) {
-    opacity: 1;
-    transform: translate(2px, -2px);
-  }
-  .project :global(.project__icon) {
-    flex-shrink: 0;
-  }
-
-  /* my-portfolio is the project the visitor is looking at: a live beacon. */
-  .project--live {
-    border-color: var(--color-accent);
-    font-weight: 600;
-  }
-  .project__live {
-    flex-shrink: 0;
-    inline-size: 0.5rem;
-    block-size: 0.5rem;
-    border-radius: 50%;
-    background: var(--color-accent);
-    box-shadow: 0 0 0 0
-      color-mix(in oklab, var(--color-accent) 50%, transparent);
-    animation: project-pulse 2.2s var(--ease-in-out) infinite;
-  }
-  .project:hover .project__live {
-    background: var(--color-accent-contrast);
-    animation: none;
-  }
-  @keyframes project-pulse {
-    50% {
-      box-shadow: 0 0 0 0.5rem transparent;
-    }
-  }
-</style>
+      ))}
+    </div>
+  </div>
+</section>

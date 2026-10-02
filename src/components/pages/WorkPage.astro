@@ -1,6 +1,6 @@
 ---
 import ExpYears from '@/components/ui/ExpYears.astro'
-import Icon from '@/components/ui/Icon.astro'
+import Glyph from '@/components/ui/Glyph.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
 import { formatYears, groupByCompany } from '@/lib/experience'
@@ -23,199 +23,78 @@ const groups = groupByCompany(experienceByLang[lang])
   title={formatYears(experience.pageTitle)}
   description={description}
 >
-  <main id="main" class="work">
-    <header class="work__head">
-      <a class="button button--ghost work__back" href={pagePath(lang, 'home')}>
-        <Icon name="arrow-left" size={18} />
-        {nav.home}
-      </a>
-      <h1 class="work__title">
-        <ExpYears template={experience.pageTitle} />
-      </h1>
-      <p class="work__lead">{description}</p>
-    </header>
+  <main id="main">
+    <div class="wrap">
+      <header class="page-title">
+        <p class="eyebrow eyebrow--accent">02 — {experience.sectionTitle}</p>
+        <h1 class="page-title__h1">
+          {experience.pageLead}{' '}
+          <span class="accent-word">
+            <ExpYears template={experience.years} />
+          </span>
+        </h1>
+        <p>{description}</p>
+      </header>
 
-    <ol class="companies">
-      {groups.map((group) => (
-        <li class="company">
-          <header class="company__head">
-            <h2 class="company__name">
-              <a href={group.link} target="_blank" rel="noreferrer">
-                {group.company}
-                <span class="sr-only">{a11y.external}</span>
-              </a>
-            </h2>
-            <p class="company__meta">
-              <span class="company__dates">
-                {group.start} – {group.end}
-              </span>
-              · {group.location}
-            </p>
-          </header>
-
-          <ol class="roles">
+      {groups.map((group, i) => (
+        <section class="work-group">
+          <div class="work-group__company">
+            <span class="section-num">{String(i + 1).padStart(2, '0')}</span>{' '}
+            <a
+              class="exp__company link-arrow work-group__link"
+              href={group.link}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {group.company} <Glyph name="arrow" class="arrow" />
+              <span class="sr-only">{a11y.external}</span>
+            </a>
+            <span class="exp__dates">
+              {group.start} – {group.end} · {group.location}
+            </span>
+          </div>
+          <div>
             {group.roles.map((role) => (
-              <li class="role">
-                <p class="role__dates">
-                  <time>{role.start}</time> – <time>{role.end}</time>
-                </p>
-                <h3 class="role__position">{role.position}</h3>
+              <article class="role">
+                <div class="exp__dates">
+                  {role.start} – {role.end}
+                </div>
+                <h3 class="role__title">{role.position}</h3>
                 <p class="role__summary">{role.description}</p>
                 <ul class="role__tasks">
                   {role.responsibilities.map((task) => (
                     <li>{task}</li>
                   ))}
                 </ul>
-                <p class="role__stack">
-                  <strong>{experience.stack}</strong>
+                <div class="role__stack">
                   {role.stack.map((item) => (
-                    <span class="chip">{item}</span>
+                    <span class="tag">{item}</span>
                   ))}
-                </p>
-              </li>
+                </div>
+              </article>
             ))}
-          </ol>
-        </li>
+          </div>
+        </section>
       ))}
-    </ol>
+
+      <p class="work-back">
+        <a class="btn btn--outline" href={pagePath(lang, 'home')}>
+          {nav.home}
+        </a>
+      </p>
+    </div>
   </main>
 </BaseLayout>
 
 <style>
-  .work {
-    max-inline-size: var(--content-max);
-    margin-inline: auto;
-    padding: var(--space-10) var(--space-5) var(--space-12);
+  .page-title__h1 {
+    margin-top: var(--space-3);
   }
-  .work__head {
-    margin-block-end: var(--space-8);
+  .work-group__link {
+    margin-top: var(--space-2);
   }
-  .work__back {
-    margin-inline-start: calc(-1 * var(--space-2));
-  }
-  .work__title {
-    margin: var(--space-4) 0 0;
-    font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-  .work__lead {
-    margin: var(--space-3) 0 0;
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-  }
-
-  .companies,
-  .roles,
-  .role__tasks {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .companies {
-    display: grid;
-    gap: var(--space-8);
-  }
-  .company {
-    padding-block-start: var(--space-6);
-    border-block-start: 1px solid var(--color-border);
-  }
-  .company__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-2) var(--space-4);
-  }
-  .company__name {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .company__name a {
-    color: var(--color-accent);
-    text-decoration: none;
-  }
-  .company__name a:hover {
-    text-decoration: underline;
-  }
-  .company__meta {
-    margin: 0;
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-  .company__dates {
-    font-family: var(--font-mono);
-  }
-
-  .roles {
-    display: grid;
-    gap: var(--space-6);
-    margin-block-start: var(--space-5);
-    padding-inline-start: var(--space-5);
-    border-inline-start: 2px solid var(--color-border);
-  }
-  .role {
-    position: relative;
-  }
-  .role::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: calc(-1 * var(--space-5) - 6px);
-    inset-block-start: 0.45em;
-    inline-size: 10px;
-    block-size: 10px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    box-shadow: 0 0 0 4px var(--color-bg);
-  }
-  .role__dates {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.05em;
-    color: var(--color-text-muted);
-  }
-  .role__position {
-    margin: var(--space-1) 0 0;
-    font-size: var(--text-lg);
-    font-weight: 700;
-  }
-  .role__summary {
-    margin: var(--space-2) 0 0;
-    max-inline-size: 65ch;
-    font-style: italic;
-    color: var(--color-text-muted);
-  }
-  .role__tasks {
-    display: grid;
-    gap: var(--space-1);
-    margin-block-start: var(--space-3);
-    max-inline-size: 65ch;
-  }
-  .role__tasks li {
-    padding-inline-start: var(--space-4);
-    position: relative;
-  }
-  .role__tasks li::before {
-    content: '▹';
-    position: absolute;
-    inset-inline-start: 0;
-    color: var(--color-accent);
-  }
-  .role__stack {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    margin: var(--space-4) 0 0;
-    font-size: var(--text-sm);
-  }
-  .role__stack strong {
-    margin-inline-end: var(--space-1);
+  .work-back {
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--color-border-strong);
   }
 </style>

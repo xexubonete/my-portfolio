@@ -1,0 +1,98 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import SectionHead from '@/components/ui/SectionHead.astro'
+import { studiesByLang, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  num: string
+}
+
+const { lang, num } = Astro.props
+const { profile, about, study, languages, softSkills, a11y } = t(lang)
+const studies = studiesByLang[lang]
+
+// "DAW · Web Developer"; the placeholder titles of the other entries are dropped.
+const studyLabel = (item: (typeof studies)[number]) =>
+  item.title && item.title !== '...'
+    ? `${item.institution} · ${item.title}`
+    : item.institution
+---
+
+<section
+  class="section"
+  data-reveal
+  id="profile"
+  aria-labelledby="profile-title"
+>
+  <div class="wrap">
+    <SectionHead
+      num={num}
+      title={profile.title}
+      meta={profile.meta}
+      id="profile-title"
+    />
+    <div class="profile reveal" style="--reveal-delay: 120ms">
+      <div class="profile__col">
+        <h3 class="profile__title">{about.title}</h3>
+        <div class="prose">
+          {about.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+
+      <div class="profile__col">
+        <h3 class="profile__title">{study.title}</h3>
+        <ul class="list-plain">
+          {studies.map((item) => (
+            <li>
+              {item.link ? (
+                <a
+                  class="link-arrow"
+                  href={item.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {studyLabel(item)} <Glyph name="arrow" class="arrow" />
+                  <span class="sr-only">{a11y.external}</span>
+                </a>
+              ) : (
+                <span>{studyLabel(item)}</span>
+              )}
+              {item.date && <span class="mono">{item.date}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="profile__col">
+        <h3 class="profile__title">{languages.title}</h3>
+        <ul class="list-plain">
+          {languages.items.map((item) => (
+            <li>
+              <span>{item.name}</span>
+              <span class="mono">{item.level}</span>
+            </li>
+          ))}
+        </ul>
+        <h3 class="profile__title profile__title--next">{softSkills.title}</h3>
+        <ul class="list-plain list-plain--check">
+          {softSkills.items.map((item) => (
+            <li>
+              <span>
+                <Glyph name="check" class="check" /> {item}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .profile__title--next {
+    margin-top: var(--space-3);
+  }
+</style>

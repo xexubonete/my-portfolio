@@ -1,32 +1,34 @@
 ---
-import { LINKS, t, type Lang } from '@/i18n'
+import { LINKS, otherLang, pagePath, t, type Lang, type PageId } from '@/i18n'
 
 interface Props {
   lang: Lang
+  page: PageId
 }
 
-const { lang } = Astro.props
-const { a11y } = t(lang)
+const { lang, page } = Astro.props
+const { footer, a11y } = t(lang)
+const other = otherLang(lang)
 const year = new Date().getFullYear()
 ---
 
 <footer class="site-footer">
-  <div class="site-footer__inner">
+  <div class="wrap">
     <span>
       © <span data-year>{year}</span> Jesús Bonete
     </span>
-    <ul class="site-footer__links">
-      <li>
-        <a href={LINKS.github} target="_blank" rel="noreferrer">
-          GitHub <span class="sr-only">{a11y.external}</span>
-        </a>
-      </li>
-      <li>
-        <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
-          LinkedIn <span class="sr-only">{a11y.external}</span>
-        </a>
-      </li>
-    </ul>
+    <span>{footer.builtWith}</span>
+    <span class="site-footer__links">
+      <a href={LINKS.github} target="_blank" rel="noreferrer">
+        GitHub <span class="sr-only">{a11y.external}</span>
+      </a>
+      <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
+        LinkedIn <span class="sr-only">{a11y.external}</span>
+      </a>
+      <a href={pagePath(other, page)} hreflang={other} lang={other}>
+        {other.toUpperCase()}
+      </a>
+    </span>
   </div>
 </footer>
 
@@ -38,35 +40,8 @@ const year = new Date().getFullYear()
 </script>
 
 <style>
-  .site-footer {
-    inline-size: 100%;
-    border-block-start: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-    font-size: var(--text-xs);
-  }
-  .site-footer__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-    max-inline-size: var(--content-max);
-    margin-inline: auto;
-    padding: var(--space-6) var(--space-5);
-  }
   .site-footer__links {
     display: flex;
     gap: var(--space-4);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .site-footer a {
-    color: inherit;
-    text-decoration: none;
-    transition: color var(--duration-fast) var(--ease-out);
-  }
-  .site-footer a:hover {
-    color: var(--color-text);
   }
 </style>
