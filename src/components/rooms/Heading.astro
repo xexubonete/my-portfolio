@@ -1,0 +1,25 @@
+---
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { heading } = t(lang)
+---
+
+<Room id="heading" mark={mark} title={heading.title} line={heading.line}>
+  <div class="bearings">
+    {heading.items.map((item) => (
+      <div>
+        <h3>{item.label}</h3>
+        <p>{item.text}</p>
+      </div>
+    ))}
+  </div>
+  <Word slot="piece" text={heading.word} />
+</Room>

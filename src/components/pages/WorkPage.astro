@@ -1,9 +1,10 @@
 ---
-import ExpYears from '@/components/ui/ExpYears.astro'
 import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
-import { formatYears, groupByCompany } from '@/lib/experience'
+import { experienceByLang, t, type Lang } from '@/i18n'
+import { formatYears } from '@/lib/experience'
 import { WORK as WORK_EN } from '@/lib/constants'
 import { WORK as WORK_ES } from '@/lib/constants-es'
 
@@ -12,76 +13,75 @@ interface Props {
 }
 
 const { lang } = Astro.props
-const { experience, a11y } = t(lang)
+const { work, a11y } = t(lang)
 const description = { es: WORK_ES, en: WORK_EN }[lang].DESCRIPTION
-const groups = groupByCompany(experienceByLang[lang])
+
+// One room per role, newest first, each under the year it ended: walking the
+// hall counts the years back to the first one.
+const roles = experienceByLang[lang].map((role) => {
+  const year = role.end.slice(-4)
+  return { ...role, year, id: `y${year}-${role.start.replace('/', '')}` }
+})
+const rooms = roles.map((role) => ({
+  id: role.id,
+  mark: role.year,
+  title: `${role.position}, ${role.company}`,
+}))
 ---
 
 <BaseLayout
   lang={lang}
   page="work"
-  title={formatYears(experience.pageTitle)}
+  title={formatYears(work.pageTitle)}
   description={description}
+  rooms={rooms}
 >
-  <main id="main">
-    <div class="wrap">
-      <header class="page-title">
-        <p class="eyebrow eyebrow--accent">{experience.eyebrow}</p>
-        <h1>
-          {experience.pageLead}{' '}
-          <span class="accent-word">
-            <ExpYears template={experience.years} />
-          </span>
-        </h1>
-        <p>{description}</p>
-      </header>
-
-      {groups.map((group, i) => (
-        <section class="work-group">
-          <div class="work-group__company">
-            <span class="section-num">{String(i + 1).padStart(2, '0')}</span>{' '}
-            <a
-              class="exp__company link-arrow"
-              href={group.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {group.company} <Glyph name="arrow" class="arrow" />
-              <span class="sr-only">{a11y.external}</span>
-            </a>
-            <span class="exp__dates">
-              {group.start} – {group.end} · {group.location}
-            </span>
-          </div>
-          <div>
-            {group.roles.map((role) => (
-              <article class="role">
-                <div class="exp__dates">
-                  {role.start} – {role.end}
-                </div>
-                <h3 class="role__title">{role.position}</h3>
-                <p class="role__summary">{role.description}</p>
-                <ul class="role__tasks">
-                  {role.responsibilities.map((task) => (
-                    <li>{task}</li>
-                  ))}
-                </ul>
-                <div class="role__stack">
-                  {role.stack.map((item) => (
-                    <span class="tag">{item}</span>
-                  ))}
-                </div>
-              </article>
+  <h1 slot="page" class="frame__page">
+    {work.title}
+  </h1>
+  {roles.map((role) => (
+    <Room
+      id={role.id}
+      mark={role.year}
+      title={role.position}
+      line={role.description}
+    >
+      <Fragment slot="meta">
+        <p>
+          <a
+            class="link"
+            href={role.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <strong>{role.company}</strong>
+            <Glyph name="arrow" class="arrow" />
+            <span class="sr-only">{a11y.external}</span>
+          </a>
+        </p>
+        <p>
+          {role.start} – {role.end} · {role.location}
+        </p>
+      </Fragment>
+      <h3 class="body-label">{work.tasks}</h3>
+      <ul class="duties">
+        {role.responsibilities.map((task) => (
+          <li>{task}</li>
+        ))}
+      </ul>
+      <div class="materials materials--one">
+        <div>
+          <h3 class="body-label">{work.stack}</h3>
+          <ul class="run">
+            {role.stack.map((item) => (
+              <>
+                <li>{item}</li>{' '}
+              </>
             ))}
-          </div>
-        </section>
-      ))}
-
-      <p class="page-foot">
-        <a class="btn btn--outline" href={pagePath(lang, 'home')}>
-          {experience.back}
-        </a>
-      </p>
-    </div>
-  </main>
+          </ul>
+        </div>
+      </div>
+      <Word slot="piece" text={role.year} side="end" />
+    </Room>
+  ))}
 </BaseLayout>

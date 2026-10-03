@@ -1,0 +1,50 @@
+---
+/**
+ * One room of the hall: a wall with its label (number, title, one sentence),
+ * a short body beside it, and the piece that stands in the room.
+ *
+ * Slots: `title` replaces the plain title (the entrance sets the h1 there),
+ * `meta` adds the small print of the label, the default slot is the body
+ * beside the label, and `piece` is the word or whatever stands in its place.
+ */
+interface Props {
+  id: string
+  mark: string
+  title: string
+  line?: string | undefined
+  /** Body alignment on wide walls: beside the label, or at the far end. */
+  bodyEnd?: boolean
+}
+
+const { id, mark, title, line, bodyEnd = false } = Astro.props
+const titleId = `${id}-title`
+---
+
+<section class="room" id={id} data-room aria-labelledby={titleId}>
+  <div class="room__in">
+    <div class="room__wall">
+      <header class="cartela">
+        <div class="cartela__head">
+          <span class="cartela__num" aria-hidden="true">
+            {mark}
+          </span>
+          <slot name="title">
+            <h2 id={titleId}>{title}</h2>
+          </slot>
+        </div>
+        {line && <p class="line">{line}</p>}
+        {Astro.slots.has('meta') && (
+          <div class="cartela__meta">
+            <slot name="meta" />
+          </div>
+        )}
+      </header>
+      {Astro.slots.has('default') && (
+        <div class:list={['room__body', bodyEnd && 'room__body--end']}>
+          <slot />
+        </div>
+      )}
+    </div>
+    <slot name="piece" />
+  </div>
+</section>

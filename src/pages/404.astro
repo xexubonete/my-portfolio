@@ -1,4 +1,7 @@
 ---
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { t } from '@/i18n'
 
@@ -12,27 +15,18 @@ const { notFound } = t(lang)
   page="home"
   title="404 - Not Found"
   description="404 Error — this page was not found"
+  rooms={[{ id: 'nowhere', mark: notFound.code, title: notFound.title }]}
 >
-  <main id="main" class="hero not-found">
-    <div class="wrap not-found__grid">
-      <div>
-        <p class="eyebrow eyebrow--accent">{notFound.eyebrow}</p>
-        <p class="display-hero display not-found__code">{notFound.code}</p>
-        <h1 class="not-found__title">{notFound.title}</h1>
-        <p class="not-found__text">{notFound.body}</p>
-        <p class="not-found__action">
-          <a class="btn" href="/">
-            {notFound.back}
-          </a>
-        </p>
-      </div>
-      <img
-        class="not-found__portrait"
-        src="/me_chillin.png"
-        alt={notFound.photoAlt}
-        width="420"
-        height="420"
-      />
-    </div>
-  </main>
+  <Room id="nowhere" mark="—" title={notFound.title} line={notFound.line}>
+    <h1 slot="title" id="nowhere-title">
+      {notFound.title}
+    </h1>
+    <p class="acts">
+      <a class="link" href="/">
+        {notFound.back}
+        <Glyph name="onward" class="arrow" />
+      </a>
+    </p>
+    <Word slot="piece" text={notFound.code} />
+  </Room>
 </BaseLayout>

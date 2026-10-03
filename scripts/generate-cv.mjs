@@ -114,7 +114,9 @@ async function render(browser, target) {
 
     // The positive check, which is the one that catches a page that broke in a way
     // nobody thought to look for: if the resume is not in there, it is not a CV.
-    if (!body.includes(target.expect)) {
+    // Compared without case: the sheet sets the name in capitals, and
+    // innerText reports text as it is displayed.
+    if (!body.toLowerCase().includes(target.expect.toLowerCase())) {
       throw new Error(
         `the page does not contain ${JSON.stringify(target.expect)}`,
       )

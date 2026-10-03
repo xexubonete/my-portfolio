@@ -7,6 +7,7 @@ import Glyph from '@/components/ui/Glyph.astro'
 import Sprite from '@/components/ui/Sprite.astro'
 import { experienceByLang, LINKS, pagePath, t, type Lang } from '@/i18n'
 import { formatYears, groupByCompany } from '@/lib/experience'
+import { emWidth } from '@/lib/monument'
 
 interface Props {
   lang: Lang
@@ -95,15 +96,16 @@ const expTemplate = {
   es: { plus: 'más de {n} años', exact: '{n} años' },
   en: { plus: '{n}+ years', exact: '{n} years' },
 }[lang]
+const NAME = 'Jesús Bonete Sánchez'
 const profileText = T.profile.replace(
   '{EXP}',
   `<b data-exp-plus="${expTemplate.plus}" data-exp-exact="${expTemplate.exact}">${formatYears(expTemplate)}</b>`,
 )
 ---
 
-{/* The sheet is always paper (cv.css), whatever the theme: it prints, it is
-    rendered to PDF and it is embedded as a preview. The page around it follows
-    the theme like the rest of the site. */}
+{/* The sheet is always paper (cv.css), whatever the theme: it prints and it
+    is rendered to PDF. The page around it follows the theme like the rest of
+    the site: the sheet hangs on the wall, or is lit on the screen. */}
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
@@ -111,139 +113,127 @@ const profileText = T.profile.replace(
     <title>CV — Jesús Bonete Sánchez</title>
     <link rel="icon" type="image/png" href="/me.png" />
     <ThemeScript />
-    <script is:inline>
-      // Embedded as the home-page preview: no toolbar, no padding, no shadow.
-      if (new URLSearchParams(location.search).get('embed')) {
-        document.documentElement.classList.add('is-embed')
-      }
-    </script>
-    <style is:global>
-      .is-embed .cv-page {
-        padding: 0;
-        min-height: 0;
-      }
-      .is-embed .cv-toolbar {
-        display: none;
-      }
-      .is-embed .cv-sheet {
-        box-shadow: none;
-      }
-    </style>
   </head>
   <body>
     <Sprite />
     <div class="cv-page">
       <div class="cv-toolbar">
         <a
-          class="btn btn--accent"
+          class="cv-toolbar__main link"
           href={T.pdf}
           download
           target="_blank"
           rel="noopener noreferrer"
         >
           {T.download}
-          <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
+          <Glyph name="arrow" class="arrow" />
+          <span class="sr-only">{a11y.external}</span>
         </a>
         <LanguageSwitch lang={lang} page="cv" label={a11y.switchLanguage} />
-        <a class="btn btn--ghost" href={pagePath(lang, 'home')}>
+        <a class="link" href={pagePath(lang, 'home')}>
           {T.back}
         </a>
       </div>
 
       <article class="cv-sheet">
+        <header class="cv-head">
+          {/* The name spans the sheet exactly, sized from its width in em. */}
+          <h1 class="cv-name" style={`--em: ${emWidth(NAME).black}`}>
+            {NAME}
+          </h1>
+          <p class="cv-role">
+            <span class="dot" aria-hidden="true"></span>
+            {T.role}
+          </p>
+          <p class="cv-place">{T.location}</p>
+        </header>
+
         <aside class="cv-aside">
-          <div>
-            <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
-            <h1 class="cv-name">
-              Jesús <span>Bonete Sánchez</span>
-            </h1>
-            <p class="cv-role">{T.role}</p>
-          </div>
+          <img
+            class="cv-photo"
+            src="/me.png"
+            alt="Jesús Bonete"
+            width="96"
+            height="96"
+          />
 
           <section>
             <h2>{T.contactTitle}</h2>
-            <div class="cv-contact">
-              <Glyph name="pin" />
-              <span>{T.location}</span>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="mail" />
-              <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
-                xexubonete@gmail.com
-              </a>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="phone" />
-              <span>(+34) 722 243 881</span>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="globe" />
-              <a
-                href="https://xexubonete.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                xexubonete.dev
-              </a>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="globe" />
-              <a
-                href={LINKS.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                linkedin.com/in/jesus-bonete-sanchez
-              </a>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="globe" />
-              <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
-                github.com/xexubonete
-              </a>
-            </div>
+            <ul class="cv-list">
+              <li>
+                <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
+                  xexubonete@gmail.com
+                </a>
+              </li>
+              <li>(+34) 722 243 881</li>
+              <li>
+                <a
+                  href="https://xexubonete.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  xexubonete.dev
+                </a>
+              </li>
+              <li>
+                <a
+                  href={LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  linkedin.com/in/jesus-bonete-sanchez
+                </a>
+              </li>
+              <li>
+                <a
+                  href={LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  github.com/xexubonete
+                </a>
+              </li>
+            </ul>
           </section>
 
           <section>
             <h2>{T.dataTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.nat}</span>
-              {T.natValue}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.license}</span>B
-            </div>
+            <dl class="cv-fields">
+              <dt>{T.nat}</dt>
+              <dd>{T.natValue}</dd>
+              <dt>{T.license}</dt>
+              <dd>B</dd>
+            </dl>
           </section>
 
           <section>
             <h2>{T.langTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.spanish}</span>
-              {T.spanishLevel}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.english}</span>B2
-            </div>
+            <dl class="cv-fields">
+              <dt>{T.spanish}</dt>
+              <dd>{T.spanishLevel}</dd>
+              <dt>{T.english}</dt>
+              <dd>B2</dd>
+            </dl>
           </section>
 
           <section>
             <h2>{T.skillsTitle}</h2>
-            <div class="cv-chips">
+            <ul class="cv-list">
               {T.softSkills.map((skill) => (
-                <span class="cv-chip">{skill}</span>
+                <li>{skill}</li>
               ))}
-            </div>
+            </ul>
           </section>
         </aside>
 
         <main class="cv-main">
           <section>
-            <h2 data-num="01">{T.profileTitle}</h2>
+            <h2>{T.profileTitle}</h2>
             <p class="cv-summary" set:html={profileText} />
           </section>
 
           <section>
-            <h2 data-num="02">{T.expTitle}</h2>
+            <h2>{T.expTitle}</h2>
             {companyGroups.map((group) =>
               group.roles.length === 1 ? (
                 <div class="cv-job">
@@ -265,16 +255,18 @@ const profileText = T.profile.replace(
                   </div>
                   <div class="cv-job-place">{group.location}</div>
                   <p class="cv-job-summary">{group.roles[0].description}</p>
-                  <ul>
+                  <ul class="cv-tasks">
                     {group.roles[0].responsibilities.map((task) => (
                       <li>{task}</li>
                     ))}
                   </ul>
-                  <div class="cv-stack">
+                  <ul class="cv-stack run">
                     {group.roles[0].stack.map((item) => (
-                      <span>{item}</span>
+                      <>
+                        <li>{item}</li>{' '}
+                      </>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               ) : (
                 <div class="cv-job">
@@ -302,16 +294,18 @@ const profileText = T.profile.replace(
                           </span>
                         </div>
                         <p class="cv-job-summary">{role.description}</p>
-                        <ul>
+                        <ul class="cv-tasks">
                           {role.responsibilities.map((task) => (
                             <li>{task}</li>
                           ))}
                         </ul>
-                        <div class="cv-stack">
+                        <ul class="cv-stack run">
                           {role.stack.map((item) => (
-                            <span>{item}</span>
+                            <>
+                              <li>{item}</li>{' '}
+                            </>
                           ))}
-                        </div>
+                        </ul>
                       </div>
                     ))}
                   </div>
@@ -321,7 +315,7 @@ const profileText = T.profile.replace(
           </section>
 
           <section>
-            <h2 data-num="03">{T.eduTitle}</h2>
+            <h2>{T.eduTitle}</h2>
             <div class="cv-job">
               <div class="cv-job-head">
                 <span class="cv-job-title">

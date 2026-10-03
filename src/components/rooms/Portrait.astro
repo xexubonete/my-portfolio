@@ -1,0 +1,78 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import { studiesByLang, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { portrait, a11y } = t(lang)
+const studies = studiesByLang[lang]
+---
+
+{/* The one room without a word: a small picture and a great deal of wall. */}
+<Room id="portrait" mark={mark} title={portrait.title} line={portrait.line}>
+  <div class="facts">
+    <div>
+      <h3 class="body-label">{portrait.study}</h3>
+      <ul>
+        {studies.map((item) => (
+          <li>
+            {item.link ? (
+              <a
+                class="link"
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {item.institution}
+                <Glyph name="arrow" class="arrow" />
+                <span class="sr-only">{a11y.external}</span>
+              </a>
+            ) : (
+              item.institution
+            )}
+            {item.date && <span> {item.date.replace(' - ', '–')}</span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h3 class="body-label">{portrait.languages.title}</h3>
+      <ul>
+        {portrait.languages.items.map((item) => (
+          <li>
+            {item.name} <span>{item.level}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h3 class="body-label">{portrait.softSkills.title}</h3>
+      <ul class="run">
+        {portrait.softSkills.items.map((item) => (
+          <>
+            <li>{item}</li>{' '}
+          </>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <figure slot="piece" class="piece">
+    <img
+      src="/me.png"
+      alt={portrait.photoAlt}
+      width="136"
+      height="136"
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption>
+      <strong>Jesús Bonete</strong>
+      {portrait.title}. {portrait.medium}.
+    </figcaption>
+  </figure>
+</Room>

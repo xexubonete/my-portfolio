@@ -1,0 +1,31 @@
+---
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { tooling } = t(lang)
+---
+
+<Room id="tooling" mark={mark} title={tooling.title} line={tooling.line}>
+  <div class="materials">
+    {tooling.groups.map((group) => (
+      <div>
+        <h3 class="body-label">{group.label}</h3>
+        <ul class="run">
+          {group.items.map((item) => (
+            <>
+              <li>{item}</li>{' '}
+            </>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <Word slot="piece" text=".NET" side="end" />
+</Room>

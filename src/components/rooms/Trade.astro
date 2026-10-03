@@ -1,0 +1,56 @@
+---
+import ExpYears from '@/components/ui/ExpYears.astro'
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
+import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
+import { formatYears, groupByCompany } from '@/lib/experience'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { trade, a11y } = t(lang)
+const groups = groupByCompany(experienceByLang[lang])
+const year = (date: string) => date.slice(-4)
+const span = (start: string, end: string) =>
+  year(start) === year(end) ? year(end) : `${year(start)} – ${year(end)}`
+---
+
+<Room id="trade" mark={mark} title={trade.title} line={trade.line}>
+  <p slot="meta">
+    <ExpYears template={trade.years} />
+  </p>
+  <ol class="ledger">
+    {groups.map((group) => (
+      <li>
+        <span class="ledger__when">{span(group.start, group.end)}</span>
+        <a
+          class="ledger__who link"
+          href={group.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {group.company}
+          <Glyph name="arrow" class="arrow" />
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+        <span class="ledger__what">
+          {group.roles[0].position}
+          {group.roles.length > 1 && ` · ${group.roles.length} ${trade.roles}`}
+        </span>
+      </li>
+    ))}
+  </ol>
+  <p class="room__more">
+    <a class="link" href={pagePath(lang, 'work')}>
+      {trade.record}
+      <Glyph name="onward" class="arrow" />
+    </a>
+  </p>
+  <Word slot="piece" text={formatYears(trade.figure)}>
+    <ExpYears template={trade.figure} />
+  </Word>
+</Room>
