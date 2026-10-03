@@ -4,3 +4,4 @@ node_modules/
 .astro/
 pnpm-lock.yaml
 .redesign-shots/
+.art-shots/

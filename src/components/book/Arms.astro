@@ -1,0 +1,54 @@
+---
+import { leafNav, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { arms } = t(lang)
+const nav = leafNav(lang, 'iii')
+const [first] = arms.paragraphs
+
+// The long list keeps the opening company; the short ones face it.
+const [main, ...others] = arms.groups
+---
+
+<Leaf {...nav}>
+  <Fragment slot="verso">
+    <Opener {...arms} />
+    <p
+      class="text text--opening"
+      set:html={withLeadIn(first ?? '', arms.leadIn)}
+    />
+    {main && (
+      <section class="inventory">
+        <h3 class="inventory__label">{main.label}</h3>
+        <ul class="run-in">
+          {main.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </Fragment>
+
+  <Fragment slot="recto">
+    {others.map((group) => (
+      <section class="inventory">
+        <h3 class="inventory__label">{group.label}</h3>
+        <ul class="run-in">
+          {group.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    <p class="fleuron" aria-hidden="true">
+      ❧
+    </p>
+  </Fragment>
+</Leaf>

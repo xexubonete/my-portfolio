@@ -3,8 +3,6 @@ import '@/styles/globals.css'
 import '@/styles/cv.css'
 import ThemeScript from '@/components/layout/ThemeScript.astro'
 import LanguageSwitch from '@/components/layout/LanguageSwitch.astro'
-import Glyph from '@/components/ui/Glyph.astro'
-import Sprite from '@/components/ui/Sprite.astro'
 import { experienceByLang, LINKS, pagePath, t, type Lang } from '@/i18n'
 import { formatYears, groupByCompany } from '@/lib/experience'
 
@@ -102,14 +100,14 @@ const profileText = T.profile.replace(
 ---
 
 {/* The sheet is always paper (cv.css), whatever the theme: it prints, it is
-    rendered to PDF and it is embedded as a preview. The page around it follows
-    the theme like the rest of the site. */}
+    rendered to PDF and it is embedded as the facsimile plate of the book's
+    appendix. The page around it follows the theme like the rest of the site. */}
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CV — Jesús Bonete Sánchez</title>
-    <link rel="icon" type="image/png" href="/me.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <ThemeScript />
     <script is:inline>
       // Embedded as the home-page preview: no toolbar, no padding, no shadow.
@@ -131,21 +129,19 @@ const profileText = T.profile.replace(
     </style>
   </head>
   <body>
-    <Sprite />
     <div class="cv-page">
       <div class="cv-toolbar">
         <a
-          class="btn btn--accent"
+          class="cartouche cartouche--rubric"
           href={T.pdf}
           download
           target="_blank"
           rel="noopener noreferrer"
         >
           {T.download}
-          <Glyph name="arrow" class="arrow" style="width: 1em; height: 1em" />
         </a>
         <LanguageSwitch lang={lang} page="cv" label={a11y.switchLanguage} />
-        <a class="btn btn--ghost" href={pagePath(lang, 'home')}>
+        <a class="link" href={pagePath(lang, 'home')}>
           {T.back}
         </a>
       </div>
@@ -153,7 +149,7 @@ const profileText = T.profile.replace(
       <article class="cv-sheet">
         <aside class="cv-aside">
           <div>
-            <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
+            <div class="cv-photo" role="img" aria-label="Jesús Bonete"></div>
             <h1 class="cv-name">
               Jesús <span>Bonete Sánchez</span>
             </h1>
@@ -163,21 +159,17 @@ const profileText = T.profile.replace(
           <section>
             <h2>{T.contactTitle}</h2>
             <div class="cv-contact">
-              <Glyph name="pin" />
               <span>{T.location}</span>
             </div>
             <div class="cv-contact">
-              <Glyph name="mail" />
               <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
                 xexubonete@gmail.com
               </a>
             </div>
             <div class="cv-contact">
-              <Glyph name="phone" />
               <span>(+34) 722 243 881</span>
             </div>
             <div class="cv-contact">
-              <Glyph name="globe" />
               <a
                 href="https://xexubonete.dev"
                 target="_blank"
@@ -187,7 +179,6 @@ const profileText = T.profile.replace(
               </a>
             </div>
             <div class="cv-contact">
-              <Glyph name="globe" />
               <a
                 href={LINKS.linkedin}
                 target="_blank"
@@ -197,7 +188,6 @@ const profileText = T.profile.replace(
               </a>
             </div>
             <div class="cv-contact">
-              <Glyph name="globe" />
               <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
                 github.com/xexubonete
               </a>
@@ -238,12 +228,12 @@ const profileText = T.profile.replace(
 
         <main class="cv-main">
           <section>
-            <h2 data-num="01">{T.profileTitle}</h2>
+            <h2 data-num="i">{T.profileTitle}</h2>
             <p class="cv-summary" set:html={profileText} />
           </section>
 
           <section>
-            <h2 data-num="02">{T.expTitle}</h2>
+            <h2 data-num="ii">{T.expTitle}</h2>
             {companyGroups.map((group) =>
               group.roles.length === 1 ? (
                 <div class="cv-job">
@@ -321,7 +311,7 @@ const profileText = T.profile.replace(
           </section>
 
           <section>
-            <h2 data-num="03">{T.eduTitle}</h2>
+            <h2 data-num="iii">{T.eduTitle}</h2>
             <div class="cv-job">
               <div class="cv-job-head">
                 <span class="cv-job-title">

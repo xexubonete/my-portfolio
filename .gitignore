@@ -20,3 +20,6 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+
+# art-direction review screenshots
+.art-shots/

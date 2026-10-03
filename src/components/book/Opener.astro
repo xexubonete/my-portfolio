@@ -1,0 +1,20 @@
+---
+/** A chapter opening: its ordinal, its title, and its argument beneath. */
+interface Props {
+  word: string
+  title: string
+  argument: string
+  /** The cover holds the h1; every chapter title is an h2 unless told so. */
+  level?: 'h1' | 'h2'
+}
+
+const { word, title, argument, level: Heading = 'h2' } = Astro.props
+---
+
+<header class="opener">
+  <p class="opener__word">{word}</p>
+  <Heading class="opener__title">
+    <slot>{title}</slot>
+  </Heading>
+  <p class="opener__argument">{argument}</p>
+</header>

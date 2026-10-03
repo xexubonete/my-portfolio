@@ -1,87 +1,130 @@
 ---
-import ExpYears from '@/components/ui/ExpYears.astro'
-import Glyph from '@/components/ui/Glyph.astro'
+import Leaf from '@/components/book/Leaf.astro'
+import Opener from '@/components/book/Opener.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
+import { slug } from '@/lib/book'
 import { formatYears, groupByCompany } from '@/lib/experience'
-import { WORK as WORK_EN } from '@/lib/constants'
-import { WORK as WORK_ES } from '@/lib/constants-es'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
-const { experience, a11y } = t(lang)
-const description = { es: WORK_ES, en: WORK_EN }[lang].DESCRIPTION
+const { work, experience, a11y } = t(lang)
 const groups = groupByCompany(experienceByLang[lang])
+
+// One leaf per company, newest first; both ends of the run lead back to the
+// chapter of the book this volume expands.
+const back = { href: `${pagePath(lang, 'home')}#ii`, label: work.back }
+const leaves = groups.map((group, i) => {
+  const link = (target: (typeof groups)[number] | undefined) =>
+    target ? { href: `#${slug(target.company)}`, label: target.company } : back
+  const [first, ...later] = group.roles
+  return {
+    group,
+    id: slug(group.company),
+    // The campaigns are counted from the oldest, the way they were fought.
+    ordinal: work.ordinals[groups.length - 1 - i] ?? String(groups.length - i),
+    prev: link(groups[i - 1]),
+    next: link(groups[i + 1]),
+    first,
+    later,
+  }
+})
 ---
 
 <BaseLayout
   lang={lang}
   page="work"
   title={formatYears(experience.pageTitle)}
-  description={description}
+  description={work.argument}
 >
-  <main id="main">
-    <div class="wrap">
-      <header class="page-title">
-        <p class="eyebrow eyebrow--accent">{experience.eyebrow}</p>
-        <h1>
-          {experience.pageLead}{' '}
-          <span class="accent-word">
-            <ExpYears template={experience.years} />
-          </span>
-        </h1>
-        <p>{description}</p>
-      </header>
-
-      {groups.map((group, i) => (
-        <section class="work-group">
-          <div class="work-group__company">
-            <span class="section-num">{String(i + 1).padStart(2, '0')}</span>{' '}
-            <a
-              class="exp__company link-arrow"
-              href={group.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {group.company} <Glyph name="arrow" class="arrow" />
+  <main id="main" class="book" data-book>
+    {leaves.map(({ group, id, ordinal, prev, next, first, later }, i) => (
+      <Leaf id={id} index={i + 1} label={group.company} prev={prev} next={next}>
+        <Fragment slot="verso">
+          <p class="page__running">
+            {work.word} · {work.title}
+          </p>
+          <Opener
+            level="h1"
+            word={ordinal}
+            title={group.company}
+            argument={`${group.location} · ${group.start} – ${group.end}`}
+          >
+            <a href={group.link} target="_blank" rel="noopener noreferrer">
+              {group.company}
               <span class="sr-only">{a11y.external}</span>
             </a>
-            <span class="exp__dates">
-              {group.start} – {group.end} · {group.location}
-            </span>
-          </div>
-          <div>
-            {group.roles.map((role) => (
-              <article class="role">
-                <div class="exp__dates">
-                  {role.start} – {role.end}
-                </div>
-                <h3 class="role__title">{role.position}</h3>
-                <p class="role__summary">{role.description}</p>
-                <ul class="role__tasks">
-                  {role.responsibilities.map((task) => (
-                    <li>{task}</li>
-                  ))}
-                </ul>
-                <div class="role__stack">
-                  {role.stack.map((item) => (
-                    <span class="tag">{item}</span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+          </Opener>
+          {first && (
+            <article class="role passage">
+              <h2 class="role__title">{first.position}</h2>
+              <p class="role__summary">{first.description}</p>
+              <ul class="role__tasks">
+                {first.responsibilities.map((task) => (
+                  <li>{task}</li>
+                ))}
+              </ul>
+              {later.length > 0 && (
+                <p class="role__stack">
+                  <span class="sc">{work.stack}.</span> {first.stack.join(', ')}
+                  .
+                </p>
+              )}
+              <aside class="note">
+                <p>
+                  <b>
+                    {first.start} – {first.end}
+                  </b>
+                </p>
+              </aside>
+            </article>
+          )}
+        </Fragment>
 
-      <p class="page-foot">
-        <a class="btn btn--outline" href={pagePath(lang, 'home')}>
-          {experience.back}
-        </a>
-      </p>
-    </div>
+        <Fragment slot="recto">
+          {/* A single role leaves the facing page to its arms; a company with
+              several roles continues with the earlier ones. */}
+          {first && later.length === 0 && (
+            <section class="inventory">
+              <h2 class="inventory__label">{work.stack}</h2>
+              <ul class="run-in">
+                {first.stack.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {later.map((role) => (
+            <article class="role passage">
+              <h2 class="role__title">{role.position}</h2>
+              <p class="role__summary">{role.description}</p>
+              <ul class="role__tasks">
+                {role.responsibilities.map((task) => (
+                  <li>{task}</li>
+                ))}
+              </ul>
+              <p class="role__stack">
+                <span class="sc">{work.stack}.</span> {role.stack.join(', ')}.
+              </p>
+              <aside class="note">
+                <p>
+                  <b>
+                    {role.start} – {role.end}
+                  </b>
+                </p>
+              </aside>
+            </article>
+          ))}
+          <p class="back-to-book">
+            <a class="cartouche" href={back.href}>
+              {work.back}
+            </a>
+          </p>
+        </Fragment>
+      </Leaf>
+    ))}
   </main>
 </BaseLayout>

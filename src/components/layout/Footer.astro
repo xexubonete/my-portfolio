@@ -13,23 +13,19 @@ const year = new Date().getFullYear()
 ---
 
 <footer class="site-footer">
-  <div class="wrap">
-    <span>
-      © <span data-year>{year}</span> Jesús Bonete
-    </span>
-    <span>{footer.builtWith}</span>
-    <span class="site-footer__links">
-      <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
-        GitHub <span class="sr-only">{a11y.external}</span>
-      </a>
-      <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-        LinkedIn <span class="sr-only">{a11y.external}</span>
-      </a>
-      <a href={pagePath(other, page)} hreflang={other} lang={other}>
-        {other.toUpperCase()}
-      </a>
-    </span>
-  </div>
+  <span>
+    © <span data-year>{year}</span> Jesús Bonete
+  </span>
+  <span>{footer.builtWith}</span>
+  <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
+    GitHub <span class="sr-only">{a11y.external}</span>
+  </a>
+  <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+    LinkedIn <span class="sr-only">{a11y.external}</span>
+  </a>
+  <a href={pagePath(other, page)} hreflang={other} lang={other} data-keep-leaf>
+    {other}
+  </a>
 </footer>
 
 <script is:inline>

@@ -1,0 +1,55 @@
+---
+import ExpYears from '@/components/ui/ExpYears.astro'
+import { experienceByLang, leafNav, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { author, experience } = t(lang)
+const nav = leafNav(lang, 'i')
+const [first, ...rest] = author.paragraphs
+
+// The trade in the margin mirrors the most recent role, so it follows
+// constants*.ts.
+const [latest] = experienceByLang[lang]
+---
+
+<Leaf {...nav}>
+  <Fragment slot="verso">
+    <Opener {...author} />
+    <div class="passage">
+      <p
+        class="text text--opening"
+        set:html={withLeadIn(first ?? '', author.leadIn)}
+      />
+      <aside class="note">
+        <dl>
+          <dt>{author.sheet.role}</dt>
+          <dd>{latest.position}</dd>
+          <dt>{author.sheet.based}</dt>
+          <dd>{author.sheet.basedValue}</dd>
+          <dt>{author.sheet.experience}</dt>
+          <dd>
+            <ExpYears template={experience.years} />
+          </dd>
+          <dt>{author.sheet.status}</dt>
+          <dd>{author.sheet.available}</dd>
+        </dl>
+      </aside>
+    </div>
+  </Fragment>
+
+  <Fragment slot="recto">
+    {rest.map((paragraph, i) => (
+      <p class:list={['text', i > 0 && 'text--indent']} set:html={paragraph} />
+    ))}
+    <p class="fleuron" aria-hidden="true">
+      ❧
+    </p>
+  </Fragment>
+</Leaf>

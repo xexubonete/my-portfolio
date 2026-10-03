@@ -1,0 +1,85 @@
+---
+import { folios } from '@/lib/book'
+import type { LeafLink } from '@/i18n'
+
+/**
+ * One leaf of the book: an open spread. The left page goes in the `verso`
+ * slot and the right one in `recto`. `full` marks pages composed on the whole
+ * page (a plate, the title page) instead of on the text block.
+ */
+interface Props {
+  id: string
+  /** Position in the book; the cover is 0 and carries no page numbers. */
+  index: number
+  label: string
+  prev?: LeafLink | undefined
+  next?: LeafLink | undefined
+  full?: 'verso' | 'recto' | 'both' | undefined
+  versoClass?: string | undefined
+  rectoClass?: string | undefined
+}
+
+const { id, index, label, prev, next, full, versoClass, rectoClass } =
+  Astro.props
+const numbers = folios(index)
+const isFull = (side: 'verso' | 'recto') => full === side || full === 'both'
+---
+
+<section class="leaf" id={id} aria-label={label} tabindex="-1" data-leaf>
+  <div
+    class:list={[
+      'page page--verso',
+      versoClass,
+      isFull('verso') && 'page--full',
+    ]}
+  >
+    <div class="page__body">
+      <slot name="verso" />
+    </div>
+    {(prev || numbers) && (
+      <footer class="page__foot">
+        {prev && (
+          <a class="turn turn--back" href={prev.href} rel="prev">
+            <span class="turn__fist" aria-hidden="true">
+              ☜
+            </span>
+            {prev.label}
+          </a>
+        )}
+        {numbers && <span class="folio">{numbers.verso}</span>}
+      </footer>
+    )}
+  </div>
+  <div
+    class:list={[
+      'page page--recto',
+      rectoClass,
+      isFull('recto') && 'page--full',
+    ]}
+  >
+    <div class="page__body">
+      <slot name="recto" />
+    </div>
+    {(prev || next || numbers) && (
+      <footer class="page__foot">
+        {prev && (
+          <a class="turn turn--back" href={prev.href} rel="prev">
+            <span class="turn__fist" aria-hidden="true">
+              ☜
+            </span>
+            {prev.label}
+          </a>
+        )}
+        {numbers && <span class="folio">{numbers.recto}</span>}
+        {next && (
+          <a class="turn turn--forward" href={next.href} rel="next">
+            {next.label}
+            <span class="turn__fist" aria-hidden="true">
+              ☞
+            </span>
+          </a>
+        )}
+      </footer>
+    )}
+  </div>
+</section>

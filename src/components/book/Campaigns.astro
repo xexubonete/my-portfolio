@@ -1,0 +1,79 @@
+---
+import { experienceByLang, leafNav, pagePath, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { campaigns } = t(lang)
+const nav = leafNav(lang, 'ii')
+const roles = experienceByLang[lang]
+
+// The opening page holds the first paragraph; the rest face it.
+const passages = campaigns.paragraphs.map((paragraph, i) => ({
+  html: i === 0 ? withLeadIn(paragraph.text, campaigns.leadIn) : paragraph.text,
+  opening: i === 0,
+  notes: paragraph.roles.map((index) => roles[index]).filter((role) => !!role),
+}))
+const verso = passages.slice(0, 1)
+const recto = passages.slice(1)
+---
+
+<Leaf {...nav}>
+  <Fragment slot="verso">
+    <Opener {...campaigns} />
+    {verso.map((passage) => (
+      <div class="passage">
+        <p
+          class:list={[
+            'text',
+            passage.opening ? 'text--opening' : 'text--indent',
+          ]}
+          set:html={passage.html}
+        />
+        <aside class="note">
+          {passage.notes.map((role) => (
+            <p>
+              <b>{role.company}</b>
+              <br />
+              {role.position}
+              <br />
+              {role.start} – {role.end}
+            </p>
+          ))}
+        </aside>
+      </div>
+    ))}
+  </Fragment>
+
+  <Fragment slot="recto">
+    {recto.map((passage, i) => (
+      <div class="passage">
+        <p
+          class:list={['text', i > 0 && 'text--indent']}
+          set:html={passage.html}
+        />
+        <aside class="note">
+          {passage.notes.map((role) => (
+            <p>
+              <b>{role.company}</b>
+              <br />
+              {role.position}
+              <br />
+              {role.start} – {role.end}
+            </p>
+          ))}
+        </aside>
+      </div>
+    ))}
+    <p class="more">
+      <a class="pointer" href={pagePath(lang, 'work')}>
+        {campaigns.more}
+      </a>
+    </p>
+  </Fragment>
+</Leaf>

@@ -1,0 +1,83 @@
+---
+import { LINKS, PROJECT_LINKS, leafNav, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { offDuty, a11y } = t(lang)
+const nav = leafNav(lang, 'v')
+const [first, ...rest] = offDuty.paragraphs
+---
+
+<Leaf {...nav}>
+  <Fragment slot="verso">
+    <Opener {...offDuty} />
+    <p
+      class="text text--opening"
+      set:html={withLeadIn(first ?? '', offDuty.leadIn)}
+    />
+    {rest.map((paragraph) => (
+      <p class="text text--indent" set:html={paragraph} />
+    ))}
+  </Fragment>
+
+  <Fragment slot="recto">
+    <section class="inventory">
+      <h3 class="inventory__label">{offDuty.languages.title}</h3>
+      <ul class="ledger">
+        {offDuty.languages.items.map((item) => (
+          <li>
+            <span>{item.name}</span>
+            <span class="ledger__dots" />
+            <span class="ledger__value">{item.level}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="inventory">
+      <h3 class="inventory__label">{offDuty.softSkills.title}</h3>
+      <ul class="run-in">
+        {offDuty.softSkills.items.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="inventory">
+      <h3 class="inventory__label">{offDuty.projects.title}</h3>
+      <ul class="ledger">
+        {PROJECT_LINKS.map((project) => (
+          <li>
+            <a href={project.href} target="_blank" rel="noopener noreferrer">
+              {project.label}
+              <span class="sr-only">{a11y.external}</span>
+            </a>
+            {project.live && (
+              <>
+                <span class="ledger__dots" />
+                <span class="ledger__value">{offDuty.projects.here}</span>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <p class="cv-call">
+        <a
+          class="cartouche"
+          href={LINKS.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {offDuty.projects.all}
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+      </p>
+    </section>
+  </Fragment>
+</Leaf>

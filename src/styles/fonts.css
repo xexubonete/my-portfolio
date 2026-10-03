@@ -1,102 +1,88 @@
 /* ──────────────────────────────────────────────────────────────────────────
    Self-hosted fonts (Latin subsets, WOFF2). Licenses are listed in DESIGN.md.
 
-   Four files, ~240 KB total:
-     Bricolage Grotesque  variable (opsz 12–96, wdth 75–100, wght 200–800)
-     Instrument Sans      variable (wdth 75–100, wght 400–700)
-     Instrument Serif     italic, static (emphasis words only)
-     JetBrains Mono       variable (wght 100–800)
+   Four files; the build subsets them again to the characters the pages show:
+     EB Garamond            variable (wght 400–800), roman and italic: the text.
+                            Carries true small capitals, superiors, fleurons
+                            and the printer's fist, all used by the design.
+     IM Fell French Canon   roman and italic, static: titles and drop caps.
+                            A digitisation of the Fell types, ink spread
+                            included, cut for large sizes.
 
    Each family has a metric-matched local fallback so text does not reflow
    when the real font arrives (font-display: swap keeps the first paint fast).
-   Preloading the display and body files is the platform lane's job.
    ────────────────────────────────────────────────────────────────────────── */
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
+  font-family: 'EB Garamond';
   font-style: normal;
-  font-weight: 200 800;
-  font-stretch: 75% 100%;
+  font-weight: 400 800;
   font-display: swap;
-  src: url('/fonts/bricolage-grotesque-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
+  src: url('/fonts/eb-garamond-latin.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Instrument Sans';
-  font-style: normal;
-  font-weight: 400 700;
-  font-stretch: 75% 100%;
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400 800;
   font-display: swap;
-  src: url('/fonts/instrument-sans-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
+  src: url('/fonts/eb-garamond-italic-latin.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Instrument Serif';
+  font-family: 'IM Fell French Canon';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/im-fell-french-canon-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IM Fell French Canon';
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/instrument-serif-italic-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
+  src: url('/fonts/im-fell-french-canon-italic-latin.woff2') format('woff2');
 }
 
+/* Metric-matched fallbacks: Georgia scaled to the set width of each face, so
+   the swap neither reflows the text nor repaints the title any larger than it
+   was first drawn. The ratios were measured in the browser against the real
+   fonts; the vertical metrics are the web fonts' own. */
 @font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 100 800;
-  font-display: swap;
-  src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
-/* Metric-matched fallbacks: the local font is scaled so the line boxes match
-   the web font closely enough that the swap does not shift layout. */
-@font-face {
-  font-family: 'Bricolage Grotesque Fallback';
-  src: local('Helvetica Neue'), local('Arial');
-  size-adjust: 98%;
-  ascent-override: 92%;
-  descent-override: 22%;
+  font-family: 'EB Garamond Fallback';
+  src: local('Georgia');
+  size-adjust: 85%;
+  ascent-override: 100.7%;
+  descent-override: 29.8%;
   line-gap-override: 0%;
 }
 
 @font-face {
-  font-family: 'Instrument Sans Fallback';
-  src: local('Helvetica Neue'), local('Arial');
-  size-adjust: 101%;
-  ascent-override: 93%;
-  descent-override: 23%;
-  line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: 'Instrument Serif Fallback';
+  font-family: 'EB Garamond Fallback';
   font-style: italic;
-  src: local('Georgia Italic'), local('Times New Roman Italic');
-  size-adjust: 94%;
-  ascent-override: 86%;
-  descent-override: 22%;
+  src: local('Georgia Italic');
+  size-adjust: 80%;
+  ascent-override: 100.7%;
+  descent-override: 29.8%;
   line-gap-override: 0%;
 }
 
 @font-face {
-  font-family: 'JetBrains Mono Fallback';
-  src: local('Menlo'), local('Consolas'), local('Courier New');
-  size-adjust: 103%;
-  ascent-override: 102%;
-  descent-override: 30%;
+  font-family: 'IM Fell French Canon Fallback';
+  src: local('Georgia');
+  size-adjust: 97%;
+  ascent-override: 92%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'IM Fell French Canon Fallback';
+  font-style: italic;
+  src: local('Georgia Italic');
+  size-adjust: 89.5%;
+  ascent-override: 92%;
+  descent-override: 25%;
   line-gap-override: 0%;
 }

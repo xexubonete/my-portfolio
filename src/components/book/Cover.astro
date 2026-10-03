@@ -1,0 +1,57 @@
+---
+import ExpYears from '@/components/ui/ExpYears.astro'
+import { leafNav, pagePath, t, type Lang } from '@/i18n'
+import { roman } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Plate from './Plate.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { cover, a11y } = t(lang)
+const nav = leafNav(lang, 'cover')
+const year = roman(new Date().getFullYear())
+---
+
+{/* The frontispiece facing the title page, as an old printed account opens. */}
+<Leaf {...nav} full="both" versoClass="page--cover-plate">
+  <Plate slot="verso" src="/plates/author.png" alt={cover.photoAlt} framed>
+    {cover.plateCaption}
+  </Plate>
+
+  <div slot="recto" class="title-page">
+    <p class="title-page__overline">{cover.overline}</p>
+    <h1 class="title-page__name">
+      <span>{cover.name[0]}</span>
+      <span class="rubric">{cover.name[1]}</span>
+    </h1>
+    <p class="title-page__subtitle">
+      {cover.subtitle[0]}
+      <ExpYears template={cover.years} />
+      {cover.subtitle[1]}
+    </p>
+    <p class="fleuron" aria-hidden="true">
+      ❦
+    </p>
+    <p class="title-page__status">{cover.status}</p>
+    <p class="title-page__actions">
+      <a class="cartouche cartouche--rubric" href="#i">
+        {cover.begin}
+      </a>
+      <a
+        class="cartouche"
+        href={pagePath(lang, 'cv')}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {cover.cv}
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+    </p>
+    <p class="title-page__imprint">
+      {cover.imprint} · <span data-year-roman>{year}</span>
+    </p>
+  </div>
+</Leaf>

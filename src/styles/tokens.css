@@ -1,14 +1,11 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   Design tokens — "Drafting sheet" art direction (see DESIGN.md).
+   Design tokens — "Capítulo" art direction (see DESIGN.md).
 
-   Plain CSS on purpose: this file is loaded by the Astro build (through
-   globals.css) AND by the static mockups under design/ with no build step.
-   Every name in the three-lane contract is defined here; names are never
-   renamed, only added.
+   Plain CSS. Two inks on one paper, as in a book printed in black and red.
 
    Theme switching:
-     - light values on :root
-     - dark values on :root[data-theme="dark"]
+     - light values on :root                      (the printed page, by day)
+     - dark values on :root[data-theme="dark"]    (the same book by candlelight)
      - visitors with no stored choice follow the OS through the media query
        on :root:not([data-theme="light"])
    ────────────────────────────────────────────────────────────────────────── */
@@ -16,145 +13,92 @@
 :root {
   color-scheme: light;
 
-  /* ── Color: "Drafting paper" (light) ─────────────────────────────────── */
-  --color-bg: #f3eee4; /* warm paper */
-  --color-surface: #fbf8f2; /* a lighter sheet laid on the paper */
-  --color-surface-2: #e8e1d2; /* recessed wells, tags, code */
-  --color-text: #17130e; /* warm ink */
-  --color-text-muted: #5e5649; /* 6.3:1 on bg */
-  --color-border: #d2c9b6; /* hairline rules */
-  --color-border-strong: var(--color-text); /* structural 1px rules */
-  --color-grid: rgb(23 19 14 / 0.07); /* the drafting grid behind the hero */
-
-  /* Accent as *ink*: AA on bg and surface (5:1), so it is safe for text and
-     small UI. accent-contrast is the text colour to put ON the accent. */
-  --color-accent: #a8480a;
-  --color-accent-contrast: #fbf8f2;
-  /* Accent as *paint*: the vivid orange for large fills (quote band, hero
-     marks). Never use it for text on bg; put accent-vivid-contrast on top. */
-  --color-accent-vivid: #f26b1d;
-  --color-accent-vivid-contrast: #17130e;
-  --color-accent-soft: rgb(242 107 29 / 0.14); /* tints, hover washes */
-
-  --color-focus: #1d4ed8; /* blueprint blue, 5.8:1 on bg */
-  --color-success: #1d7a3e; /* "Available" beacon, 4.65:1 on bg */
-  --color-success-soft: rgb(29 122 62 / 0.12);
-  --color-selection: rgb(242 107 29 / 0.3);
+  /* ── Color: the printed page ─────────────────────────────────────────── */
+  --color-bg: #e6dcc6; /* the table the book lies on */
+  --color-surface: #f5efe2; /* the paper */
+  --color-surface-2: #ebe3d1; /* the paper where it curves into the spine */
+  --color-text: #1c1712; /* the black ink: warm, never pure */
+  --color-text-muted: #584e42; /* marginalia. 7.1:1 on the paper */
+  --color-border: #cdc1a8; /* hairline rules */
+  --color-accent: #9a2318; /* the red ink of the rubricator. 7.2:1 on paper */
+  --color-accent-contrast: #f5efe2;
+  --color-focus: #1d4ed8; /* 6.0:1 on the paper */
+  --color-selection: rgb(154 35 24 / 0.2);
+  --color-spine: rgb(60 40 15 / 0.16); /* shadow where the pages meet */
+  --color-plate-ink: var(--color-text); /* framed engravings */
+  --color-plate-paper: transparent;
+  --color-glow: transparent; /* daylight needs no candle */
+  --shadow-book:
+    0 1px 0 rgb(60 40 15 / 0.2), 0 30px 60px -30px rgb(60 40 15 / 0.45);
 
   /* ── Type families ───────────────────────────────────────────────────── */
   --font-display:
-    'Bricolage Grotesque', 'Bricolage Grotesque Fallback', 'Helvetica Neue',
-    Arial, sans-serif;
+    'IM Fell French Canon', 'IM Fell French Canon Fallback', 'Iowan Old Style',
+    'Palatino Linotype', Palatino, Georgia, serif;
   --font-body:
-    'Instrument Sans', 'Instrument Sans Fallback', 'Helvetica Neue', Arial,
-    sans-serif;
-  --font-accent:
-    'Instrument Serif', 'Instrument Serif Fallback', Georgia, 'Times New Roman',
-    serif;
-  --font-mono:
-    'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, 'SF Mono', Menlo,
-    Consolas, monospace;
+    'EB Garamond', 'EB Garamond Fallback', 'Iowan Old Style',
+    'Palatino Linotype', Palatino, Georgia, serif;
 
-  /* ── Fluid type scale ────────────────────────────────────────────────────
-     Minor-third-ish steps at 390px growing to a major-third at 1280px. The
-     big sizes are capped so the hero fits beside the portrait and the whole
-     desktop home stays around two viewports tall. */
-  --text-xs: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
-  --text-sm: clamp(0.84rem, 0.81rem + 0.15vw, 0.9rem);
-  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem);
-  --text-xl: clamp(1.3rem, 1.15rem + 0.7vw, 1.6rem);
-  --text-2xl: clamp(1.6rem, 1.35rem + 1.2vw, 2.1rem);
-  --text-3xl: clamp(2rem, 1.6rem + 2vw, 2.9rem);
-  --text-4xl: clamp(2.5rem, 1.8rem + 3.4vw, 4rem);
-  --text-5xl: clamp(3rem, 1.75rem + 4.5vw, 5rem);
-  --text-hero: clamp(3.75rem, 1rem + 13.5vw, 8.5rem);
+  /* ── Type scale ──────────────────────────────────────────────────────────
+     One text size, as in a book, and a few steps around it. Garamond has a
+     small x-height, so the text size is larger than a sans would need. */
+  --text-xs: clamp(0.8rem, 0.77rem + 0.12vw, 0.875rem); /* folios, heads */
+  --text-sm: clamp(0.92rem, 0.88rem + 0.18vw, 1.02rem); /* marginalia */
+  --text-base: clamp(1.15rem, 1.07rem + 0.34vw, 1.34rem); /* the text */
+  --text-lg: clamp(1.3rem, 1.2rem + 0.45vw, 1.55rem); /* arguments */
+  --text-xl: clamp(1.9rem, 1.5rem + 1.6vw, 2.9rem); /* chapter titles */
 
-  --leading-tight: 0.92; /* display sizes */
-  --leading-snug: 1.1; /* headings */
-  --leading-normal: 1.5; /* body */
-  --leading-relaxed: 1.65; /* long paragraphs */
-
-  --tracking-display: -0.035em;
-  --tracking-heading: -0.02em;
-  --tracking-body: 0;
-  --tracking-mono: 0.02em;
+  --leading-text: 1.42;
   --tracking-caps: 0.12em;
 
-  /* ── Spacing ─────────────────────────────────────────────────────────────
-     4px base. 1–8 are fixed; 9–12 are the section rhythm and grow with the
-     viewport. Deliberately tight: the home page is composed as a dense
-     sheet of columns (see DESIGN.md §4), not as a scroll of sections. */
-  --space-1: 0.25rem; /* 4 */
-  --space-2: 0.5rem; /* 8 */
-  --space-3: 0.75rem; /* 12 */
-  --space-4: 1rem; /* 16 */
-  --space-5: 1.5rem; /* 24 */
-  --space-6: 2rem; /* 32 */
-  --space-7: 3rem; /* 48 */
-  --space-8: 4rem; /* 64 */
-  --space-9: clamp(2.5rem, 1.5rem + 3vw, 4rem); /* 40 → 64 */
-  --space-10: clamp(3rem, 2rem + 4vw, 5rem); /* 48 → 80 */
-  --space-11: clamp(4rem, 2.5rem + 5vw, 6rem); /* 64 → 96 */
-  --space-12: clamp(5rem, 3rem + 7vw, 8rem); /* 80 → 128 */
+  /* ── Space ───────────────────────────────────────────────────────────────
+     The unit is the line of text: vertical space is counted in lines. */
+  --line: calc(var(--text-base) * var(--leading-text));
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-9: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 2.5rem); /* page side padding */
 
-  --content-max: 80rem; /* 1280 */
-  --content-narrow: 44rem; /* measure for long prose, ~70ch */
-  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem); /* page side padding */
+  --head-height: 3.25rem; /* the running head above the book */
+  --book-max: 100rem;
 
-  /* ── Shape and depth ─────────────────────────────────────────────────── */
-  --radius-s: 0.25rem; /* 4: tags, chips */
-  --radius-m: 0.5rem; /* 8: buttons, inputs */
-  --radius-l: 1rem; /* 16: sheets, media */
-  --radius-pill: 999px;
-
-  --shadow-s: 0 1px 2px rgb(23 19 14 / 0.08), 0 1px 1px rgb(23 19 14 / 0.04);
-  --shadow-m:
-    0 6px 16px -6px rgb(23 19 14 / 0.18), 0 2px 4px rgb(23 19 14 / 0.06);
-  --shadow-l:
-    0 24px 48px -16px rgb(23 19 14 / 0.28), 0 8px 16px -8px rgb(23 19 14 / 0.12);
-  --shadow-sheet: 0 30px 60px -20px rgb(23 19 14 / 0.35); /* the CV paper */
+  --radius-s: 2px;
+  --shadow-sheet: 0 30px 60px -20px rgb(60 40 15 / 0.4); /* the CV paper */
 
   /* ── Motion ──────────────────────────────────────────────────────────── */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.5);
   --duration-fast: 150ms;
   --duration-base: 320ms;
-  --duration-slow: 700ms;
-  --duration-reveal: 900ms; /* entrance reveals */
+  --duration-turn: 340ms; /* each half of a page turn */
 }
 
-/* ── Color: "Night shift" (dark) ───────────────────────────────────────────
-   A blue-black, not a grey: the complement of the orange ink, so the accent
-   glows instead of merely contrasting. Text is the paper colour, not white. */
+/* ── Color: the same book by candlelight ───────────────────────────────────
+   A brown-black room, paper the colour of a page seen by a flame, and the
+   red ink turned to ember. The glow is the candle itself (see book.css). */
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --color-bg: #0c1117;
-  --color-surface: #141b24;
-  --color-surface-2: #1c2531;
-  --color-text: #ede7da;
-  --color-text-muted: #a3abb7; /* 8.2:1 on bg */
-  --color-border: #283240;
-  --color-border-strong: var(--color-text);
-  --color-grid: rgb(237 231 218 / 0.06);
-
-  --color-accent: #ff8e3c; /* 8.3:1 on bg */
-  --color-accent-contrast: #17130e;
-  --color-accent-vivid: #ff8e3c;
-  --color-accent-vivid-contrast: #17130e;
-  --color-accent-soft: rgb(255 142 60 / 0.16);
-
-  --color-focus: #8db8ff; /* 9.4:1 on bg */
-  --color-success: #5bd37d;
-  --color-success-soft: rgb(91 211 125 / 0.14);
-  --color-selection: rgb(255 142 60 / 0.35);
-
-  --shadow-s: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 1px rgb(0 0 0 / 0.3);
-  --shadow-m: 0 6px 16px -6px rgb(0 0 0 / 0.6), 0 2px 4px rgb(0 0 0 / 0.4);
-  --shadow-l:
-    0 24px 48px -16px rgb(0 0 0 / 0.7), 0 8px 16px -8px rgb(0 0 0 / 0.5);
+  --color-bg: #0b0806;
+  --color-surface: #19130c;
+  --color-surface-2: #130e09;
+  --color-text: #e9dcc1;
+  --color-text-muted: #b6a686; /* 7.6:1 on the paper */
+  --color-border: #3b2f1f;
+  --color-accent: #f0955c; /* 7.7:1 on the paper */
+  --color-accent-contrast: #19130c;
+  --color-focus: #9cc2ff;
+  --color-selection: rgb(240 149 92 / 0.3);
+  --color-spine: rgb(0 0 0 / 0.3);
+  --color-plate-ink: #1c140c;
+  --color-plate-paper: #d9c8a4; /* a page seen by the flame */
+  --color-glow: rgb(255 170 84 / 0.17);
+  --shadow-book: 0 40px 80px -30px rgb(0 0 0 / 0.9);
   --shadow-sheet: 0 30px 60px -20px rgb(0 0 0 / 0.8);
 }
 
@@ -163,42 +107,40 @@
   :root:not([data-theme='light']) {
     color-scheme: dark;
 
-    --color-bg: #0c1117;
-    --color-surface: #141b24;
-    --color-surface-2: #1c2531;
-    --color-text: #ede7da;
-    --color-text-muted: #a3abb7;
-    --color-border: #283240;
-    --color-border-strong: var(--color-text);
-    --color-grid: rgb(237 231 218 / 0.06);
-
-    --color-accent: #ff8e3c;
-    --color-accent-contrast: #17130e;
-    --color-accent-vivid: #ff8e3c;
-    --color-accent-vivid-contrast: #17130e;
-    --color-accent-soft: rgb(255 142 60 / 0.16);
-
-    --color-focus: #8db8ff;
-    --color-success: #5bd37d;
-    --color-success-soft: rgb(91 211 125 / 0.14);
-    --color-selection: rgb(255 142 60 / 0.35);
-
-    --shadow-s: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 1px rgb(0 0 0 / 0.3);
-    --shadow-m: 0 6px 16px -6px rgb(0 0 0 / 0.6), 0 2px 4px rgb(0 0 0 / 0.4);
-    --shadow-l:
-      0 24px 48px -16px rgb(0 0 0 / 0.7), 0 8px 16px -8px rgb(0 0 0 / 0.5);
+    --color-bg: #0b0806;
+    --color-surface: #19130c;
+    --color-surface-2: #130e09;
+    --color-text: #e9dcc1;
+    --color-text-muted: #b6a686;
+    --color-border: #3b2f1f;
+    --color-accent: #f0955c;
+    --color-accent-contrast: #19130c;
+    --color-focus: #9cc2ff;
+    --color-selection: rgb(240 149 92 / 0.3);
+    --color-spine: rgb(0 0 0 / 0.3);
+    --color-plate-ink: #1c140c;
+    --color-plate-paper: #d9c8a4;
+    --color-glow: rgb(255 170 84 / 0.17);
+    --shadow-book: 0 40px 80px -30px rgb(0 0 0 / 0.9);
     --shadow-sheet: 0 30px 60px -20px rgb(0 0 0 / 0.8);
   }
 }
 
-/* Motion is opt-out at the token level: every transition and animation that
-   reads these durations collapses to an instant change. Reveal-on-scroll
-   effects must additionally start visible (see DESIGN.md, "Motion"). */
+/* On a spread (see book.css) the text size also answers to the height of the
+   window, so that a chapter's two pages fit a laptop screen without scrolling. */
+@media (min-width: 70rem) {
+  :root {
+    --text-base: clamp(1.05rem, min(1.07rem + 0.34vw, 2.3vh), 1.34rem);
+  }
+}
+
+/* Motion is opt-out at the token level: every transition that reads these
+   durations collapses to an instant change. The page turn and the candle are
+   switched off outright in book.css. */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
     --duration-base: 0ms;
-    --duration-slow: 0ms;
-    --duration-reveal: 0ms;
+    --duration-turn: 0ms;
   }
 }
