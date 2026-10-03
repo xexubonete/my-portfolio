@@ -1,0 +1,381 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   The CV sheet. Always paper, whatever the site theme: it prints to A4, it is
+   rendered to PDF by scripts/generate-cv.mjs, and it is embedded as a preview
+   on the home page. The *page around* the sheet follows the theme; the sheet
+   itself uses literal paper values on purpose.
+
+   Plain CSS, imported by the CV page component and by design/cv.html.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.cv-page {
+  --paper: #fbf8f2;
+  --paper-2: #efe9dc;
+  --ink: #17130e;
+  --ink-muted: #5e5649;
+  --rule: #d2c9b6;
+  --orange: #a8480a;
+  --orange-vivid: #f26b1d;
+
+  min-height: 100dvh;
+  padding: var(--space-6) var(--gutter) var(--space-9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cv-toolbar {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.cv-sheet {
+  width: 210mm;
+  min-height: 297mm;
+  max-width: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sheet);
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+/* Header band: ink with paper text, full width, single row. */
+.cv-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10mm 9mm 7mm;
+  display: flex;
+  align-items: center;
+  gap: 6mm;
+}
+
+.cv-photo {
+  /* The source is square, so the circle shows the whole memoji with its
+     edges trimmed evenly. */
+  display: block;
+  flex: none;
+  width: 28mm;
+  height: 28mm;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  background: var(--paper-2);
+  border: 1px solid rgb(251 248 242 / 0.4);
+}
+
+.cv-heading {
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 78%;
+  font-size: 22pt;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.cv-name span {
+  color: var(--orange-vivid);
+}
+
+.cv-role {
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(251 248 242 / 0.75);
+  margin-top: 2mm;
+}
+
+/* Contact block: still inside the ink band, directly under the header. */
+.cv-section--contact {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 9mm 8mm;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8mm;
+  row-gap: 1.6mm;
+}
+
+.cv-section--contact h2 {
+  flex: 1 0 100%;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 7pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--orange-vivid);
+  padding-bottom: 1.2mm;
+  border-bottom: 1px solid rgb(251 248 242 / 0.25);
+  margin-bottom: 1.4mm;
+}
+
+.cv-section--contact a {
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.cv-contact {
+  display: flex;
+  gap: 2mm;
+  align-items: flex-start;
+  font-size: 8pt;
+  line-height: 1.3;
+}
+
+.cv-contact svg {
+  width: 3.4mm;
+  height: 3.4mm;
+  flex: none;
+  margin-top: 0.3mm;
+  color: var(--orange-vivid);
+}
+
+.cv-field {
+  font-size: 8.5pt;
+  margin-bottom: 1.8mm;
+}
+
+.cv-field .label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 6.5pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.cv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6mm;
+}
+
+.cv-chip {
+  font-family: var(--font-mono);
+  font-size: 6.8pt;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--rule);
+  border-radius: 1mm;
+  padding: 0.7mm 1.6mm;
+  color: var(--ink);
+}
+
+/* Body: every remaining section stacks full width, in reading order. */
+.cv-main {
+  padding: 7mm 9mm 8mm;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5mm;
+}
+
+.cv-section--data {
+  margin-top: -1.5mm;
+}
+
+.cv-main h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 85%;
+  font-size: 13pt;
+  letter-spacing: -0.02em;
+  padding-bottom: 1.2mm;
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 2.5mm;
+}
+
+.cv-summary {
+  font-size: 9pt;
+  line-height: 1.45;
+}
+
+.cv-summary b {
+  color: var(--orange);
+}
+
+/* Technical skills: plain comma-separated keywords, one group per line, so
+   every stack keyword is real flowing text an ATS can match. */
+.cv-tech-group {
+  font-size: 8.5pt;
+  line-height: 1.5;
+  margin-bottom: 0.8mm;
+}
+
+.cv-tech-group .label {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.02em;
+  color: var(--orange);
+  margin-right: 1mm;
+}
+
+.cv-job {
+  position: relative;
+  padding-left: 5mm;
+  margin-bottom: 3mm;
+}
+
+.cv-job::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.6mm;
+  width: 2mm;
+  height: 2mm;
+  background: var(--orange-vivid);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.cv-job::after {
+  content: '';
+  position: absolute;
+  left: 0.9mm;
+  top: 5mm;
+  bottom: -3mm;
+  width: 0.3mm;
+  background: var(--rule);
+}
+
+.cv-job:last-child::after {
+  display: none;
+}
+
+.cv-job-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4mm;
+}
+
+.cv-job-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 90%;
+  font-size: 10.5pt;
+  letter-spacing: -0.01em;
+}
+
+.cv-job-company {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.cv-job-period {
+  font-family: var(--font-mono);
+  font-size: 7.2pt;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.cv-job-place {
+  font-family: var(--font-mono);
+  font-size: 7.2pt;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+}
+
+.cv-job-summary {
+  font-size: 8.5pt;
+  color: var(--ink-muted);
+  margin: 0.6mm 0 0.8mm;
+}
+
+.cv-job ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 8.5pt;
+}
+
+.cv-job li {
+  position: relative;
+  padding-left: 3.2mm;
+  margin-bottom: 0.4mm;
+  line-height: 1.3;
+}
+
+.cv-job li::before {
+  content: '';
+  position: absolute;
+  left: 0.2mm;
+  top: 1.5mm;
+  width: 1.4mm;
+  height: 1.4mm;
+  background: var(--orange);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.cv-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1mm;
+  margin-top: 1.2mm;
+}
+
+.cv-stack span {
+  font-family: var(--font-mono);
+  font-size: 6.6pt;
+  letter-spacing: 0.02em;
+  background: var(--paper-2);
+  border-radius: 1mm;
+  padding: 0.5mm 1.4mm;
+  color: var(--ink);
+}
+
+.cv-roles {
+  margin-top: 2mm;
+  padding-left: 3.5mm;
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5mm;
+}
+
+.cv-roles .cv-job-title {
+  font-size: 9.5pt;
+}
+
+@media (max-width: 48rem) {
+  .cv-sheet {
+    min-height: 0;
+  }
+
+  .cv-header {
+    flex-wrap: wrap;
+  }
+}
+
+@media print {
+  .cv-page {
+    padding: 0;
+    background: #fff;
+  }
+
+  .cv-toolbar {
+    display: none;
+  }
+
+  .cv-sheet {
+    box-shadow: none;
+    width: 100%;
+    min-height: 100vh;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}

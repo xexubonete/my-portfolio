@@ -3,3 +3,4 @@ node_modules/
 .netlify/
 .astro/
 pnpm-lock.yaml
+.redesign-shots/

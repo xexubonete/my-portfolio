@@ -1,28 +1,87 @@
 // Generates pixel-perfect, margin-free CV PDFs from the /cv and /en/cv routes
-// using headless Chromium. Requires the dev (or preview) server to be running.
+// using headless Chromium. The site is static, so the script serves the
+// production build in dist/ itself: `pnpm cv:pdf` builds and then prints.
 //
-//   1) pnpm dev         (in another terminal)
-//   2) pnpm cv:pdf
-//
-// Override the base URL with CV_BASE_URL if the server runs elsewhere.
+// Set CV_BASE_URL to print from another server instead (a preview deployment,
+// a dev server), in which case dist/ is not needed.
 //
 // This script used to print whatever the page happened to show. That is how a
 // transient dev-server hiccup ended up inside a downloadable CV: Vite rendered its
 // error overlay under the resume, Chromium printed it, and the good PDF was
 // overwritten without a word. Every check below exists to make that impossible --
 // a bad run now fails loudly and leaves the previous PDF alone.
-import { readFile, rename, unlink } from 'node:fs/promises'
+import { readFile, rename, unlink, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import puppeteer from 'puppeteer'
+import { PDFDocument } from 'pdf-lib'
+import { serveStatic } from './lib/static-server.mjs'
 
-const BASE = process.env.CV_BASE_URL ?? 'http://localhost:4321'
+const server = process.env.CV_BASE_URL ? null : await serveDist()
+const BASE = process.env.CV_BASE_URL ?? server.url
+
+// Keywords are the technologies actually listed in the CV's Technical Skills
+// section (src/i18n/content.ts: frameworks, patterns, databases, devops,
+// tools), in their canonical spelling, repeated here only so an ATS keyword
+// search also matches the PDF's own metadata -- nothing here is invented.
+const KEYWORDS = [
+  'C#',
+  'SQL',
+  '.NET',
+  '.NET Core',
+  '.NET Framework',
+  'REST APIs',
+  'gRPC',
+  'RabbitMQ',
+  'Microservices',
+  'Dapper',
+  'Entity Framework Core',
+  'Entity Framework',
+  'Hangfire',
+  'MediatR',
+  'AutoMapper',
+  'FluentValidation',
+  'SignalR',
+  'xUnit',
+  'MSTest',
+  'Serilog',
+  'Swagger',
+  'OpenAPI',
+  'Angular',
+  'Clean Architecture',
+  'Domain-Driven Design',
+  'CQRS',
+  'Repository',
+  'Unit of Work',
+  'PostgreSQL',
+  'SQL Server',
+  'Azure Cosmos DB',
+  'Azure',
+  'Azure Blob Storage',
+  'Azure DevOps',
+  'CI/CD',
+  'Jenkins',
+  'Git',
+  'GitHub',
+  'Postman',
+  'Bruno',
+].join(', ')
 
 const targets = [
-  { url: `${BASE}/cv`, out: 'public/CV_Jesus_Bonete_ES.pdf', expect: 'Bonete' },
+  {
+    url: `${BASE}/cv`,
+    out: 'public/CV_Jesus_Bonete_ES.pdf',
+    expect: 'Bonete',
+    lang: 'es',
+    title: 'Jesús Bonete Sánchez — Currículum (Desarrollador .NET Senior)',
+    subject: 'Currículum vitae — Desarrollador .NET Senior',
+  },
   {
     url: `${BASE}/en/cv`,
     out: 'public/CV_Jesus_Bonete_EN.pdf',
     expect: 'Bonete',
+    lang: 'en',
+    title: 'Jesús Bonete Sánchez — Resume (Senior .NET Developer)',
+    subject: 'Resume — Senior .NET Developer',
   },
 ]
 
@@ -35,6 +94,17 @@ const ERROR_MARKERS = [
   'LoadPluginContext',
 ]
 
+// Without CV_BASE_URL the PDFs come from dist/, which has to exist first.
+async function serveDist() {
+  if (!existsSync('dist/cv/index.html') && !existsSync('dist/cv.html')) {
+    console.error(
+      'dist/ has no CV page. Run "pnpm build" first (or "pnpm cv:pdf").',
+    )
+    process.exit(1)
+  }
+  return serveStatic('dist')
+}
+
 // The Node the project pins. Astro 7 needs 22.12 or newer, so a mismatch here is
 // worth saying out loud before a confusing compile failure appears instead.
 async function warnOnNodeMismatch() {
@@ -46,7 +116,7 @@ async function warnOnNodeMismatch() {
   if (wanted && wanted.split('.')[0] !== running) {
     console.warn(
       `! Node ${running} is running, but .nvmrc asks for ${wanted}.\n` +
-        `  Run "nvm use" before "pnpm dev" if the page fails to compile.`,
+        `  Run "nvm use" before "pnpm build" if the page fails to compile.`,
     )
   }
 }
@@ -111,13 +181,23 @@ async function render(browser, target) {
     // Written beside the real file and moved into place only once everything above
     // has passed, so a failed run can never replace a good CV with a broken one.
     const pending = `${target.out}.pending`
-    await page.pdf({
-      path: pending,
+    const pdfBytes = await page.pdf({
       format: 'A4',
       printBackground: true,
       preferCSSPageSize: true,
       margin: { top: '0', right: '0', bottom: '0', left: '0' },
     })
+
+    // Chromium's print-to-pdf sets the PDF /Title from <title> but nothing
+    // else; an ATS reads this metadata too, so it gets the same canonical
+    // wording as the page content.
+    const pdfDoc = await PDFDocument.load(pdfBytes)
+    pdfDoc.setTitle(target.title)
+    pdfDoc.setAuthor('Jesús Bonete Sánchez')
+    pdfDoc.setSubject(target.subject)
+    pdfDoc.setKeywords(KEYWORDS.split(', '))
+    pdfDoc.setLanguage(target.lang)
+    await writeFile(pending, await pdfDoc.save())
 
     await rename(pending, target.out)
     console.log(`✓ ${target.out}`)
@@ -149,6 +229,7 @@ try {
   }
 } finally {
   await browser.close()
+  await server?.close()
 }
 
 if (failures.length) {

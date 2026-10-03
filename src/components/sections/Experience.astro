@@ -1,0 +1,81 @@
+---
+import ExpYears from '@/components/ui/ExpYears.astro'
+import Glyph from '@/components/ui/Glyph.astro'
+import SectionHead from '@/components/ui/SectionHead.astro'
+import { experienceByLang, pagePath, t, type Lang } from '@/i18n'
+import { groupByCompany } from '@/lib/experience'
+
+interface Props {
+  lang: Lang
+  num: string
+}
+
+const { lang, num } = Astro.props
+const { experience, a11y } = t(lang)
+const groups = groupByCompany(experienceByLang[lang])
+const endYear = (date: string) => date.slice(-4)
+---
+
+<div
+  class="col col--exp reveal"
+  style="--reveal-delay: 100ms"
+  id="experience"
+  aria-labelledby="experience-title"
+>
+  <SectionHead num={num} title={experience.sectionTitle} id="experience-title">
+    <Fragment slot="meta">
+      <ExpYears template={experience.years} />
+    </Fragment>
+  </SectionHead>
+  <div class="exp">
+    {groups.map((group, i) => {
+      const [latest] = group.roles
+      return (
+        <article class="exp__row">
+          <div class="exp__year">{endYear(group.end)}</div>
+          <div class="exp__head">
+            <a
+              class="exp__company link-arrow"
+              href={group.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {group.company} <Glyph name="arrow" class="arrow" />
+              <span class="sr-only">{a11y.external}</span>
+            </a>
+            <div class="exp__position">
+              {latest.position}
+              {group.roles.length > 1 && (
+                <span class="exp__count">
+                  {' '}
+                  · {group.roles.length} {experience.roles}
+                </span>
+              )}
+            </div>
+            <div class="exp__dates">
+              {group.start} – {group.end} · {group.location}
+            </div>
+            <p class="exp__body">{latest.description}</p>
+          </div>
+          {i === 0 && (
+            <img
+              class="exp__logo"
+              src="/cafler-logo.png"
+              alt=""
+              width="40"
+              height="40"
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </article>
+      )
+    })}
+  </div>
+  <p class="col__foot">
+    <a class="btn btn--outline" href={pagePath(lang, 'work')}>
+      {experience.viewMore}
+      <Glyph name="arrow" class="arrow btn__arrow" />
+    </a>
+  </p>
+</div>

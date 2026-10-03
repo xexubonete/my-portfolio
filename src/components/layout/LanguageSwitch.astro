@@ -1,0 +1,35 @@
+---
+import { LANGS, pagePath, type Lang, type PageId } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  page: PageId
+  label: string
+}
+
+const { lang, page, label } = Astro.props
+const names: Record<Lang, string> = { es: 'Español', en: 'English' }
+// English first, as in the mockups' `en · es` pill.
+const order = [...LANGS].reverse()
+---
+
+{/* Plain links to the same page in the other language: no script, and
+    crawlers follow them. The active language is marked, not linked. */}
+<span class="lang-switch" aria-label={label}>
+  {order.map((item) =>
+    item === lang ? (
+      <span aria-current="true" lang={item}>
+        {item}
+      </span>
+    ) : (
+      <a
+        href={pagePath(item, page)}
+        hreflang={item}
+        lang={item}
+        title={names[item]}
+      >
+        {item}
+      </a>
+    ),
+  )}
+</span>

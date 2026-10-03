@@ -1,205 +1,146 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Global stylesheet: Tailwind 4 + the design tokens + base styles + the
+   design-owned component recipes. The art direction is documented in
+   DESIGN.md; the raw values live in tokens.css (plain CSS, shared with the
+   static mockups in design/).
+   ────────────────────────────────────────────────────────────────────────── */
+
 @import 'tailwindcss';
 
-/* Tailwind 4 reads its theme from CSS, but the shadcn palette, the radius scale
-   and the animate plugin all still live in tailwind.config.ts. Pointing at it
-   keeps every token exactly as it was instead of restating the whole theme. */
-@config '../../tailwind.config.ts';
+/* Unlayered on purpose: the token declarations must win over the copies that
+   Tailwind emits for `@theme` inside `@layer theme`. */
+@import './tokens.css';
+@import './fonts.css';
+@import './base.css' layer(base);
+@import './recipes.css' layer(components);
 
-/* Tailwind 4 changed the default border colour from gray-200 to currentColor,
-   which would repaint every unstyled border on the site. This restores the v3
-   behaviour; the `* { @apply border-border }` below then overrides it anyway. */
-@layer base {
-  *,
-  ::after,
-  ::before {
-    border-color: hsl(var(--border));
+/* `dark:` follows the same rules as the tokens: an explicit data-theme, or
+   the OS preference when nothing is stored. Components should rarely need it
+   since every token already flips; it exists for the odd asset swap. */
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(
+      :root:not([data-theme='light']),
+      :root:not([data-theme='light']) *
+    ) {
+      @slot;
+    }
   }
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
-    --primary: 31 69% 53%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 31 69% 53%;
-    --radius: 1rem;
-  }
+/* Tailwind theme mapping. `inline` makes utilities read the token *value*
+   (`var(--color-bg)`), so a utility resolves against the theme in force where
+   it is used. Utility names: bg-canvas, bg-surface, bg-surface-2, text-ink,
+   text-muted, border-line, bg-accent, text-accent, ring-focus, font-display,
+   text-hero, rounded-m, shadow-m, ease-out-soft, duration-base, p-s4, … */
+@theme inline {
+  /* Reset Tailwind's default palette so only the token colours exist. */
+  --color-*: initial;
+  --color-canvas: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-ink: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-line: var(--color-border);
+  --color-line-strong: var(--color-border-strong);
+  --color-grid: var(--color-grid);
+  --color-accent: var(--color-accent);
+  --color-accent-contrast: var(--color-accent-contrast);
+  --color-accent-vivid: var(--color-accent-vivid);
+  --color-accent-vivid-contrast: var(--color-accent-vivid-contrast);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-focus: var(--color-focus);
+  --color-success: var(--color-success);
+  --color-success-soft: var(--color-success-soft);
+  --color-white: #fff;
+  --color-black: #000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
 
-  .dark {
-    --background: 20 12% 12%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 24 10% 16%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 24 10% 16%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 32 72% 56%;
-    --primary-foreground: 20 14% 8%;
-    --secondary: 20 8% 22%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 20 8% 21%;
-    --muted-foreground: 24 6% 70%;
-    --accent: 20 8% 24%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 72.2% 50.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 7% 27%;
-    --input: 20 7% 27%;
-    --ring: 32 72% 56%;
-  }
-}
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-accent: var(--font-accent);
+  --font-mono: var(--font-mono);
+  --font-sans: var(--font-body);
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  /* Zoom the bento content out a touch so more of the grid is visible at once.
-     Applied to <main> (not <body>) on purpose: zooming the body breaks the
-     sticky header and mis-positions the Radix language/theme dropdowns, which
-     render in a body-level portal and compute coordinates ignoring zoom. The
-     header stays at real scale; only the content reads "from further away". */
-  main {
-    zoom: 0.9;
-  }
-  .colorOrangeHover:hover {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    transition:
-      background-color 0.6s ease,
-      color 0.3s ease;
-  }
-  /* Space between grouped list items */
-  .tech-list {
-    display: block;
-    margin-top: 5px;
-  }
-}
-.goal-list {
-  display: block;
-}
-a {
-  font-style: normal;
-}
-/* Unified button hover used across the site (project pills, contact buttons,
-   CV button, etc.): fill brand orange + lift + glow. `!important` guarantees it
-   wins over shadcn variant hovers (outline's bg-accent, destructive's opacity). */
-.btn-uniform {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
+  --text-xs: var(--text-xs);
+  --text-xs--line-height: 1.5;
+  --text-sm: var(--text-sm);
+  --text-sm--line-height: 1.5;
+  --text-base: var(--text-base);
+  --text-base--line-height: var(--leading-normal);
+  --text-lg: var(--text-lg);
+  --text-lg--line-height: 1.45;
+  --text-xl: var(--text-xl);
+  --text-xl--line-height: 1.3;
+  --text-2xl: var(--text-2xl);
+  --text-2xl--line-height: 1.15;
+  --text-3xl: var(--text-3xl);
+  --text-3xl--line-height: var(--leading-snug);
+  --text-4xl: var(--text-4xl);
+  --text-4xl--line-height: 1;
+  --text-5xl: var(--text-5xl);
+  --text-5xl--line-height: var(--leading-tight);
+  --text-hero: var(--text-hero);
+  --text-hero--line-height: 0.86;
 
-.btn-uniform:hover {
-  background-color: hsl(var(--primary)) !important;
-  color: hsl(var(--primary-foreground)) !important;
-  border-color: hsl(var(--primary)) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px hsl(var(--primary) / 0.35);
-}
+  --tracking-display: var(--tracking-display);
+  --tracking-heading: var(--tracking-heading);
+  --tracking-caps: var(--tracking-caps);
+  --tracking-mono: var(--tracking-mono);
 
-/* Project repo buttons: outline + icon + ↗ arrow; fill brand orange on hover. */
-.repo-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: 1.5px solid hsl(var(--primary));
-  border-radius: 0.5rem;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: hsl(var(--foreground));
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
+  --spacing-s1: var(--space-1);
+  --spacing-s2: var(--space-2);
+  --spacing-s3: var(--space-3);
+  --spacing-s4: var(--space-4);
+  --spacing-s5: var(--space-5);
+  --spacing-s6: var(--space-6);
+  --spacing-s7: var(--space-7);
+  --spacing-s8: var(--space-8);
+  --spacing-s9: var(--space-9);
+  --spacing-s10: var(--space-10);
+  --spacing-s11: var(--space-11);
+  --spacing-s12: var(--space-12);
+  --spacing-gutter: var(--gutter);
+  --container-content: var(--content-max);
+  --container-narrow: var(--content-narrow);
 
-.repo-btn:hover {
-  transform: translateY(-2px);
-  border-color: hsl(var(--primary));
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  box-shadow: 0 8px 20px hsl(var(--primary) / 0.3);
-}
+  --radius-s: var(--radius-s);
+  --radius-m: var(--radius-m);
+  --radius-l: var(--radius-l);
+  --radius-pill: var(--radius-pill);
 
-.repo-arrow {
-  margin-left: auto;
-  opacity: 0.5;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
+  --shadow-s: var(--shadow-s);
+  --shadow-m: var(--shadow-m);
+  --shadow-l: var(--shadow-l);
+  --shadow-sheet: var(--shadow-sheet);
 
-.repo-btn:hover .repo-arrow {
-  opacity: 1;
-  transform: translate(1px, -1px);
-}
+  --ease-out-soft: var(--ease-out);
+  --ease-in-out-soft: var(--ease-in-out);
+  --ease-spring: var(--ease-spring);
+  --default-transition-duration: var(--duration-base);
+  --default-transition-timing-function: var(--ease-out);
 
-/* my-portfolio = the project we're deployed on: a green "live" beacon. */
-.repo-btn--live {
-  border-color: #22c55e;
-  font-weight: 600;
-  animation: portfolio-pulse 2.2s ease-in-out infinite;
-}
-
-.repo-btn--live:hover {
-  animation: none;
-}
-
-.repo-btn--live:hover .portfolio-live {
-  background: hsl(var(--primary-foreground));
-  box-shadow: none;
-}
-
-@keyframes portfolio-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 0 7px rgba(34, 197, 94, 0);
-  }
-}
-
-.portfolio-live {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  flex-shrink: 0;
-  border-radius: 9999px;
-  background: #22c55e;
-  box-shadow: 0 0 6px rgba(34, 197, 94, 0.7);
-  animation: portfolio-blink 1.4s ease-in-out infinite;
-}
-
-@keyframes portfolio-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
-  }
+  /* Legacy aliases so the pre-redesign components keep compiling while the
+     frontend lane replaces them. Remove once nothing references them. */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-text);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-text);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: var(--color-accent-contrast);
+  --color-secondary: var(--color-surface-2);
+  --color-secondary-foreground: var(--color-text);
+  --color-muted-foreground: var(--color-text-muted);
+  --color-accent-foreground: var(--color-accent-contrast);
+  --color-destructive: var(--color-accent);
+  --color-destructive-foreground: var(--color-accent-contrast);
+  --color-border: var(--color-border);
+  --color-input: var(--color-border);
+  --color-ring: var(--color-focus);
 }

@@ -1,20 +1,35 @@
+---
+// The language redirect. It is a static page, so it must decide in the browser:
+// the script runs before anything paints and sends Spanish-speaking visitors to
+// /es/ and everyone else to /en/. With JavaScript off, the meta refresh falls
+// back to English and the links let the visitor choose.
+---
+
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <meta name="robots" content="noindex" />
+    <title>Jesús Bonete - Portfolio</title>
+    <link rel="alternate" hreflang="en" href="https://xexubonete.dev/en/" />
+    <link rel="alternate" hreflang="es" href="https://xexubonete.dev/es/" />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://xexubonete.dev/en/"
+    />
+    <script is:inline>
+      var lang = navigator.language || navigator.userLanguage || ''
+      location.replace(lang.toLowerCase().indexOf('es') === 0 ? '/es/' : '/en/')
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=/en/" />
+    </noscript>
   </head>
   <body>
-    <script is:inline>
-      var userLang = navigator.language || navigator.userLanguage
-
-      console.log('Idioma del navegador:', userLang)
-
-      if (userLang.startsWith('es')) {
-        window.location.replace('/es/')
-      } else {
-        window.location.replace('/en/')
-      }
-    </script>
+    <p>
+      <a href="/en/">English</a> · <a href="/es/">Español</a>
+    </p>
   </body>
 </html>

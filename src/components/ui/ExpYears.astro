@@ -1,0 +1,22 @@
+---
+import { formatYears, type YearsTemplate } from '@/lib/experience'
+
+/**
+ * A years-of-experience phrase rendered at build time and refreshed on the
+ * client by the script in BaseLayout, which reads the two data attributes.
+ */
+interface Props {
+  template: YearsTemplate
+  class?: string
+}
+
+const { template, class: className } = Astro.props
+---
+
+<span
+  class={className}
+  data-exp-plus={template.plus}
+  data-exp-exact={template.exact}
+>
+  {formatYears(template)}
+</span>

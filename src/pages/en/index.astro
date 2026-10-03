@@ -1,15 +1,5 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro'
-import BentoGrid from '@/components/bento/BentoGrid.astro'
-
-// Dynamic experience years are computed per request — never cache.
-Astro.response.headers.set('Cache-Control', 'no-store')
+import HomePage from '@/components/pages/HomePage.astro'
 ---
 
-<BaseLayout
-  lang="en"
-  title="Jesús Bonete - Portfolio"
-  description="Jesús Bonete - Portfolio, Projects, CV, About Me, Contact, Available, Experience, Study"
->
-  <BentoGrid lang="en" />
-</BaseLayout>
+<HomePage lang="en" />

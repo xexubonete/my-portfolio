@@ -1,0 +1,23 @@
+---
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { tape } = t(lang)
+---
+
+{/* The track is duplicated so the loop is seamless; recipes.css hides the
+    copy and wraps the first one under reduced motion. Decorative only: the
+    same items are listed, readable, in the Stack section. */}
+<div class="tape" aria-hidden="true">
+  {[0, 1].map(() => (
+    <div class="tape__track display tape__text">
+      {tape.map((item) => (
+        <span>{item}</span>
+      ))}
+    </div>
+  ))}
+</div>
