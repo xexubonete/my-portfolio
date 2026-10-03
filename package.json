@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
+    "pdf-lib": "^1.17.1",
     "prettier": "^3.9.9",
     "prettier-plugin-astro": "^1.1.0",
     "prettier-plugin-tailwindcss": "^0.8.1",

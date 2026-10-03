@@ -115,7 +115,12 @@ const patterns = [
   'Repository',
   'Unit of Work',
 ]
-const databases = ['PostgreSQL', 'MSSQL', 'CosmoDB', 'Stored Procedures']
+const databases = [
+  'PostgreSQL',
+  'SQL Server',
+  'Azure Cosmos DB',
+  'Stored Procedures',
+]
 const devops = [
   'Azure',
   'Azure Blob Storage',
@@ -146,9 +151,9 @@ const tape = [
   'MediatR',
   'Hangfire',
   'Azure',
-  'MSSQL',
+  'SQL Server',
   'PostgreSQL',
-  'CosmoDB',
+  'Azure Cosmos DB',
   'Claude',
   'GitHub Copilot',
 ]

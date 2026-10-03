@@ -18,7 +18,7 @@ A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwin
 - [Tailwind CSS](https://tailwindcss.com/) v4 on top of plain CSS tokens and recipes
 - [TypeScript](https://www.typescriptlang.org/)
 - [sharp](https://sharp.pixelplumbing.com/) and [subset-font](https://github.com/papandreou/subset-font) in the build pipeline
-- [Puppeteer](https://pptr.dev/) to print the CV PDFs
+- [Puppeteer](https://pptr.dev/) to print the CV PDFs, [pdf-lib](https://pdf-lib.js.org/) to set their ATS metadata
 
 > Package manager: **pnpm** (pinned via the `packageManager` field). Use `corepack enable` to get the matching version automatically. Node 24 (see `.nvmrc`).
 

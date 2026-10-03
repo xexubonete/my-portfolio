@@ -10,20 +10,54 @@
 // error overlay under the resume, Chromium printed it, and the good PDF was
 // overwritten without a word. Every check below exists to make that impossible --
 // a bad run now fails loudly and leaves the previous PDF alone.
-import { readFile, rename, unlink } from 'node:fs/promises'
+import { readFile, rename, unlink, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import puppeteer from 'puppeteer'
+import { PDFDocument } from 'pdf-lib'
 import { serveStatic } from './lib/static-server.mjs'
 
 const server = process.env.CV_BASE_URL ? null : await serveDist()
 const BASE = process.env.CV_BASE_URL ?? server.url
 
+// Keywords are the technologies actually listed in src/lib/constants(-es).ts,
+// in their canonical spelling, repeated here only so an ATS keyword search
+// also matches the PDF's own metadata -- nothing here is invented.
+const KEYWORDS = [
+  '.NET',
+  'C#',
+  'Entity Framework',
+  'SQL Server',
+  'Azure',
+  'Azure DevOps',
+  'Azure Cosmos DB',
+  'RabbitMQ',
+  'Microservices',
+  'Clean Architecture',
+  'CQRS',
+  'MediatR',
+  'gRPC',
+  'REST APIs',
+  'Git',
+  'GitHub',
+  'Angular',
+].join(', ')
+
 const targets = [
-  { url: `${BASE}/cv`, out: 'public/CV_Jesus_Bonete_ES.pdf', expect: 'Bonete' },
+  {
+    url: `${BASE}/cv`,
+    out: 'public/CV_Jesus_Bonete_ES.pdf',
+    expect: 'Bonete',
+    lang: 'es',
+    title: 'Jesús Bonete Sánchez — Currículum (Desarrollador .NET Senior)',
+    subject: 'Currículum vitae — Desarrollador .NET Senior',
+  },
   {
     url: `${BASE}/en/cv`,
     out: 'public/CV_Jesus_Bonete_EN.pdf',
     expect: 'Bonete',
+    lang: 'en',
+    title: 'Jesús Bonete Sánchez — Resume (Senior .NET Developer)',
+    subject: 'Resume — Senior .NET Developer',
   },
 ]
 
@@ -123,13 +157,23 @@ async function render(browser, target) {
     // Written beside the real file and moved into place only once everything above
     // has passed, so a failed run can never replace a good CV with a broken one.
     const pending = `${target.out}.pending`
-    await page.pdf({
-      path: pending,
+    const pdfBytes = await page.pdf({
       format: 'A4',
       printBackground: true,
       preferCSSPageSize: true,
       margin: { top: '0', right: '0', bottom: '0', left: '0' },
     })
+
+    // Chromium's print-to-pdf sets the PDF /Title from <title> but nothing
+    // else; an ATS reads this metadata too, so it gets the same canonical
+    // wording as the page content.
+    const pdfDoc = await PDFDocument.load(pdfBytes)
+    pdfDoc.setTitle(target.title)
+    pdfDoc.setAuthor('Jesús Bonete Sánchez')
+    pdfDoc.setSubject(target.subject)
+    pdfDoc.setKeywords(KEYWORDS.split(', '))
+    pdfDoc.setLanguage(target.lang)
+    await writeFile(pending, await pdfDoc.save())
 
     await rename(pending, target.out)
     console.log(`✓ ${target.out}`)

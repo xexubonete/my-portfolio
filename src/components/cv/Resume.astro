@@ -23,7 +23,7 @@ const T = {
     back: 'Volver a la web',
     pdf: '/CV_Jesus_Bonete_ES.pdf',
     location: 'Elda, Alicante, España',
-    profileTitle: 'Perfil',
+    profileTitle: 'Perfil profesional',
     profile:
       'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables. Especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código sin sacrificar buenas prácticas.',
     contactTitle: 'Contacto',
@@ -32,12 +32,14 @@ const T = {
     nat: 'Nacionalidad',
     natValue: 'Española',
     license: 'Permiso de conducir',
+    licenseValue: 'B',
     langTitle: 'Idiomas',
     spanish: 'Español',
     spanishLevel: 'Nativo',
     english: 'Inglés',
+    englishLevel: 'B2',
     skillsTitle: 'Habilidades',
-    expTitle: 'Experiencia',
+    expTitle: 'Experiencia profesional',
     eduTitle: 'Formación',
     eduName: 'Desarrollo de Aplicaciones Web (DAW)',
     eduPlace: 'Alicante, España',
@@ -58,7 +60,7 @@ const T = {
     back: 'Back to site',
     pdf: '/CV_Jesus_Bonete_EN.pdf',
     location: 'Elda, Alicante, Spain',
-    profileTitle: 'Profile',
+    profileTitle: 'Summary',
     profile:
       'Senior .NET developer with {EXP} of experience building robust and scalable services. Specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality without compromising best practices.',
     contactTitle: 'Contact',
@@ -67,10 +69,12 @@ const T = {
     nat: 'Nationality',
     natValue: 'Spanish',
     license: 'Driving licence',
+    licenseValue: 'B',
     langTitle: 'Languages',
     spanish: 'Spanish',
     spanishLevel: 'Native',
     english: 'English',
+    englishLevel: 'B2',
     skillsTitle: 'Skills',
     expTitle: 'Experience',
     eduTitle: 'Education',
@@ -151,82 +155,63 @@ const profileText = T.profile.replace(
       </div>
 
       <article class="cv-sheet">
-        <aside class="cv-aside">
-          <div>
-            <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
+        <header class="cv-header">
+          <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
+          <div class="cv-heading">
             <h1 class="cv-name">
               Jesús <span>Bonete Sánchez</span>
             </h1>
             <p class="cv-role">{T.role}</p>
           </div>
+        </header>
 
-          <section>
-            <h2>{T.contactTitle}</h2>
-            <div class="cv-contact">
-              <Glyph name="pin" />
-              <span>{T.location}</span>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="mail" />
-              <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
-                xexubonete@gmail.com
-              </a>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="phone" />
-              <span>(+34) 722 243 881</span>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="globe" />
-              <a
-                href="https://xexubonete.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                xexubonete.dev
-              </a>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="globe" />
-              <a
-                href={LINKS.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                linkedin.com/in/jesus-bonete-sanchez
-              </a>
-            </div>
-            <div class="cv-contact">
-              <Glyph name="globe" />
-              <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
-                github.com/xexubonete
-              </a>
-            </div>
+        <section class="cv-section cv-section--contact">
+          <h2>{T.contactTitle}</h2>
+          <div class="cv-contact">
+            <Glyph name="pin" />
+            <span>{T.location}</span>
+          </div>
+          <div class="cv-contact">
+            <Glyph name="mail" />
+            <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
+              xexubonete@gmail.com
+            </a>
+          </div>
+          <div class="cv-contact">
+            <Glyph name="phone" />
+            <span>(+34) 722 243 881</span>
+          </div>
+          <div class="cv-contact">
+            <Glyph name="globe" />
+            <a
+              href="https://xexubonete.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://xexubonete.dev
+            </a>
+          </div>
+          <div class="cv-contact">
+            <Glyph name="globe" />
+            <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+              https://www.linkedin.com/in/jesus-bonete-sanchez
+            </a>
+          </div>
+          <div class="cv-contact">
+            <Glyph name="globe" />
+            <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
+              https://github.com/xexubonete
+            </a>
+          </div>
+        </section>
+
+        <main class="cv-main">
+          <section class="cv-section">
+            <h2>{T.profileTitle}</h2>
+            <p class="cv-summary" set:html={profileText} />
           </section>
 
-          <section>
-            <h2>{T.dataTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.nat}</span>
-              {T.natValue}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.license}</span>B
-            </div>
-          </section>
-
-          <section>
-            <h2>{T.langTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.spanish}</span>
-              {T.spanishLevel}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.english}</span>B2
-            </div>
-          </section>
-
-          <section>
+          <section class="cv-section">
             <h2>{T.skillsTitle}</h2>
             <div class="cv-chips">
               {T.softSkills.map((skill) => (
@@ -234,16 +219,21 @@ const profileText = T.profile.replace(
               ))}
             </div>
           </section>
-        </aside>
 
-        <main class="cv-main">
-          <section>
-            <h2 data-num="01">{T.profileTitle}</h2>
-            <p class="cv-summary" set:html={profileText} />
+          <section class="cv-section">
+            <h2>{T.langTitle}</h2>
+            <div class="cv-field">
+              <span class="label">{T.spanish}</span>
+              {T.spanishLevel}
+            </div>
+            <div class="cv-field">
+              <span class="label">{T.english}</span>
+              {T.englishLevel}
+            </div>
           </section>
 
-          <section>
-            <h2 data-num="02">{T.expTitle}</h2>
+          <section class="cv-section">
+            <h2>{T.expTitle}</h2>
             {companyGroups.map((group) =>
               group.roles.length === 1 ? (
                 <div class="cv-job">
@@ -320,8 +310,8 @@ const profileText = T.profile.replace(
             )}
           </section>
 
-          <section>
-            <h2 data-num="03">{T.eduTitle}</h2>
+          <section class="cv-section">
+            <h2>{T.eduTitle}</h2>
             <div class="cv-job">
               <div class="cv-job-head">
                 <span class="cv-job-title">
@@ -331,6 +321,18 @@ const profileText = T.profile.replace(
                 <span class="cv-job-period">2020 – 2022</span>
               </div>
               <div class="cv-job-place">{T.eduPlace}</div>
+            </div>
+          </section>
+
+          <section class="cv-section cv-section--data">
+            <h2>{T.dataTitle}</h2>
+            <div class="cv-field">
+              <span class="label">{T.nat}</span>
+              {T.natValue}
+            </div>
+            <div class="cv-field">
+              <span class="label">{T.license}</span>
+              {T.licenseValue}
             </div>
           </section>
         </main>

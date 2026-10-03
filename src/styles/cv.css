@@ -39,30 +39,30 @@
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  display: grid;
-  grid-template-columns: 64mm 1fr;
+  display: flex;
+  flex-direction: column;
   box-shadow: var(--shadow-sheet);
   overflow: hidden;
   line-height: 1.4;
 }
 
-/* Side column: ink with paper text. */
-.cv-aside {
+/* Header band: ink with paper text, full width, single row. */
+.cv-header {
   background: var(--ink);
   color: var(--paper);
-  padding: 10mm 7mm 8mm;
+  padding: 10mm 9mm 7mm;
   display: flex;
-  flex-direction: column;
-  gap: 5mm;
+  align-items: center;
+  gap: 6mm;
 }
 
 .cv-photo {
-  /* Centred in the column: as a block it used to sit flush left. The source is
-     square, so the circle shows the whole memoji with its edges trimmed evenly. */
+  /* The source is square, so the circle shows the whole memoji with its
+     edges trimmed evenly. */
   display: block;
-  width: 34mm;
-  height: 34mm;
-  margin: 0 auto;
+  flex: none;
+  width: 28mm;
+  height: 28mm;
   border-radius: 50%;
   object-fit: cover;
   object-position: center center;
@@ -70,31 +70,46 @@
   border: 1px solid rgb(251 248 242 / 0.4);
 }
 
+.cv-heading {
+  display: flex;
+  flex-direction: column;
+}
+
 .cv-name {
   font-family: var(--font-display);
   font-weight: 800;
   font-stretch: 78%;
   font-size: 22pt;
-  line-height: 0.92;
+  line-height: 0.98;
   letter-spacing: -0.03em;
-  margin-top: 2mm;
 }
 
 .cv-name span {
-  display: block;
   color: var(--orange-vivid);
 }
 
 .cv-role {
   font-family: var(--font-mono);
-  font-size: 7.5pt;
+  font-size: 8pt;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgb(251 248 242 / 0.75);
   margin-top: 2mm;
 }
 
-.cv-aside h2 {
+/* Contact block: still inside the ink band, directly under the header. */
+.cv-section--contact {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 9mm 8mm;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8mm;
+  row-gap: 1.6mm;
+}
+
+.cv-section--contact h2 {
+  flex: 1 0 100%;
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: 7pt;
@@ -103,10 +118,10 @@
   color: var(--orange-vivid);
   padding-bottom: 1.2mm;
   border-bottom: 1px solid rgb(251 248 242 / 0.25);
-  margin-bottom: 2mm;
+  margin-bottom: 1.4mm;
 }
 
-.cv-aside a {
+.cv-section--contact a {
   color: inherit;
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -118,7 +133,6 @@
   align-items: flex-start;
   font-size: 8pt;
   line-height: 1.3;
-  margin-bottom: 1.8mm;
 }
 
 .cv-contact svg {
@@ -140,37 +154,38 @@
   font-size: 6.5pt;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgb(251 248 242 / 0.6);
+  color: var(--ink-muted);
 }
 
 .cv-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2mm;
+  gap: 1.6mm;
 }
 
 .cv-chip {
   font-family: var(--font-mono);
   font-size: 6.8pt;
   letter-spacing: 0.02em;
-  border: 1px solid rgb(251 248 242 / 0.3);
+  border: 1px solid var(--rule);
   border-radius: 1mm;
   padding: 0.7mm 1.6mm;
-  color: var(--paper);
+  color: var(--ink);
 }
 
-/* Main column. */
+/* Body: every remaining section stacks full width, in reading order. */
 .cv-main {
-  padding: 10mm 9mm 8mm;
+  padding: 7mm 9mm 8mm;
   display: flex;
   flex-direction: column;
-  gap: 5mm;
+  gap: 4.5mm;
+}
+
+.cv-section--data {
+  margin-top: -1.5mm;
 }
 
 .cv-main h2 {
-  display: flex;
-  align-items: baseline;
-  gap: 2.5mm;
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 85%;
@@ -179,15 +194,6 @@
   padding-bottom: 1.2mm;
   border-bottom: 1px solid var(--ink);
   margin-bottom: 2.5mm;
-}
-
-.cv-main h2::before {
-  content: attr(data-num);
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 7pt;
-  letter-spacing: 0.12em;
-  color: var(--orange);
 }
 
 .cv-summary {
@@ -328,8 +334,11 @@
 
 @media (max-width: 48rem) {
   .cv-sheet {
-    grid-template-columns: 1fr;
     min-height: 0;
+  }
+
+  .cv-header {
+    flex-wrap: wrap;
   }
 }
 
