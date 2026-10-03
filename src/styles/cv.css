@@ -205,6 +205,22 @@
   color: var(--orange);
 }
 
+/* Technical skills: plain comma-separated keywords, one group per line, so
+   every stack keyword is real flowing text an ATS can match. */
+.cv-tech-group {
+  font-size: 8.5pt;
+  line-height: 1.5;
+  margin-bottom: 0.8mm;
+}
+
+.cv-tech-group .label {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.02em;
+  color: var(--orange);
+  margin-right: 1mm;
+}
+
 .cv-job {
   position: relative;
   padding-left: 5mm;

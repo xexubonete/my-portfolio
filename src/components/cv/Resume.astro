@@ -14,7 +14,31 @@ interface Props {
 
 const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
-const { a11y } = t(lang)
+const { a11y, skills } = t(lang)
+
+// Short, CV-specific labels for the same five stack groups the website's
+// Stack section renders (src/i18n/content.ts: frameworks, patterns,
+// databases, devops, tools, in that order) -- same items, no invented tech.
+const techSkillLabels = {
+  es: [
+    'Lenguajes y frameworks',
+    'Arquitectura',
+    'Bases de datos',
+    'Cloud y DevOps',
+    'Testing y herramientas',
+  ],
+  en: [
+    'Languages & Frameworks',
+    'Architecture',
+    'Databases',
+    'Cloud & DevOps',
+    'Testing & Tools',
+  ],
+}[lang]
+const techSkillGroups = skills.groups.map((group, i) => ({
+  label: techSkillLabels[i],
+  items: group.items,
+}))
 
 const T = {
   es: {
@@ -38,7 +62,8 @@ const T = {
     spanishLevel: 'Nativo',
     english: 'Inglés',
     englishLevel: 'B2',
-    skillsTitle: 'Habilidades',
+    techSkillsTitle: 'Habilidades técnicas',
+    skillsTitle: 'Competencias',
     expTitle: 'Experiencia profesional',
     eduTitle: 'Formación',
     eduName: 'Desarrollo de Aplicaciones Web (DAW)',
@@ -75,7 +100,8 @@ const T = {
     spanishLevel: 'Native',
     english: 'English',
     englishLevel: 'B2',
-    skillsTitle: 'Skills',
+    techSkillsTitle: 'Technical Skills',
+    skillsTitle: 'Soft Skills',
     expTitle: 'Experience',
     eduTitle: 'Education',
     eduName: 'Web Application Development (DAW)',
@@ -209,6 +235,16 @@ const profileText = T.profile.replace(
           <section class="cv-section">
             <h2>{T.profileTitle}</h2>
             <p class="cv-summary" set:html={profileText} />
+          </section>
+
+          <section class="cv-section">
+            <h2>{T.techSkillsTitle}</h2>
+            {techSkillGroups.map((group) => (
+              <p class="cv-tech-group">
+                <span class="label">{group.label}:</span>{' '}
+                {group.items.join(', ')}
+              </p>
+            ))}
           </section>
 
           <section class="cv-section">

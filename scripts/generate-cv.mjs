@@ -19,27 +19,51 @@ import { serveStatic } from './lib/static-server.mjs'
 const server = process.env.CV_BASE_URL ? null : await serveDist()
 const BASE = process.env.CV_BASE_URL ?? server.url
 
-// Keywords are the technologies actually listed in src/lib/constants(-es).ts,
-// in their canonical spelling, repeated here only so an ATS keyword search
-// also matches the PDF's own metadata -- nothing here is invented.
+// Keywords are the technologies actually listed in the CV's Technical Skills
+// section (src/i18n/content.ts: frameworks, patterns, databases, devops,
+// tools), in their canonical spelling, repeated here only so an ATS keyword
+// search also matches the PDF's own metadata -- nothing here is invented.
 const KEYWORDS = [
-  '.NET',
   'C#',
-  'Entity Framework',
-  'SQL Server',
-  'Azure',
-  'Azure DevOps',
-  'Azure Cosmos DB',
+  'SQL',
+  '.NET',
+  '.NET Core',
+  '.NET Framework',
+  'REST APIs',
+  'gRPC',
   'RabbitMQ',
   'Microservices',
-  'Clean Architecture',
-  'CQRS',
+  'Dapper',
+  'Entity Framework Core',
+  'Entity Framework',
+  'Hangfire',
   'MediatR',
-  'gRPC',
-  'REST APIs',
+  'AutoMapper',
+  'FluentValidation',
+  'SignalR',
+  'xUnit',
+  'MSTest',
+  'Serilog',
+  'Swagger',
+  'OpenAPI',
+  'Angular',
+  'Clean Architecture',
+  'Domain-Driven Design',
+  'CQRS',
+  'Repository',
+  'Unit of Work',
+  'PostgreSQL',
+  'SQL Server',
+  'Azure Cosmos DB',
+  'Azure',
+  'Azure Blob Storage',
+  'Azure DevOps',
+  'CI/CD',
+  'Jenkins',
   'Git',
   'GitHub',
-  'Angular',
+  'Postman',
+  'Bruno',
 ].join(', ')
 
 const targets = [
