@@ -9,14 +9,13 @@ interface Props {
 
 const { lang, page, label } = Astro.props
 const names: Record<Lang, string> = { es: 'Español', en: 'English' }
-// English first, as in the mockups' `en · es` pill.
-const order = [...LANGS].reverse()
 ---
 
 {/* Plain links to the same page in the other language: no script, and
-    crawlers follow them. The active language is marked, not linked. */}
-<span class="lang-switch" aria-label={label}>
-  {order.map((item) =>
+    crawlers follow them. The active language is marked, not linked. The hall
+    script keeps the link pointed at the room the visitor is standing in. */}
+<span class="lang-switch" role="group" aria-label={label}>
+  {LANGS.map((item) =>
     item === lang ? (
       <span aria-current="true" lang={item}>
         {item}
@@ -27,6 +26,7 @@ const order = [...LANGS].reverse()
         hreflang={item}
         lang={item}
         title={names[item]}
+        data-lang-link
       >
         {item}
       </a>

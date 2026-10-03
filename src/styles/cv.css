@@ -1,193 +1,167 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   The CV sheet. Always paper, whatever the site theme: it prints to A4, it is
-   rendered to PDF by scripts/generate-cv.mjs, and it is embedded as a preview
-   on the home page. The *page around* the sheet follows the theme; the sheet
-   itself uses literal paper values on purpose.
+   The CV sheet. Always paper, whatever the site theme: it prints to A4 and
+   it is rendered to PDF by scripts/generate-cv.mjs. The *page around* the
+   sheet follows the theme; the sheet itself uses literal paper values on
+   purpose. One sheet, one typeface, one dot.
 
-   Plain CSS, imported by the CV page component and by design/cv.html.
+   Plain CSS, imported by the CV page component.
    ────────────────────────────────────────────────────────────────────────── */
 
 .cv-page {
-  --paper: #fbf8f2;
-  --paper-2: #efe9dc;
-  --ink: #17130e;
-  --ink-muted: #5e5649;
-  --rule: #d2c9b6;
-  --orange: #a8480a;
-  --orange-vivid: #f26b1d;
+  --paper: #fdfdfb;
+  --ink: #0b0b0a;
+  --ink-muted: #55544e;
+  --rule: #cfcdc6;
+  --dot: #e03a12;
+  --sheet-pad: 12mm;
 
   min-height: 100dvh;
-  padding: var(--space-6) var(--gutter) var(--space-9);
+  padding: var(--space-5) var(--gutter) var(--space-8);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-5);
+  background-image: var(--room-light);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
 .cv-toolbar {
   display: flex;
-  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
+  gap: var(--space-2) var(--space-6);
+  font-size: var(--label-size);
+  font-weight: 500;
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-case);
+}
+
+.cv-toolbar a {
+  padding-block: 0.6rem;
+}
+
+.cv-toolbar__main {
+  font-weight: 700;
 }
 
 .cv-sheet {
   width: 210mm;
   min-height: 297mm;
   max-width: 100%;
+  padding: var(--sheet-pad);
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  display: grid;
-  grid-template-columns: 64mm 1fr;
-  box-shadow: var(--shadow-sheet);
-  overflow: hidden;
+  font-size: 8.6pt;
   line-height: 1.4;
+  display: grid;
+  grid-template-columns: 46mm minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 9mm;
+  row-gap: 7mm;
+  box-shadow: var(--frame-shadow);
+  container-type: inline-size;
 }
 
-/* Side column: ink with paper text. */
-.cv-aside {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 10mm 7mm 8mm;
-  display: flex;
-  flex-direction: column;
-  gap: 5mm;
-}
-
-.cv-photo {
-  /* Centred in the column: as a block it used to sit flush left. The source is
-     square, so the circle shows the whole memoji with its edges trimmed evenly. */
-  display: block;
-  width: 34mm;
-  height: 34mm;
-  margin: 0 auto;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center center;
-  background: var(--paper-2);
-  border: 1px solid rgb(251 248 242 / 0.4);
-}
-
-.cv-name {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 78%;
-  font-size: 22pt;
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  margin-top: 2mm;
-}
-
-.cv-name span {
-  display: block;
-  color: var(--orange-vivid);
-}
-
-.cv-role {
-  font-family: var(--font-mono);
-  font-size: 7.5pt;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(251 248 242 / 0.75);
-  margin-top: 2mm;
-}
-
-.cv-aside h2 {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 7pt;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--orange-vivid);
-  padding-bottom: 1.2mm;
-  border-bottom: 1px solid rgb(251 248 242 / 0.25);
-  margin-bottom: 2mm;
-}
-
-.cv-aside a {
+.cv-sheet a {
   color: inherit;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
-.cv-contact {
-  display: flex;
-  gap: 2mm;
-  align-items: flex-start;
-  font-size: 8pt;
-  line-height: 1.3;
-  margin-bottom: 1.8mm;
+.cv-sheet .dot {
+  background: var(--dot);
 }
 
-.cv-contact svg {
-  width: 3.4mm;
-  height: 3.4mm;
-  flex: none;
-  margin-top: 0.3mm;
-  color: var(--orange-vivid);
+/* The dots between the items of a stack are the paper's grey, not the room's. */
+.cv-sheet .run {
+  --color-text-muted: var(--ink-muted);
 }
 
-.cv-field {
-  font-size: 8.5pt;
-  margin-bottom: 1.8mm;
+/* The head: the name from edge to edge, then a rule. */
+.cv-head {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  row-gap: 3.2mm;
+  padding-block-end: 3.2mm;
+  border-block-end: 0.35mm solid var(--ink);
 }
 
-.cv-field .label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 6.5pt;
-  letter-spacing: 0.1em;
+.cv-name {
+  grid-column: 1 / -1;
+  margin-inline-start: -0.04em;
+  font-family: var(--font-display);
+  font-stretch: 62%;
+  font-weight: 900;
+  font-size: calc(100cqw / var(--em));
+  line-height: 0.72;
   text-transform: uppercase;
-  color: rgb(251 248 242 / 0.6);
+  white-space: nowrap;
 }
 
-.cv-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2mm;
+.cv-role {
+  font-size: 10.5pt;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-.cv-chip {
-  font-family: var(--font-mono);
-  font-size: 6.8pt;
-  letter-spacing: 0.02em;
-  border: 1px solid rgb(251 248 242 / 0.3);
-  border-radius: 1mm;
-  padding: 0.7mm 1.6mm;
-  color: var(--paper);
+.cv-role .dot {
+  margin-inline-end: 0.35em;
 }
 
-/* Main column. */
-.cv-main {
-  padding: 10mm 9mm 8mm;
+.cv-place {
+  color: var(--ink-muted);
+}
+
+/* Section labels, on both columns: small capitals over a hairline. */
+.cv-sheet h2 {
+  padding-block-end: 1.2mm;
+  margin-block-end: 2mm;
+  border-block-end: 0.2mm solid var(--rule);
+  font-size: 6.6pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cv-aside {
   display: flex;
   flex-direction: column;
-  gap: 5mm;
+  gap: 5.5mm;
+  font-size: 8pt;
 }
 
-.cv-main h2 {
+.cv-photo {
+  width: 24mm;
+  height: 24mm;
+  padding: 1.2mm;
+  border: 0.2mm solid var(--rule);
+  object-fit: cover;
+}
+
+.cv-list li {
+  margin-block-end: 0.9mm;
+  line-height: 1.3;
+}
+
+.cv-fields {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9mm 3mm;
+}
+
+.cv-fields dt {
+  color: var(--ink-muted);
+}
+
+.cv-main {
   display: flex;
-  align-items: baseline;
-  gap: 2.5mm;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-stretch: 85%;
-  font-size: 13pt;
-  letter-spacing: -0.02em;
-  padding-bottom: 1.2mm;
-  border-bottom: 1px solid var(--ink);
-  margin-bottom: 2.5mm;
-}
-
-.cv-main h2::before {
-  content: attr(data-num);
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 7pt;
-  letter-spacing: 0.12em;
-  color: var(--orange);
+  flex-direction: column;
+  gap: 5.5mm;
 }
 
 .cv-summary {
@@ -196,38 +170,15 @@
 }
 
 .cv-summary b {
-  color: var(--orange);
+  font-weight: 700;
 }
 
 .cv-job {
-  position: relative;
-  padding-left: 5mm;
-  margin-bottom: 3mm;
+  margin-block-end: 3.6mm;
 }
 
-.cv-job::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1.6mm;
-  width: 2mm;
-  height: 2mm;
-  background: var(--orange-vivid);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-.cv-job::after {
-  content: '';
-  position: absolute;
-  left: 0.9mm;
-  top: 5mm;
-  bottom: -3mm;
-  width: 0.3mm;
-  background: var(--rule);
-}
-
-.cv-job:last-child::after {
-  display: none;
+.cv-job:last-child {
+  margin-block-end: 0;
 }
 
 .cv-job-head {
@@ -238,98 +189,79 @@
 }
 
 .cv-job-title {
-  font-family: var(--font-display);
+  font-size: 10pt;
   font-weight: 700;
-  font-stretch: 90%;
-  font-size: 10.5pt;
   letter-spacing: -0.01em;
 }
 
-.cv-job-company {
-  color: var(--orange);
-  text-decoration: none;
+a.cv-job-company {
+  text-decoration: underline;
+  text-decoration-thickness: 0.2mm;
+  text-underline-offset: 0.7mm;
 }
 
-.cv-job-period {
-  font-family: var(--font-mono);
-  font-size: 7.2pt;
-  letter-spacing: 0.04em;
+.cv-job-period,
+.cv-job-place {
   color: var(--ink-muted);
+  font-size: 7.6pt;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.cv-job-place {
-  font-family: var(--font-mono);
-  font-size: 7.2pt;
-  letter-spacing: 0.04em;
-  color: var(--ink-muted);
-}
-
 .cv-job-summary {
-  font-size: 8.5pt;
+  margin: 0.8mm 0;
   color: var(--ink-muted);
-  margin: 0.6mm 0 0.8mm;
 }
 
-.cv-job ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 8.5pt;
-}
-
-.cv-job li {
-  position: relative;
-  padding-left: 3.2mm;
-  margin-bottom: 0.4mm;
+.cv-tasks li {
+  display: grid;
+  grid-template-columns: 3.6mm minmax(0, 1fr);
   line-height: 1.3;
+  margin-block-end: 0.4mm;
 }
 
-.cv-job li::before {
-  content: '';
-  position: absolute;
-  left: 0.2mm;
-  top: 1.5mm;
-  width: 1.4mm;
-  height: 1.4mm;
-  background: var(--orange);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
+.cv-tasks li::before {
+  content: '—';
+  color: var(--ink-muted);
 }
 
+/* The stack reads as the materials line of a label, not as a row of chips. */
 .cv-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1mm;
-  margin-top: 1.2mm;
-}
-
-.cv-stack span {
-  font-family: var(--font-mono);
-  font-size: 6.6pt;
-  letter-spacing: 0.02em;
-  background: var(--paper-2);
-  border-radius: 1mm;
-  padding: 0.5mm 1.4mm;
-  color: var(--ink);
+  margin-block-start: 1.2mm;
+  font-size: 7.4pt;
+  line-height: 1.4;
 }
 
 .cv-roles {
-  margin-top: 2mm;
-  padding-left: 3.5mm;
-  border-left: 1px solid var(--rule);
+  margin-block-start: 2mm;
+  padding-inline-start: 3.5mm;
+  border-inline-start: 0.2mm solid var(--rule);
   display: flex;
   flex-direction: column;
-  gap: 2.5mm;
+  gap: 2.6mm;
 }
 
 .cv-roles .cv-job-title {
-  font-size: 9.5pt;
+  font-size: 9.2pt;
 }
 
 @media (max-width: 48rem) {
+  .cv-page {
+    --sheet-pad: 1.25rem;
+  }
+
   .cv-sheet {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     min-height: 0;
+  }
+
+  .cv-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cv-job-head {
+    flex-direction: column;
+    gap: 0;
   }
 }
 

@@ -1,0 +1,45 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
+import { experienceByLang, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  mark: string
+  /** Anchor of the room that follows, for the arrow that leads on. */
+  next: string
+}
+
+const { lang, mark, next } = Astro.props
+const { entrance, a11y } = t(lang)
+
+// The label mirrors the most recent role, so it follows constants*.ts.
+const [latest] = experienceByLang[lang]
+---
+
+<Room
+  id="entrance"
+  mark={mark}
+  title={entrance.title}
+  line={entrance.line}
+  bodyEnd
+>
+  <h1 slot="title" id="entrance-title">
+    Jesús Bonete
+  </h1>
+  <Fragment slot="meta">
+    <p>
+      <strong>{latest.position}</strong>
+    </p>
+    <p>{entrance.based}</p>
+    <p>
+      <span class="dot" aria-hidden="true"></span>
+      {entrance.available}
+    </p>
+  </Fragment>
+  <a class="onward" href={`#${next}`} aria-label={a11y.next}>
+    <Glyph name="onward" />
+  </a>
+  <Word slot="piece" text="Bonete" totem />
+</Room>

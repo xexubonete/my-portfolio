@@ -1,0 +1,56 @@
+---
+import { emWidth } from '@/lib/monument'
+
+/**
+ * The monumental word of a room. It is sized in CSS to span the wall, from
+ * its width in em at the two weights of the art direction (see monument.ts).
+ * With an `href` the whole word is the link.
+ */
+interface Props {
+  text: string
+  href?: string | undefined
+  /** Accessible name of the link; the word itself is hidden from readers. */
+  label?: string | undefined
+  /** Which side of the floor a word narrower than its wall stands on. */
+  side?: 'start' | 'center' | 'end'
+  /** The glyph reaches below the baseline and has to be lifted onto it. */
+  sunk?: boolean
+  /** On an upright screen the word is stood on end and spans the height. */
+  totem?: boolean
+}
+
+const {
+  text,
+  href,
+  label,
+  side = 'start',
+  sunk = false,
+  totem = false,
+} = Astro.props
+const { black, hairline, bearing } = emWidth(text)
+const style = [
+  `--em-black: ${black}`,
+  `--em-hairline: ${hairline}`,
+  `--bearing-black: ${bearing.black}`,
+  `--bearing-hairline: ${bearing.hairline}`,
+  `--word-side: ${side}`,
+].join('; ')
+const classes = ['word', sunk && 'word--sunk', totem && 'word--totem']
+---
+
+{href ? (
+  <a
+    class:list={classes}
+    style={style}
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={label}
+  >
+    <slot>{text}</slot>
+  </a>
+) : (
+  <p class:list={classes} style={style} aria-hidden="true">
+    <slot>{text}</slot>
+  </p>
+)}

@@ -1,24 +1,19 @@
 ---
-import Glyph from '@/components/ui/Glyph.astro'
-
 interface Props {
-  label: string
+  /** What the switch does from the light room, and from the dark one. */
+  off: string
+  on: string
 }
 
-const { label } = Astro.props
+const { off, on } = Astro.props
 ---
 
-{/* recipes.css shows one glyph at a time with the same precedence as the
-    tokens: the explicit data-theme first, the OS preference otherwise. */}
-<button
-  class="theme-toggle"
-  type="button"
-  data-theme-toggle
-  aria-label={label}
-  title={label}
->
-  <Glyph name="sun" class="icon-sun" />
-  <Glyph name="moon" class="icon-moon" />
+{/* The label is whichever of the two the theme in force shows; tokens.css
+    decides, with the same precedence as every other token. */}
+<button class="lights" type="button" data-theme-toggle>
+  <span class="lights__lamp" aria-hidden="true"></span>
+  <span class="lights__text in-light">{off}</span>
+  <span class="lights__text in-dark">{on}</span>
 </button>
 
 <script is:inline>
@@ -30,15 +25,10 @@ const { label } = Astro.props
         var set = html.dataset.theme
         var dark = set === 'dark' || (!set && prefersDark.matches)
         var next = dark ? 'light' : 'dark'
-        // Colours cross-fade for one toggle; layout never moves.
-        html.classList.add('theme-transition')
         html.dataset.theme = next
         try {
           localStorage.setItem('theme', next)
         } catch (_) {}
-        setTimeout(function () {
-          html.classList.remove('theme-transition')
-        }, 400)
       })
     })
   })()

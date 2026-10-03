@@ -1,0 +1,55 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import { LINKS, PROJECT_LINKS, t, type Lang } from '@/i18n'
+import { emWidth } from '@/lib/monument'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { projects, a11y } = t(lang)
+
+// The list is sized like a word: by its longest line.
+const widths = PROJECT_LINKS.map((project) => emWidth(project.label))
+const black = Math.max(...widths.map((width) => width.black))
+const hairline = Math.max(...widths.map((width) => width.hairline))
+---
+
+<Room id="projects" mark={mark} title={projects.title} line={projects.line}>
+  <p class="acts">
+    <a
+      class="link"
+      href={`${LINKS.github}?tab=repositories`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {projects.all}
+      <Glyph name="arrow" class="arrow" />
+      <span class="sr-only">{a11y.external}</span>
+    </a>
+  </p>
+  <ul
+    slot="piece"
+    class="works"
+    style={`--em-black: ${black}; --em-hairline: ${hairline}; --bearing-black: 0.04; --bearing-hairline: 0.065`}
+  >
+    {PROJECT_LINKS.map((project) => (
+      <li>
+        <a
+          href={project.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={project.live ? projects.here : undefined}
+        >
+          {project.label}
+          {project.live && <span class="dot" aria-hidden="true" />}
+          {project.live && <span class="sr-only">({projects.here})</span>}
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Room>

@@ -1,24 +1,22 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   Self-hosted fonts (Latin subsets, WOFF2). Licenses are listed in DESIGN.md.
+   One self-hosted font file (Latin subset, WOFF2). The license is in
+   DESIGN.md.
 
-   Four files, ~240 KB total:
-     Bricolage Grotesque  variable (opsz 12–96, wdth 75–100, wght 200–800)
-     Instrument Sans      variable (wdth 75–100, wght 400–700)
-     Instrument Serif     italic, static (emphasis words only)
-     JetBrains Mono       variable (wght 100–800)
+     Archivo  variable (wdth 62–125, wght 100–900)
 
-   Each family has a metric-matched local fallback so text does not reflow
-   when the real font arrives (font-display: swap keeps the first paint fast).
-   Preloading the display and body files is the platform lane's job.
+   The build subsets it further and gives it a hashed, immutable URL (see
+   scripts/integrations/static-pipeline.mjs). The two fallbacks are local
+   fonts scaled to the metrics of the two ways the family is used, so the
+   swap does not move anything: text at normal width, words at width 62.
    ────────────────────────────────────────────────────────────────────────── */
 
 @font-face {
-  font-family: 'Bricolage Grotesque';
+  font-family: 'Archivo';
   font-style: normal;
-  font-weight: 200 800;
-  font-stretch: 75% 100%;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
   font-display: swap;
-  src: url('/fonts/bricolage-grotesque-latin.woff2') format('woff2');
+  src: url('/fonts/archivo-latin.woff2') format('woff2');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
@@ -26,77 +24,21 @@
 }
 
 @font-face {
-  font-family: 'Instrument Sans';
-  font-style: normal;
-  font-weight: 400 700;
-  font-stretch: 75% 100%;
-  font-display: swap;
-  src: url('/fonts/instrument-sans-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Instrument Serif';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/instrument-serif-italic-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 100 800;
-  font-display: swap;
-  src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
-/* Metric-matched fallbacks: the local font is scaled so the line boxes match
-   the web font closely enough that the swap does not shift layout. */
-@font-face {
-  font-family: 'Bricolage Grotesque Fallback';
+  font-family: 'Archivo Fallback';
   src: local('Helvetica Neue'), local('Arial');
-  size-adjust: 98%;
-  ascent-override: 92%;
-  descent-override: 22%;
+  size-adjust: 100%;
+  ascent-override: 88%;
+  descent-override: 21%;
   line-gap-override: 0%;
 }
 
 @font-face {
-  font-family: 'Instrument Sans Fallback';
-  src: local('Helvetica Neue'), local('Arial');
-  size-adjust: 101%;
-  ascent-override: 93%;
-  descent-override: 23%;
-  line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: 'Instrument Serif Fallback';
-  font-style: italic;
-  src: local('Georgia Italic'), local('Times New Roman Italic');
-  size-adjust: 94%;
-  ascent-override: 86%;
-  descent-override: 22%;
-  line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono Fallback';
-  src: local('Menlo'), local('Consolas'), local('Courier New');
-  size-adjust: 103%;
+  font-family: 'Archivo Display Fallback';
+  src:
+    local('Arial Narrow Bold'), local('Helvetica Neue Condensed Black'),
+    local('Impact'), local('Arial Bold');
+  size-adjust: 86%;
   ascent-override: 102%;
-  descent-override: 30%;
+  descent-override: 24%;
   line-gap-override: 0%;
 }

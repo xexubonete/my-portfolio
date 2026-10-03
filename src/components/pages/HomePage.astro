@@ -1,68 +1,57 @@
 ---
-import Contact from '@/components/sections/Contact.astro'
-import Cv from '@/components/sections/Cv.astro'
-import Experience from '@/components/sections/Experience.astro'
-import Goals from '@/components/sections/Goals.astro'
-import Hero from '@/components/sections/Hero.astro'
-import Profile from '@/components/sections/Profile.astro'
-import Projects from '@/components/sections/Projects.astro'
-import Quote from '@/components/sections/Quote.astro'
-import Stack from '@/components/sections/Stack.astro'
-import Tape from '@/components/sections/Tape.astro'
+import Contact from '@/components/rooms/Contact.astro'
+import Cv from '@/components/rooms/Cv.astro'
+import Entrance from '@/components/rooms/Entrance.astro'
+import Heading from '@/components/rooms/Heading.astro'
+import Portrait from '@/components/rooms/Portrait.astro'
+import Projects from '@/components/rooms/Projects.astro'
+import Tooling from '@/components/rooms/Tooling.astro'
+import Trade from '@/components/rooms/Trade.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { t, type Lang } from '@/i18n'
+import { roman } from '@/lib/monument'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
-const { meta } = t(lang)
+const content = t(lang)
+
+// The order of the visit. The CV comes second: it is the reason most people
+// walk in. The ids are the same in both languages, so a room keeps its
+// address when the visitor changes language.
+const ORDER = [
+  'entrance',
+  'cv',
+  'trade',
+  'tooling',
+  'projects',
+  'heading',
+  'portrait',
+  'contact',
+] as const
+const rooms = ORDER.map((id, i) => ({
+  id,
+  mark: roman(i + 1),
+  title: content[id].title,
+}))
+const mark = Object.fromEntries(rooms.map((room) => [room.id, room.mark]))
 ---
 
-{/* The home is composed like one drawing sheet: the hero, the tape, two
-    three-column bands, the quote strip and the contact band. */}
 <BaseLayout
   lang={lang}
   page="home"
-  title={meta.title}
-  description={meta.description}
+  title={content.meta.title}
+  description={content.meta.description}
+  rooms={rooms}
 >
-  <main id="main">
-    <Hero lang={lang} />
-    <Tape lang={lang} />
-
-    <section class="band band--sheet" data-reveal id="sheet-1">
-      <div class="wrap band__grid">
-        <Cv lang={lang} />
-        <Experience lang={lang} num="01" />
-        <Stack lang={lang} num="02" />
-      </div>
-    </section>
-
-    <section class="band band--sheet" data-reveal id="sheet-2">
-      <div class="wrap band__grid band__grid--second">
-        <Projects lang={lang} num="03" />
-        <Goals lang={lang} num="04" />
-        <Profile lang={lang} num="05" />
-      </div>
-    </section>
-
-    <Quote lang={lang} />
-    <Contact lang={lang} num="06" />
-  </main>
-
-  <script is:inline>
-    // Scale the embedded A4 CV (794px wide) to the preview box. Lives here,
-    // not in the column, so no element sits between the sheet's columns.
-    ;(function () {
-      var sheet = document.querySelector('.cv__sheet')
-      if (!sheet) return
-      var fit = function () {
-        sheet.style.setProperty('--cv-scale', String(sheet.clientWidth / 794))
-      }
-      fit()
-      new ResizeObserver(fit).observe(sheet)
-    })()
-  </script>
+  <Entrance lang={lang} mark={mark.entrance} next="cv" />
+  <Cv lang={lang} mark={mark.cv} />
+  <Trade lang={lang} mark={mark.trade} />
+  <Tooling lang={lang} mark={mark.tooling} />
+  <Projects lang={lang} mark={mark.projects} />
+  <Heading lang={lang} mark={mark.heading} />
+  <Portrait lang={lang} mark={mark.portrait} />
+  <Contact lang={lang} mark={mark.contact} />
 </BaseLayout>

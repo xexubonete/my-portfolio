@@ -7,16 +7,11 @@ import { formatYears, type YearsTemplate } from '@/lib/experience'
  */
 interface Props {
   template: YearsTemplate
-  class?: string
 }
 
-const { template, class: className } = Astro.props
+const { template } = Astro.props
 ---
 
-<span
-  class={className}
-  data-exp-plus={template.plus}
-  data-exp-exact={template.exact}
->
+<span data-exp-plus={template.plus} data-exp-exact={template.exact}>
   {formatYears(template)}
 </span>

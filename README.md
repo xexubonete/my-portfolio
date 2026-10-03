@@ -1,15 +1,15 @@
 # 🎯 My portfolio
 
-A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwind CSS. Bilingual (English/Spanish), light and dark themes, and an art direction of its own — see [`DESIGN.md`](DESIGN.md).
+A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwind CSS. Bilingual (English/Spanish), light and dark themes, and an art direction of its own: an exhibition travelled sideways, one room per screen — see [`DESIGN.md`](DESIGN.md).
 
 ## 🚀 Features
 
 - **Bilingual Support**: `/` detects the browser language and sends visitors to `/en/` or `/es/`; every page has its twin in the other language, one click away
 - **Dark/Light Theme**: follows the system preference by default, persists an explicit choice, and never flashes the wrong theme on load
 - **Fully Static**: every page is prerendered at build time and served from Vercel's CDN — no server function runs per request
-- **Near-zero JavaScript**: no framework on the client; the theme toggle, the language switch and the live years-of-experience count are a few lines of inline script
-- **Performance Optimized**: self-hosted subsetted fonts with preload, AVIF/WebP images with explicit sizes, and all CSS inlined into each page
-- **Responsive and accessible**: one drafting-sheet layout from phone to wide desktop, semantic landmarks, visible focus, `prefers-reduced-motion` respected
+- **Near-zero JavaScript**: no framework on the client; the light switch, the room-to-room steps of the hall and the live years-of-experience count are a few lines of inline script, and the hall still works without them
+- **Performance Optimized**: one self-hosted subsetted font with preload, AVIF/WebP images with explicit sizes, and all CSS inlined into each page
+- **Responsive and accessible**: the same hall of one-screen rooms from phone to wide desktop, semantic landmarks, visible focus, `prefers-reduced-motion` respected
 - **SEO Friendly**: canonical and `hreflang` links, Open Graph and Twitter metadata, a proper 404
 
 ## 🛠️ Tech Stack
@@ -25,9 +25,8 @@ A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwin
 ## 🏗️ Project Structure
 
 ```
-├── DESIGN.md                     # art direction: tokens, type, layout, motion rules
+├── DESIGN.md                     # art direction: concept, tokens, type, layout, motion, voice
 ├── astro.config.mjs              # output: 'static', inlined CSS, build pipeline
-├── design/                       # static HTML mockups rendered from the real content
 ├── package.json
 ├── pnpm-lock.yaml
 ├── public/                       # CV PDFs, images, memojis, fonts/ (self-hosted)
@@ -38,16 +37,16 @@ A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwin
 ├── src
 │   ├── components
 │   │   ├── cv/Resume.astro        # the A4 CV page
-│   │   ├── layout/                # Header, Footer, HeadSEO, ThemeScript, ThemeToggle, LanguageSwitch
+│   │   ├── layout/                # HeadSEO, ThemeScript, ThemeToggle, LanguageSwitch
 │   │   ├── pages/                 # HomePage and WorkPage, rendered once per language
-│   │   ├── sections/              # Hero, Experience, Stack, Projects, Goals, About, Quote, Contact…
-│   │   └── ui/                    # SectionHead, ExpYears, Glyph, Sprite
+│   │   ├── rooms/                 # Entrance, Cv, Trade, Tooling, Projects, Heading, Portrait, Contact
+│   │   └── ui/                    # Room, Word, ExpYears, Glyph, Sprite
 │   ├── i18n
 │   │   ├── content.ts             # every UI string, both languages, one typed shape
 │   │   ├── routes.ts              # Lang type, language-aware paths
 │   │   └── index.ts               # per-language data helpers
-│   ├── layouts/BaseLayout.astro
-│   ├── lib/                       # constants (EN), constants-es (ES), experience helpers, types
+│   ├── layouts/BaseLayout.astro   # the frame, the hall, the floor index and their script
+│   ├── lib/                       # constants (EN), constants-es (ES), experience helpers, monument (word fitting), types
 │   ├── pages
 │   │   ├── 404.astro
 │   │   ├── index.astro            # redirects by browser language
@@ -109,7 +108,6 @@ pnpm cv:pdf
 - Edit `src/lib/constants.ts` (English) and `src/lib/constants-es.ts` (Spanish) for experience and study data.
 - Every other string lives in `src/i18n/content.ts`, typed so both languages always carry the same keys.
 - Colours, type scale, spacing and motion tokens live in `src/styles/tokens.css`; component and section recipes in `src/styles/recipes.css`. The rationale is in `DESIGN.md`.
-- The mockups under `design/` are rendered from the real content with `node design/build.mjs`.
 
 ## 📄 License
 

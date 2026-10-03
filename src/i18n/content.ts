@@ -1,87 +1,57 @@
 import type { YearsTemplate } from '@/lib/experience'
 
-/** A label with its emoji kept apart; the design renders labels without it. */
-type Labelled = { emoji: string; label: string }
+/** What every room hangs on its wall: the title of the piece and one sentence. */
+type Room = { title: string; line: string }
 
 type Content = {
   meta: { title: string; description: string }
   a11y: {
     skip: string
     mainNav: string
-    toggleTheme: string
+    index: string
     switchLanguage: string
     external: string
-    openCv: string
-    cvPreview: string
+    previous: string
+    next: string
   }
-  nav: { brand: string; home: string }
-  intro: {
-    eyebrow: string
-    /** The name, one line per word, so the surname can be set in orange. */
-    name: [string, string]
-    /** The first sentence, set as the lead. */
-    lead: string
-    /** The rest of the introduction, flowed in columns. */
-    paragraphs: string[]
-    photoAlt: string
-  }
-  /** The title block under the name: the fields of a drawing's corner box. */
-  titleBlock: {
-    role: string
-    based: string
-    basedValue: string
-    experience: string
-    status: string
-    available: string
-  }
-  /** Headline items of the stack, looping on the tape. */
-  tape: string[]
-  experience: {
-    title: YearsTemplate
-    pageTitle: YearsTemplate
-    /** The bare figure: "+4 years". */
+  /** The fixed frame around the rooms. The light switch names what it does. */
+  frame: { home: string; cv: string; lightsOff: string; lightsOn: string }
+  entrance: Room & { based: string; available: string }
+  cv: Room & { open: string; download: string; pdf: string }
+  trade: Room & {
+    /** The figure that stands in the room: "+4". */
+    figure: YearsTemplate
+    /** The same figure spelled out for the label: "+4 years". */
     years: YearsTemplate
-    sectionTitle: string
-    pageLead: string
     roles: string
-    viewMore: string
+    record: string
+  }
+  tooling: Room & { groups: { label: string; items: string[] }[] }
+  projects: Room & { here: string; all: string }
+  heading: Room & {
+    /** The word that stands in the room: the initials of the subject. */
+    word: string
+    items: { label: string; text: string }[]
+  }
+  portrait: Room & {
+    medium: string
+    photoAlt: string
+    study: string
+    languages: { title: string; items: { name: string; level: string }[] }
+    softSkills: { title: string; items: string[] }
+  }
+  contact: Room & {
+    items: { label: string; href: string; detail: string }[]
+    builtWith: string
+  }
+  /** The work page: one room per role, newest first. */
+  work: {
+    title: string
+    pageTitle: YearsTemplate
+    tasks: string
     stack: string
-    eyebrow: string
-    back: string
   }
-  skills: {
-    title: string
-    groups: (Labelled & { items: string[] })[]
-  }
-  projects: { title: string; here: string; all: string }
-  about: { title: string; paragraphs: string[] }
-  goals: {
-    title: string
-    meta: string
-    intro: string
-    items: (Labelled & { text: string })[]
-  }
-  softSkills: { title: string; items: string[] }
-  languages: { title: string; items: { name: string; level: string }[] }
-  study: { title: string }
-  profile: { title: string; meta: string }
-  quote: { text: string; accent: string; author: string }
-  cv: { title: string; caption: string; download: string }
-  contact: {
-    title: string
-    meta: string
-    items: (Labelled & { href: string; detail: string })[]
-    photoAlt: string
-  }
-  footer: { builtWith: string }
-  notFound: {
-    eyebrow: string
-    code: string
-    title: string
-    body: string
-    back: string
-    photoAlt: string
-  }
+  notFound: { code: string; title: string; line: string; back: string }
 }
 
 const frameworks = (microservices: string) => [
@@ -128,31 +98,6 @@ const devops = [
 ]
 const tools = ['Postman', 'Bruno', 'Team Explorer']
 
-const quote = {
-  text: 'The only way to go fast, is to go well.',
-  accent: 'go well.',
-  author: 'Robert C. Martin',
-}
-
-const tape = [
-  'C#',
-  '.NET 10',
-  'gRPC',
-  'CQRS',
-  'Clean Architecture',
-  'Microservices',
-  'Entity Framework',
-  'Dapper',
-  'MediatR',
-  'Hangfire',
-  'Azure',
-  'MSSQL',
-  'PostgreSQL',
-  'CosmoDB',
-  'Claude',
-  'GitHub Copilot',
-]
-
 const PHONE = 'tel:+34722243881'
 const PHONE_TEXT = '+34 722 243 881'
 const MAIL = 'mailto:xexubonete@gmail.com'
@@ -172,153 +117,134 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     a11y: {
       skip: 'Saltar al contenido',
       mainNav: 'Principal',
-      toggleTheme: 'Cambiar tema',
+      index: 'Salas',
       switchLanguage: 'Idioma',
       external: '(se abre en una pestaña nueva)',
-      openCv: 'Abrir el CV',
-      cvPreview: 'Vista previa del CV',
+      previous: 'Sala anterior',
+      next: 'Sala siguiente',
     },
-    nav: { brand: 'dotnet developer', home: 'Inicio' },
-    intro: {
-      eyebrow: 'bienvenido',
-      name: ['Jesús', 'Bonete'],
-      lead: 'Hola, soy <b>Jesús Bonete</b>, desarrollador backend enfocado en crear aplicaciones eficientes y escalables.',
-      paragraphs: [
-        'Me especializo en servicios robustos y seguros, optimización de bases de datos e integración impecable con el frontend desde el servidor. La IA es el núcleo de mi forma de trabajar: la integro en mi día a día para desarrollar más rápido, automatizar tareas repetitivas y elevar la calidad del código sin sacrificar buenas prácticas.',
-        'Saco el máximo partido de LLMs, agentes y asistentes como Claude o GitHub Copilot para acelerar cada fase, de la arquitectura al despliegue, tomando mejores decisiones en menos tiempo. Cuido el código limpio, la arquitectura sólida y el crecimiento en cada proyecto. Apasionado de la tecnología, siempre busco nuevos retos.',
-      ],
-      photoAlt: 'memoji de Jesús Bonete',
+    frame: {
+      home: 'Inicio',
+      cv: 'CV',
+      lightsOff: 'Apagar la luz',
+      lightsOn: 'Dar la luz',
     },
-    titleBlock: {
-      role: 'Puesto',
-      based: 'Ubicación',
-      basedValue: 'Elda, Alicante, España',
-      experience: 'Experiencia',
-      status: 'Estado',
+    entrance: {
+      title: 'Entrada',
+      line: 'Backend. Lo que nadie ve y aguanta todo lo demás.',
+      based: 'Elda, Alicante, España',
       available: 'Disponible',
     },
-    tape,
-    experience: {
-      title: { plus: 'Experiencia (+{n}a)', exact: 'Experiencia ({n}a)' },
-      pageTitle: {
-        plus: 'Experiencia laboral (+{n} años)',
-        exact: 'Experiencia laboral ({n} años)',
-      },
-      years: { plus: '+{n} años', exact: '{n} años' },
-      sectionTitle: 'Experiencia',
-      pageLead: 'Experiencia laboral',
-      roles: 'puestos',
-      viewMore: 'Ver más',
-      stack: 'Stack:',
-      eyebrow: '01 — Experiencia',
-      back: 'Volver al inicio',
+    cv: {
+      title: 'CV',
+      line: 'Una hoja. Sin adjetivos.',
+      open: 'Abrir el CV',
+      download: 'Descargar el PDF',
+      pdf: '/CV_Jesus_Bonete_ES.pdf',
     },
-    skills: {
-      title: 'Stack',
+    trade: {
+      title: 'Oficio',
+      line: 'De becario a senior. Tres casas, un oficio.',
+      figure: { plus: '+{n}', exact: '{n}' },
+      years: { plus: '+{n} años', exact: '{n} años' },
+      roles: 'puestos',
+      record: 'Hoja de servicios',
+    },
+    tooling: {
+      title: 'Herramienta',
+      line: 'Código limpio. El otro se paga después, y con intereses.',
       groups: [
         {
-          emoji: '📚',
           label: 'Frameworks y librerías',
           items: frameworks('Microservicios'),
         },
-        { emoji: '🧑‍🎨', label: 'Patrones de diseño', items: patterns },
-        { emoji: '📊', label: 'Bases de datos', items: databases },
-        { emoji: '☁️', label: 'DevOps y Cloud', items: devops },
-        { emoji: '🧰', label: 'Herramientas', items: tools },
+        { label: 'Patrones de diseño', items: patterns },
+        { label: 'Bases de datos', items: databases },
+        { label: 'DevOps y Cloud', items: devops },
+        { label: 'Herramientas', items: tools },
       ],
     },
     projects: {
       title: 'Proyectos',
+      line: 'Código a la vista. Que cada cual juzgue.',
       here: 'estás aquí',
       all: 'Todos los repos',
     },
-    about: {
-      title: 'Sobre mí',
-      paragraphs: [
-        'Mas allá de la programación, me apasiona entrenar🏋️‍♂️ y llevar una vida saludable🍏.',
-        'Otra afición que practico es jugar a airsoft🎖️ los fines de semana.',
-      ],
-    },
-    goals: {
-      title: 'Objetivos',
-      meta: 'IA en el backend',
-      intro:
-        'Quiero especializarme en integrar la IA en el backend, dominando:',
+    heading: {
+      title: 'Rumbo',
+      line: 'La IA ya trabaja conmigo: Claude, Copilot. Ahora toca meterla en el backend. Con evals, no con fe.',
+      word: 'IA',
       items: [
         {
-          emoji: '🤖',
           label: 'Integración de LLMs',
           text: 'Conectar modelos como Claude o GPT a servicios y APIs backend de forma segura y eficiente.',
         },
         {
-          emoji: '🧠',
           label: 'RAG y bases vectoriales',
           text: 'Búsqueda semántica con embeddings y bases de datos vectoriales para dar contexto propio a los modelos.',
         },
         {
-          emoji: '🛠️',
           label: 'Agentes y tool calling',
           text: 'Orquestar agentes que invocan herramientas y APIs (function calling, MCP) para automatizar flujos.',
         },
         {
-          emoji: '📊',
           label: 'Evaluación y observabilidad',
           text: 'Medir calidad, latencia y coste de los LLMs con evals y trazas para llevar la IA a producción con garantías.',
         },
       ],
     },
-    softSkills: {
-      title: 'Soft skills',
-      items: [
-        'Autoaprendizaje',
-        'Trabajo en equipo',
-        'Resolución de problemas',
-        'Comunicación',
-        'Adaptabilidad',
-        'Liderazgo',
-        'Trabajo bajo presión',
-        'Proactividad',
-      ],
-    },
-    languages: {
-      title: 'Idiomas',
-      items: [
-        { name: 'Español', level: 'Nativo' },
-        { name: 'Inglés', level: 'B2' },
-      ],
-    },
-    study: { title: 'Aprendizaje' },
-    profile: { title: 'Perfil', meta: 'sobre mí · idiomas' },
-    quote,
-    cv: {
-      title: 'CV',
-      caption: 'Vista previa de mi CV — haz clic para verlo y descargarlo',
-      download: 'Ver y descargar CV',
+    portrait: {
+      title: 'Autorretrato',
+      line: 'Hierro, vida sana y airsoft los fines de semana. Cada cual descansa como sabe.',
+      medium: 'Píxel sobre pantalla',
+      photoAlt: 'memoji de Jesús Bonete',
+      study: 'Aprendizaje',
+      languages: {
+        title: 'Idiomas',
+        items: [
+          { name: 'Español', level: 'Nativo' },
+          { name: 'Inglés', level: 'B2' },
+        ],
+      },
+      softSkills: {
+        title: 'Soft skills',
+        items: [
+          'Autoaprendizaje',
+          'Trabajo en equipo',
+          'Resolución de problemas',
+          'Comunicación',
+          'Adaptabilidad',
+          'Liderazgo',
+          'Trabajo bajo presión',
+          'Proactividad',
+        ],
+      },
     },
     contact: {
       title: 'Contacto',
-      meta: 'hablemos',
+      line: 'El teléfono funciona. El correo, también.',
       items: [
-        { emoji: '🤙', label: 'Llámame', href: PHONE, detail: PHONE_TEXT },
-        { emoji: '📧', label: 'Escríbeme', href: MAIL, detail: MAIL_TEXT },
-        {
-          emoji: '👔',
-          label: 'LinkedIn',
-          href: LINKEDIN,
-          detail: LINKEDIN_TEXT,
-        },
-        { emoji: '🎖️', label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
+        { label: 'Llámame', href: PHONE, detail: PHONE_TEXT },
+        { label: 'Escríbeme', href: MAIL, detail: MAIL_TEXT },
+        { label: 'LinkedIn', href: LINKEDIN, detail: LINKEDIN_TEXT },
+        { label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
       ],
-      photoAlt: 'memoji de Jesús relajado',
+      builtWith: 'Hecho con Astro',
     },
-    footer: { builtWith: 'Hecho con Astro' },
+    work: {
+      title: 'Hoja de servicios',
+      pageTitle: {
+        plus: 'Experiencia laboral (+{n} años)',
+        exact: 'Experiencia laboral ({n} años)',
+      },
+      tasks: 'Cometido',
+      stack: 'Herramienta',
+    },
     notFound: {
-      eyebrow: 'error',
       code: '404',
       title: 'Página no encontrada',
-      body: 'Lo sentimos, no encontramos la página que buscas.',
-      back: 'Volver al inicio',
-      photoAlt: 'memoji de Jesús relajado',
+      line: 'Puerta equivocada. Detrás no hay nada.',
+      back: 'Volver a la entrada',
     },
   },
   en: {
@@ -330,153 +256,134 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     a11y: {
       skip: 'Skip to content',
       mainNav: 'Primary',
-      toggleTheme: 'Toggle theme',
+      index: 'Rooms',
       switchLanguage: 'Language',
       external: '(opens in a new tab)',
-      openCv: 'Open the CV',
-      cvPreview: 'CV preview',
+      previous: 'Previous room',
+      next: 'Next room',
     },
-    nav: { brand: 'dotnet developer', home: 'Home' },
-    intro: {
-      eyebrow: 'welcome',
-      name: ['Jesús', 'Bonete'],
-      lead: "Hi, I'm <b>Jesús Bonete</b>, a backend dev focused on building efficient and scalable applications.",
-      paragraphs: [
-        'I specialize in robust, secure services, database optimization and seamless integration with the frontend from the server side. AI is at the core of how I work: I weave it into my daily workflow to build faster, automate repetitive tasks and raise code quality without compromising best practices.',
-        "I make the most of LLMs, agents and assistants like Claude or GitHub Copilot to speed up every phase, from architecture to deployment, making better decisions in less time. I care about clean code, solid architecture and growing with every project. Passionate about technology, I'm always after new challenges.",
-      ],
-      photoAlt: 'memoji of Jesús Bonete',
+    frame: {
+      home: 'Home',
+      cv: 'CV',
+      lightsOff: 'Lights off',
+      lightsOn: 'Lights on',
     },
-    titleBlock: {
-      role: 'Role',
-      based: 'Based',
-      basedValue: 'Elda, Alicante, Spain',
-      experience: 'Experience',
-      status: 'Status',
+    entrance: {
+      title: 'Entrance',
+      line: 'Backend. What nobody sees, holding up everything else.',
+      based: 'Elda, Alicante, Spain',
       available: 'Available',
     },
-    tape,
-    experience: {
-      title: { plus: 'Experience (+{n}yr)', exact: 'Experience ({n}yr)' },
-      pageTitle: {
-        plus: 'Work experience (+{n} years)',
-        exact: 'Work experience ({n} years)',
-      },
-      years: { plus: '+{n} years', exact: '{n} years' },
-      sectionTitle: 'Experience',
-      pageLead: 'Work experience',
-      roles: 'roles',
-      viewMore: 'View more',
-      stack: 'Stack:',
-      eyebrow: '01 — Experience',
-      back: 'Back home',
+    cv: {
+      title: 'CV',
+      line: 'One sheet. No adjectives.',
+      open: 'Open the CV',
+      download: 'Download the PDF',
+      pdf: '/CV_Jesus_Bonete_EN.pdf',
     },
-    skills: {
-      title: 'Stack',
+    trade: {
+      title: 'Trade',
+      line: 'Intern to senior. Three firms, one trade.',
+      figure: { plus: '+{n}', exact: '{n}' },
+      years: { plus: '+{n} years', exact: '{n} years' },
+      roles: 'roles',
+      record: 'Service record',
+    },
+    tooling: {
+      title: 'Tooling',
+      line: 'Clean code. The other kind gets paid for later, with interest.',
       groups: [
         {
-          emoji: '📚',
           label: 'Frameworks and libraries',
           items: frameworks('Microservices'),
         },
-        { emoji: '🧑‍🎨', label: 'Design patterns', items: patterns },
-        { emoji: '📊', label: 'Databases', items: databases },
-        { emoji: '☁️', label: 'DevOps and Cloud', items: devops },
-        { emoji: '🧰', label: 'Tools', items: tools },
+        { label: 'Design patterns', items: patterns },
+        { label: 'Databases', items: databases },
+        { label: 'DevOps and Cloud', items: devops },
+        { label: 'Tools', items: tools },
       ],
     },
     projects: {
       title: 'Projects',
+      line: 'Code in plain sight. Judge for yourself.',
       here: 'you are here',
       all: 'All repositories',
     },
-    about: {
-      title: 'About me',
-      paragraphs: [
-        "Beyond coding, I'm passionate about the gym 🏋️‍♂️ and living a healthy lifestyle 🍏.",
-        'Another hobby of mine is playing airsoft 🎖️ on weekends.',
-      ],
-    },
-    goals: {
-      title: 'Goals',
-      meta: 'AI in the backend',
-      intro:
-        'I want to specialize in integrating AI into the backend, mastering:',
+    heading: {
+      title: 'Heading',
+      line: 'AI already works beside me: Claude, Copilot. Next it goes into the backend. On evals, not on faith.',
+      word: 'AI',
       items: [
         {
-          emoji: '🤖',
           label: 'LLM integration',
           text: 'Connecting models like Claude or GPT to backend services and APIs securely and efficiently.',
         },
         {
-          emoji: '🧠',
           label: 'RAG & vector databases',
           text: 'Semantic search with embeddings and vector databases to ground models with your own data.',
         },
         {
-          emoji: '🛠️',
           label: 'Agents & tool calling',
           text: 'Orchestrating agents that call tools and APIs (function calling, MCP) to automate workflows.',
         },
         {
-          emoji: '📊',
           label: 'Evals & observability',
           text: 'Measuring quality, latency and cost of LLMs with evals and tracing to ship AI to production with confidence.',
         },
       ],
     },
-    softSkills: {
-      title: 'Soft skills',
-      items: [
-        'Self-learning',
-        'Teamwork',
-        'Problem solving',
-        'Communication',
-        'Adaptability',
-        'Leadership',
-        'Working under pressure',
-        'Proactivity',
-      ],
-    },
-    languages: {
-      title: 'Languages',
-      items: [
-        { name: 'Spanish', level: 'Native' },
-        { name: 'English', level: 'B2' },
-      ],
-    },
-    study: { title: 'Study' },
-    profile: { title: 'Profile', meta: 'about · languages' },
-    quote,
-    cv: {
-      title: 'CV',
-      caption: 'Preview of my resume — click to view and download',
-      download: 'View & download CV',
+    portrait: {
+      title: 'Self-portrait',
+      line: 'Iron, clean living and airsoft at weekends. Everyone rests the way they know.',
+      medium: 'Pixel on screen',
+      photoAlt: 'memoji of Jesús Bonete',
+      study: 'Study',
+      languages: {
+        title: 'Languages',
+        items: [
+          { name: 'Spanish', level: 'Native' },
+          { name: 'English', level: 'B2' },
+        ],
+      },
+      softSkills: {
+        title: 'Soft skills',
+        items: [
+          'Self-learning',
+          'Teamwork',
+          'Problem solving',
+          'Communication',
+          'Adaptability',
+          'Leadership',
+          'Working under pressure',
+          'Proactivity',
+        ],
+      },
     },
     contact: {
       title: 'Contact',
-      meta: "let's talk",
+      line: 'The phone works. So does the mail.',
       items: [
-        { emoji: '🤙', label: 'Call me', href: PHONE, detail: PHONE_TEXT },
-        { emoji: '📧', label: 'Email me', href: MAIL, detail: MAIL_TEXT },
-        {
-          emoji: '👔',
-          label: 'LinkedIn',
-          href: LINKEDIN,
-          detail: LINKEDIN_TEXT,
-        },
-        { emoji: '🎖️', label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
+        { label: 'Call me', href: PHONE, detail: PHONE_TEXT },
+        { label: 'Email me', href: MAIL, detail: MAIL_TEXT },
+        { label: 'LinkedIn', href: LINKEDIN, detail: LINKEDIN_TEXT },
+        { label: 'GitHub', href: GITHUB, detail: GITHUB_TEXT },
       ],
-      photoAlt: 'memoji of Jesús taking it easy',
+      builtWith: 'Built with Astro',
     },
-    footer: { builtWith: 'Built with Astro' },
+    work: {
+      title: 'Service record',
+      pageTitle: {
+        plus: 'Work experience (+{n} years)',
+        exact: 'Work experience ({n} years)',
+      },
+      tasks: 'Duties',
+      stack: 'Tooling',
+    },
     notFound: {
-      eyebrow: 'error',
       code: '404',
       title: 'Page not found',
-      body: "Sorry, we couldn't find the page you're looking for.",
-      back: 'Go back home',
-      photoAlt: 'memoji of Jesús taking it easy',
+      line: 'Wrong door. Nothing behind it.',
+      back: 'Back to the entrance',
     },
   },
 }

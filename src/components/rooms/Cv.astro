@@ -1,0 +1,42 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
+import { pagePath, t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { cv, a11y } = t(lang)
+const cvPath = pagePath(lang, 'cv')
+---
+
+{/* The word is the door: the two letters open the CV. */}
+<Room id="cv" mark={mark} title={cv.title} line={cv.line}>
+  <ul class="acts">
+    <li>
+      <a class="link" href={cvPath} target="_blank" rel="noopener noreferrer">
+        {cv.open}
+        <Glyph name="arrow" class="arrow" />
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+    </li>
+    <li>
+      <a class="link" href={cv.pdf} target="_blank" rel="noopener noreferrer">
+        {cv.download}
+        <Glyph name="arrow" class="arrow" />
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+    </li>
+  </ul>
+  <Word
+    slot="piece"
+    text="CV"
+    side="end"
+    href={cvPath}
+    label={`${cv.open} ${a11y.external}`}
+  />
+</Room>

@@ -21,9 +21,9 @@ export default defineConfig({
     // fonts, preloads the ones each page uses, and gives every raster <img>
     // AVIF/WebP sources with explicit dimensions. See scripts/integrations/.
     staticPipeline({
-      // Only the display and body faces are worth a preload: they shape the
-      // first paint. The mono and the serif italic can arrive with the swap.
-      preload: (url) => /bricolage|instrument-sans/.test(url),
+      // The site is set in one family, in one file: it shapes the first
+      // paint, so every page preloads it.
+      preload: (url) => /archivo/.test(url),
     }),
   ],
   vite: {

@@ -1,0 +1,39 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+import Room from '@/components/ui/Room.astro'
+import Word from '@/components/ui/Word.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+  mark: string
+}
+
+const { lang, mark } = Astro.props
+const { contact, a11y } = t(lang)
+const year = new Date().getFullYear()
+---
+
+<Room id="contact" mark={mark} title={contact.title} line={contact.line}>
+  <ul class="acts acts--rows">
+    {contact.items.map((item) => (
+      <li>
+        <small>{item.label}</small>
+        <a
+          class="link"
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {item.detail}
+          <Glyph name="arrow" class="arrow" />
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="credit">
+    © <span data-year>{year}</span> Jesús Bonete · {contact.builtWith}
+  </p>
+  <Word slot="piece" text="@" side="end" sunk />
+</Room>
