@@ -7,15 +7,16 @@ A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwin
 - **Bilingual Support**: `/` detects the browser language and sends visitors to `/en/` or `/es/`; every page has its twin in the other language, one click away
 - **Dark/Light Theme**: follows the system preference by default, persists an explicit choice, and never flashes the wrong theme on load
 - **Fully Static**: every page is prerendered at build time and served from Vercel's CDN — no server function runs per request
-- **Near-zero JavaScript**: no framework on the client; the theme toggle, the language switch and the live years-of-experience count are a few lines of inline script
+- **Near-zero JavaScript**: no framework on the client; the theme toggle, the page turn and the live years-of-experience count are a few lines of inline script, and the book still opens and turns with JavaScript off
 - **Performance Optimized**: self-hosted subsetted fonts with preload, AVIF/WebP images with explicit sizes, and all CSS inlined into each page
-- **Responsive and accessible**: one drafting-sheet layout from phone to wide desktop, semantic landmarks, visible focus, `prefers-reduced-motion` respected
+- **A book, not a dashboard**: the home is a volume of nine leaves (frontispiece, index, six chapters, the CV as an appendix) shown one spread at a time, with a real page turn
+- **Responsive and accessible**: an open spread on desktop and a single column on a phone, semantic landmarks, visible focus, `prefers-reduced-motion` respected
 - **SEO Friendly**: canonical and `hreflang` links, Open Graph and Twitter metadata, a proper 404
 
 ## 🛠️ Tech Stack
 
 - [Astro](https://astro.build/) (static output)
-- [Tailwind CSS](https://tailwindcss.com/) v4 on top of plain CSS tokens and recipes
+- [Tailwind CSS](https://tailwindcss.com/) v4 on top of plain CSS tokens and the book's own stylesheet
 - [TypeScript](https://www.typescriptlang.org/)
 - [sharp](https://sharp.pixelplumbing.com/) and [subset-font](https://github.com/papandreou/subset-font) in the build pipeline
 - [Puppeteer](https://pptr.dev/) to print the CV PDFs
@@ -27,34 +28,35 @@ A fully static, zero-JavaScript-framework portfolio built with Astro and Tailwin
 ```
 ├── DESIGN.md                     # art direction: tokens, type, layout, motion rules
 ├── astro.config.mjs              # output: 'static', inlined CSS, build pipeline
-├── design/                       # static HTML mockups rendered from the real content
 ├── package.json
 ├── pnpm-lock.yaml
-├── public/                       # CV PDFs, images, memojis, fonts/ (self-hosted)
+├── public/                       # CV PDFs, memojis, plates/ (engravings), fonts/ (self-hosted)
 ├── scripts
+│   ├── engrave.mjs               # turns the memojis into the engraved plates and the favicon
 │   ├── generate-cv.mjs           # prints the CV PDFs from the production build
 │   ├── integrations/             # static-pipeline: font subsetting + image formats
 │   └── lib/                      # static file server used by the scripts
 ├── src
 │   ├── components
+│   │   ├── book/                  # Leaf, Opener, Plate and one component per leaf of the book
 │   │   ├── cv/Resume.astro        # the A4 CV page
 │   │   ├── layout/                # Header, Footer, HeadSEO, ThemeScript, ThemeToggle, LanguageSwitch
 │   │   ├── pages/                 # HomePage and WorkPage, rendered once per language
-│   │   ├── sections/              # Hero, Experience, Stack, Projects, Goals, About, Quote, Contact…
-│   │   └── ui/                    # SectionHead, ExpYears, Glyph, Sprite
+│   │   └── ui/                    # ExpYears, Glyph, Sprite
 │   ├── i18n
 │   │   ├── content.ts             # every UI string, both languages, one typed shape
 │   │   ├── routes.ts              # Lang type, language-aware paths
+│   │   ├── book.ts                # the leaves of the home book and how they link
 │   │   └── index.ts               # per-language data helpers
 │   ├── layouts/BaseLayout.astro
-│   ├── lib/                       # constants (EN), constants-es (ES), experience helpers, types
+│   ├── lib/                       # constants (EN), constants-es (ES), experience and book helpers, types
 │   ├── pages
 │   │   ├── 404.astro
 │   │   ├── index.astro            # redirects by browser language
 │   │   ├── cv.astro               # /cv (Spanish CV)
 │   │   ├── en/{index,work,cv}.astro
 │   │   └── es/{index,work}.astro
-│   └── styles/                    # tokens, fonts, base, recipes, cv, globals (Tailwind entry)
+│   └── styles/                    # tokens, fonts, base, book, cv, globals (Tailwind entry)
 ├── tsconfig.json
 └── vercel.json                   # build settings and cache/security headers
 ```
@@ -108,8 +110,8 @@ pnpm cv:pdf
 
 - Edit `src/lib/constants.ts` (English) and `src/lib/constants-es.ts` (Spanish) for experience and study data.
 - Every other string lives in `src/i18n/content.ts`, typed so both languages always carry the same keys.
-- Colours, type scale, spacing and motion tokens live in `src/styles/tokens.css`; component and section recipes in `src/styles/recipes.css`. The rationale is in `DESIGN.md`.
-- The mockups under `design/` are rendered from the real content with `node design/build.mjs`.
+- Colours, type scale, spacing and motion tokens live in `src/styles/tokens.css`; the book's layouts in `src/styles/book.css`. The rationale is in `DESIGN.md`.
+- The engravings under `public/plates/` and the favicon are drawn from the memojis by `node scripts/engrave.mjs`; run it again if a portrait changes.
 
 ## 📄 License
 

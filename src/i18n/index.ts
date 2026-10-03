@@ -32,3 +32,6 @@ export const PROJECT_LINKS: ProjectLink[] = [
 ]
 
 export { LINKS }
+
+export { leafNav, leafTitles } from './book'
+export type { LeafLink, LeafNav } from './book'

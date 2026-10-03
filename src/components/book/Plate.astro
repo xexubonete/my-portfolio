@@ -1,0 +1,32 @@
+---
+/**
+ * An engraving. The file is ink on a transparent ground and is applied as a
+ * mask, so the plate takes the ink colour of the theme in force.
+ */
+interface Props {
+  src: string
+  alt: string
+  /** Width over height of the file. */
+  ratio?: string
+  /** The plate carries its own oval frame (the frontispiece does). */
+  framed?: boolean
+}
+
+const { src, alt, ratio = '4 / 5', framed = false } = Astro.props
+---
+
+<figure class="plate">
+  <div class:list={[framed && 'plate--framed']}>
+    <div
+      class="plate__image"
+      role="img"
+      aria-label={alt}
+      style={`--plate: url(${src}); --plate-ratio: ${ratio}`}
+    ></div>
+  </div>
+  {Astro.slots.has('default') && (
+    <figcaption>
+      <slot />
+    </figcaption>
+  )}
+</figure>

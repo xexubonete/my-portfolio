@@ -1,0 +1,68 @@
+---
+import { leafNav, leafTitles, pagePath, t, type Lang } from '@/i18n'
+import { LEAF_IDS, folios, type LeafId } from '@/lib/book'
+import Leaf from './Leaf.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { epigraph, contents, cv } = t(lang)
+const nav = leafNav(lang, 'index')
+const titles = leafTitles(lang)
+
+const chapters: LeafId[] = ['i', 'ii', 'iii', 'iv', 'v', 'vi']
+const page = (id: LeafId) => folios(LEAF_IDS.indexOf(id))?.verso
+---
+
+<Leaf {...nav} full="verso">
+  {/* The epigraph stays in the language it was said in. */}
+  <figure slot="verso" class="epigraph">
+    <blockquote lang="en">{epigraph.text}</blockquote>
+    <figcaption>{epigraph.author}</figcaption>
+  </figure>
+
+  <nav slot="recto" class="toc" aria-labelledby="toc-title">
+    <header class="opener">
+      <h2 class="opener__title" id="toc-title">
+        {contents.title}
+      </h2>
+      <p class="opener__argument">{contents.note}</p>
+    </header>
+    <ol class="toc__list">
+      {chapters.map((id) => (
+        <li>
+          <a href={`#${id}`}>
+            <span class="toc__num">{id}</span>
+            <span class="toc__title">{titles[id]}</span>
+            <span class="toc__dots" />
+            <span class="toc__page">{page(id)}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <hr class="toc__rule" />
+    <ul class="toc__list">
+      <li>
+        <a href="#cv">
+          <span class="toc__num">{cv.word.slice(0, 2)}.</span>
+          <span class="toc__title">{titles.cv}</span>
+          <span class="toc__dots" />
+          <span class="toc__page">{page('cv')}</span>
+        </a>
+      </li>
+      <li>
+        <a href={pagePath(lang, 'work')}>
+          <span class="toc__num" aria-hidden="true">
+            ☞
+          </span>
+          <span class="toc__title">{contents.work}</span>
+          <span class="toc__dots" />
+          <span class="toc__page">{contents.workNote}</span>
+        </a>
+      </li>
+    </ul>
+    <p class="toc__keys">{contents.keys}</p>
+  </nav>
+</Leaf>

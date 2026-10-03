@@ -1,0 +1,77 @@
+---
+import { leafNav, pagePath, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { cv, a11y } = t(lang)
+const nav = leafNav(lang, 'cv')
+const cvPath = pagePath(lang, 'cv')
+const [first] = cv.paragraphs
+---
+
+<Leaf {...nav} full="verso">
+  <figure slot="verso" class="facsimile">
+    {/* The real CV page, embedded at its native A4 width and scaled to the box
+        by the script in HomePage. `embed` hides its toolbar before paint. */}
+    <a
+      class="facsimile__sheet"
+      href={cvPath}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={a11y.openCv}
+    >
+      <iframe
+        src={`${cvPath}?embed=1`}
+        title={a11y.cvPreview}
+        tabindex="-1"
+        loading="lazy"
+      ></iframe>
+    </a>
+    <figcaption>{cv.plateCaption}</figcaption>
+  </figure>
+
+  <Fragment slot="recto">
+    <Opener {...cv} />
+    <p
+      class="text text--opening"
+      set:html={withLeadIn(first ?? '', cv.leadIn)}
+    />
+    <div class="appendix-actions">
+      <a
+        class="cartouche cartouche--rubric"
+        href={cvPath}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {cv.view}
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+      <p class="appendix-actions__pdfs">
+        <a
+          class="link"
+          href="/CV_Jesus_Bonete_ES.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {cv.pdfEs}
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+        <a
+          class="link"
+          href="/CV_Jesus_Bonete_EN.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {cv.pdfEn}
+          <span class="sr-only">{a11y.external}</span>
+        </a>
+      </p>
+    </div>
+  </Fragment>
+</Leaf>

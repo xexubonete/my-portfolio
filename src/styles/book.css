@@ -1,0 +1,1285 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   The book. Every layout in the site lives here; the art direction it
+   implements is documented in DESIGN.md.
+
+   The model is a printed volume lying open. A page of the site is a run of
+   leaves (`.leaf`), each an open spread with a left page (`.page--verso`) and
+   a right one (`.page--recto`). Only one leaf is on show: the one the URL
+   fragment names, or the first when it names none. That is plain CSS
+   (`:target`), so the book reads the same with JavaScript off; the script in
+   BaseLayout only adds the page turn and the arrow keys.
+
+   Under 70rem there is no room for a spread and a leaf becomes a single
+   column: the left page, then the right.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Small pieces used everywhere ──────────────────────────────────────── */
+
+/* True small capitals from EB Garamond, letterspaced as they must be. */
+.sc {
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.rubric {
+  color: var(--color-accent);
+}
+
+/* A printer's flower between two blocks. */
+.fleuron {
+  color: var(--color-accent);
+  font-size: 1.5em;
+  line-height: 1;
+  text-align: center;
+  margin-block: var(--line);
+}
+
+.link {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
+
+/* A pointing hand before a line that leads somewhere else in the book. */
+.pointer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+  font-style: italic;
+}
+
+.pointer::before {
+  content: '☞';
+  color: var(--color-accent);
+  font-style: normal;
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.pointer:hover {
+  color: var(--color-accent);
+}
+
+.more {
+  margin-top: var(--line);
+  text-align: right;
+}
+
+/* The one "button" a book can have: a label inside a double frame. */
+.cartouche {
+  display: inline-block;
+  padding: 0.5em 1.15em 0.55em;
+  border: 1px solid currentColor;
+  box-shadow:
+    0 0 0 3px var(--color-surface),
+    0 0 0 4px currentColor;
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+  line-height: 1.2;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.cartouche:hover {
+  background: var(--color-text);
+  color: var(--color-surface);
+  box-shadow:
+    0 0 0 3px var(--color-surface),
+    0 0 0 4px var(--color-text);
+}
+
+.cartouche--rubric {
+  color: var(--color-accent);
+}
+
+.cartouche--rubric:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  box-shadow:
+    0 0 0 3px var(--color-surface),
+    0 0 0 4px var(--color-accent);
+}
+
+/* ── The running head (site header) ────────────────────────────────────── */
+
+.running-head {
+  flex: none;
+  width: 100%;
+  max-width: var(--book-max);
+  margin-inline: auto;
+  min-height: var(--head-height);
+  padding-inline: var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.running-head a:hover {
+  color: var(--color-accent);
+}
+
+.running-head__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 0.3rem + 2.4vw, 1.75rem);
+}
+
+.running-head__cv {
+  color: var(--color-accent);
+  border-bottom: 1px solid currentColor;
+}
+
+.lang-switch {
+  display: inline-flex;
+  gap: 0.5em;
+}
+
+.lang-switch > * + *::before {
+  content: '·';
+  margin-right: 0.5em;
+  color: var(--color-text-muted);
+}
+
+.lang-switch [aria-current] {
+  color: var(--color-text-muted);
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: -0.4rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--color-accent);
+}
+
+.theme-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* By day the button offers the candle; by candlelight, the sun. Same
+   precedence as the tokens: the explicit data-theme, else the OS. */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-candle {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-toggle .icon-sun {
+    display: block;
+  }
+
+  :root:not([data-theme='light']) .theme-toggle .icon-candle {
+    display: none;
+  }
+}
+
+/* ── The colophon line (site footer) ───────────────────────────────────── */
+
+.site-footer {
+  flex: none;
+  padding: var(--space-3) var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.2em 1.6em;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.site-footer a:hover {
+  color: var(--color-accent);
+}
+
+/* ── The book and its leaves ───────────────────────────────────────────── */
+
+.book {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  max-width: var(--book-max);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+.leaf {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-book);
+  outline: none;
+  /* Opening a leaf by its address must not scroll the running head away. */
+  scroll-margin-top: 100dvh;
+}
+
+.leaf:target,
+.book:not(:has(.leaf:target)) > .leaf:first-child {
+  display: block;
+}
+
+.page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--gutter) var(--space-5);
+  container-type: inline-size;
+}
+
+.page--recto {
+  padding-top: 0;
+}
+
+.page__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 34rem;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* The foot of a page: the folio in the middle, the way out at the corner. */
+.page__foot {
+  max-width: 34rem;
+  width: 100%;
+  margin: calc(var(--line) * 0.75) auto 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.page--verso .page__foot {
+  display: none;
+}
+
+.folio {
+  grid-column: 2;
+  color: var(--color-text-muted);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.turn {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+  padding-block: 0.35em;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.turn__fist {
+  color: var(--color-accent);
+  font-style: normal;
+  font-size: 1.25em;
+  line-height: 1;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.turn--back {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.turn--forward {
+  grid-column: 3;
+  justify-self: end;
+  text-align: right;
+}
+
+.turn:hover {
+  color: var(--color-accent);
+}
+
+.turn--forward:hover .turn__fist {
+  transform: translateX(0.25em);
+}
+
+.turn--back:hover .turn__fist {
+  transform: translateX(-0.25em);
+}
+
+/* ── A chapter opening ─────────────────────────────────────────────────── */
+
+.opener {
+  text-align: center;
+  margin-bottom: calc(var(--line) * 1.25);
+}
+
+.opener__word {
+  color: var(--color-accent);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.2em;
+  margin-bottom: calc(var(--line) * 0.4);
+}
+
+.opener__title {
+  font-size: var(--text-xl);
+  font-style: italic;
+  line-height: 1.05;
+}
+
+.opener__title a:hover {
+  color: var(--color-accent);
+}
+
+.opener__argument {
+  max-width: 24em;
+  margin: calc(var(--line) * 0.55) auto 0;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.opener::after {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  margin: calc(var(--line) * 0.85) auto 0;
+  border-top: 1px solid var(--color-accent);
+}
+
+/* The line over a page that says which book this is (work page). */
+.page__running {
+  margin-bottom: var(--line);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+  text-align: center;
+}
+
+/* ── Running text ──────────────────────────────────────────────────────── */
+
+.text {
+  text-align: justify;
+  hyphens: auto;
+  hyphenate-limit-chars: 6 3 3;
+  overflow-wrap: break-word;
+}
+
+.text a {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+}
+
+.text a:hover {
+  color: var(--color-accent);
+}
+
+/* Paragraphs follow one another with an indent and no gap, as in print. */
+.text--indent {
+  text-indent: 1.5em;
+}
+
+/* The first paragraph of a chapter: a three-line initial in the red ink,
+   and its first words in small capitals to lead the eye back to the text. */
+.text--opening::first-letter {
+  float: left;
+  margin: 0.06em 0.09em 0 -0.02em;
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: 4.55em;
+  font-style: normal;
+  line-height: 0.74;
+  text-transform: uppercase;
+}
+
+.lead-in {
+  font-variant-caps: small-caps;
+  letter-spacing: 0.06em;
+}
+
+/* A passage is a paragraph with its marginal note. In a single column the
+   note follows the paragraph, set small and ruled off on the left. */
+.passage {
+  position: relative;
+}
+
+.note {
+  margin: calc(var(--line) * 0.5) 0 calc(var(--line) * 0.75) 1.5em;
+  padding-left: 0.9em;
+  border-left: 1px solid var(--color-accent);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+  text-align: left;
+  hyphens: manual;
+}
+
+.note > * + * {
+  margin-top: 0.6em;
+}
+
+.note b {
+  color: var(--color-text);
+  font-weight: 400;
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.note dt {
+  color: var(--color-accent);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+  line-height: 1.1;
+}
+
+.note dd + dt {
+  margin-top: 0.5em;
+}
+
+/* ── The frontispiece and the other plates ─────────────────────────────── */
+
+.plate {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
+/* The engraving is a mask, so it prints in the ink of whichever theme. */
+.plate__image {
+  width: min(100%, var(--plate-width, 22rem));
+  margin-inline: auto;
+  aspect-ratio: var(--plate-ratio, 4 / 5);
+  background: var(--color-text);
+  mask: var(--plate) center / contain no-repeat;
+}
+
+/* A framed plate stays a positive print by candlelight: dark ink on an oval
+   of lit paper, instead of turning into its own negative. The ellipse is the
+   outer rule of the frame drawn by scripts/engrave.mjs. */
+.plate--framed {
+  width: min(100%, var(--plate-width, 22rem));
+  margin-inline: auto;
+  background: radial-gradient(
+    ellipse 44.9% 47.5% at 50% 50%,
+    var(--color-plate-paper) 99.4%,
+    transparent 100%
+  );
+}
+
+.plate--framed .plate__image {
+  width: 100%;
+  background: var(--color-plate-ink);
+}
+
+.plate figcaption {
+  margin-top: calc(var(--line) * 0.6);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+.plate figcaption .sc {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+/* ── The title page ────────────────────────────────────────────────────── */
+
+.page--cover-plate {
+  padding-bottom: 0;
+}
+
+.page--cover-plate .plate {
+  --plate-width: 15rem;
+}
+
+.title-page {
+  margin-block: auto;
+  padding-block: 1em;
+  font-size: var(--text-base);
+  text-align: center;
+}
+
+.title-page__overline {
+  max-width: 17em;
+  margin-inline: auto;
+  font-family: var(--font-display);
+  font-size: 1.16em;
+  font-style: italic;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.title-page__name {
+  margin-block: 0.14em 0.12em;
+  font-size: min(5.5em, 19.5cqi);
+  line-height: 0.96;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.title-page__name span {
+  display: block;
+}
+
+.title-page__subtitle {
+  max-width: 19em;
+  margin-inline: auto;
+  font-family: var(--font-display);
+  font-size: 1.16em;
+  font-style: italic;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.title-page .fleuron {
+  margin-block: 0.55em;
+}
+
+.title-page__status {
+  font-variant-caps: all-small-caps;
+  letter-spacing: clamp(0.1em, 1.2cqi, 0.2em);
+}
+
+.title-page__actions {
+  margin-top: 1.4em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1em 1.4em;
+}
+
+.title-page__imprint {
+  width: fit-content;
+  margin: 1.9em auto 0;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--color-text);
+  color: var(--color-text-muted);
+  font-size: 0.78em;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.2em;
+}
+
+/* ── The epigraph and the table of contents ────────────────────────────── */
+
+.epigraph {
+  margin: auto;
+  padding-block: calc(var(--line) * 1.5);
+  max-width: 16em;
+  text-align: center;
+}
+
+.epigraph blockquote {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-style: italic;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.epigraph figcaption {
+  margin-top: var(--line);
+  color: var(--color-text-muted);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.toc__list {
+  margin-top: calc(var(--line) * 0.25);
+}
+
+.toc__list a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  padding-block: 0.36em;
+}
+
+.toc__num {
+  flex: none;
+  width: 2.6em;
+  color: var(--color-accent);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.toc__title {
+  font-style: italic;
+}
+
+.toc__dots {
+  flex: 1;
+  min-width: 1.5em;
+  border-bottom: 1px dotted var(--color-text-muted);
+  transform: translateY(-0.28em);
+}
+
+.toc__page {
+  flex: none;
+  color: var(--color-text-muted);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.toc__list a:hover .toc__title {
+  color: var(--color-accent);
+}
+
+.toc__rule {
+  width: 3.5rem;
+  margin: calc(var(--line) * 0.5) auto;
+  border: 0;
+  border-top: 1px solid var(--color-accent);
+}
+
+.toc__keys {
+  display: none;
+  margin-top: var(--line);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-style: italic;
+  text-align: center;
+}
+
+/* ── Inventories: the stack, the virtues, the papers ───────────────────── */
+
+.inventory {
+  margin-top: calc(var(--line) * 0.9);
+}
+
+.inventory:first-child {
+  margin-top: 0;
+}
+
+.inventory__label {
+  margin-bottom: 0.15em;
+  color: var(--color-accent);
+  font-family: var(--font-body);
+  font-size: 1em;
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+  line-height: var(--leading-text);
+}
+
+/* Items run on in one paragraph, parted by a raised point. */
+.run-in li {
+  display: inline;
+}
+
+/* The point belongs to the item before it, so it never opens a line. */
+.run-in li:not(:last-child)::after {
+  content: '\00a0· ';
+  color: var(--color-accent);
+}
+
+.ledger li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+}
+
+.ledger__dots {
+  flex: 1;
+  min-width: 1.5em;
+  border-bottom: 1px dotted var(--color-text-muted);
+  transform: translateY(-0.28em);
+}
+
+.ledger__value {
+  font-style: italic;
+  text-align: right;
+}
+
+.ledger a:hover {
+  color: var(--color-accent);
+}
+
+/* ── The course: four numbered articles ────────────────────────────────── */
+
+.articles {
+  counter-reset: article;
+}
+
+.articles li {
+  counter-increment: article;
+  position: relative;
+  padding-left: 2.4em;
+}
+
+.articles li + li {
+  margin-top: calc(var(--line) * 0.7);
+}
+
+.articles li::before {
+  content: counter(article, lower-roman) '.';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.articles h3 {
+  font-family: var(--font-body);
+  font-size: 1em;
+  font-style: italic;
+  line-height: var(--leading-text);
+}
+
+/* ── Contact, colophon ─────────────────────────────────────────────────── */
+
+.page--tailpiece .plate {
+  --plate-width: 15rem;
+  --plate-ratio: 1;
+}
+
+.ledger--contact {
+  margin-top: calc(var(--line) * 1.25);
+}
+
+.cv-call {
+  margin-top: calc(var(--line) * 1.6);
+  text-align: center;
+}
+
+.colophon {
+  max-width: 22em;
+  margin: auto auto 0;
+  padding-top: calc(var(--line) * 1.5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-style: italic;
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ── The appendix: the CV in facsimile ─────────────────────────────────── */
+
+.facsimile {
+  margin: auto;
+  width: min(100%, 21rem);
+  text-align: center;
+}
+
+/* The real CV page at its native A4 width, scaled to the box by the script
+   in HomePage. A link covers it: the whole plate opens the CV. */
+.facsimile__sheet {
+  --cv-scale: 0.42;
+  position: relative;
+  display: block;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sheet);
+  background: #f5efe2;
+}
+
+.facsimile__sheet iframe {
+  width: 794px;
+  height: 1123px;
+  border: 0;
+  transform: scale(var(--cv-scale));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.facsimile__sheet:hover {
+  border-color: var(--color-accent);
+}
+
+.facsimile figcaption {
+  margin-top: calc(var(--line) * 0.6);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+.facsimile figcaption .sc {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.appendix-actions {
+  margin-top: calc(var(--line) * 1.5);
+  text-align: center;
+}
+
+.appendix-actions__pdfs {
+  margin-top: var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.2em 1.6em;
+  font-style: italic;
+}
+
+/* ── The work page: one campaign per leaf ──────────────────────────────── */
+
+.role + .role {
+  margin-top: calc(var(--line) * 1.1);
+}
+
+.role__title {
+  font-size: var(--text-lg);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.role__summary {
+  margin-top: calc(var(--line) * 0.35);
+}
+
+.role__tasks {
+  margin-top: calc(var(--line) * 0.35);
+}
+
+.role__tasks li {
+  position: relative;
+  padding-left: 1.5em;
+  text-align: left;
+}
+
+.role__tasks li::before {
+  content: '¶';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.role__stack {
+  margin-top: calc(var(--line) * 0.5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.role__stack .sc {
+  color: var(--color-accent);
+}
+
+.back-to-book {
+  margin-top: auto;
+  padding-top: calc(var(--line) * 1.5);
+  text-align: center;
+}
+
+/* ── 404: the torn page ────────────────────────────────────────────────── */
+
+.torn {
+  margin-block: auto;
+  text-align: center;
+}
+
+.torn__code {
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 32cqi, 10rem);
+  line-height: 0.9;
+}
+
+.torn__title {
+  margin-top: calc(var(--line) * 1.2);
+  font-size: var(--text-xl);
+  font-style: italic;
+}
+
+.torn__body {
+  max-width: 22em;
+  margin: var(--line) auto 0;
+  text-wrap: balance;
+}
+
+.torn__action {
+  margin-top: calc(var(--line) * 1.5);
+}
+
+/* ── The spread: two pages side by side ────────────────────────────────── */
+
+@media (min-width: 70rem) {
+  .book {
+    padding: 0 var(--gutter);
+  }
+
+  .leaf:target,
+  .book:not(:has(.leaf:target)) > .leaf:first-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Margins as a book has them: narrow at the spine, wide at the fore-edge,
+     where the notes go. The text block sits in the same place on every page. */
+  .page {
+    --inner: clamp(2.25rem, 3.4vw, 4rem);
+    --outer: clamp(1.5rem, 2.2vw, 2.75rem);
+    --margin-width: clamp(8.25rem, 11.5vw, 11.5rem);
+    --note-gap: clamp(1.1rem, 1.6vw, 1.75rem);
+    --fore-edge: calc(var(--outer) + var(--margin-width) + var(--note-gap));
+    padding: clamp(1.5rem, 4.5vh, 3.75rem) var(--inner)
+      clamp(0.75rem, 2vh, 1.5rem);
+  }
+
+  /* The paper darkens as it curves into the spine. */
+  .page--verso {
+    padding-left: var(--fore-edge);
+    background:
+      linear-gradient(to left, var(--color-spine), transparent 4.5rem),
+      var(--color-surface);
+  }
+
+  .page--recto {
+    padding-right: var(--fore-edge);
+    background:
+      linear-gradient(to right, var(--color-spine), transparent 4.5rem),
+      var(--color-surface);
+  }
+
+  /* Pages with no notes (plates, title page) are composed on the whole page. */
+  .page--full.page--verso {
+    padding-left: var(--inner);
+  }
+
+  .page--full.page--recto {
+    padding-right: var(--inner);
+  }
+
+  .page--cover-plate {
+    padding-bottom: clamp(1rem, 2.5vh, 1.5rem);
+  }
+
+  .page__body,
+  .page__foot {
+    max-width: none;
+  }
+
+  .page--verso .page__foot {
+    display: grid;
+  }
+
+  /* Each page keeps the way out on its own outer corner. */
+  .page--recto .turn--back {
+    display: none;
+  }
+
+  /* A chapter opens a little way down the page. */
+  .opener {
+    margin-top: clamp(0rem, 4vh, 2.75rem);
+  }
+
+  /* Notes move out into the fore-edge margin, level with their paragraph. */
+  .note {
+    position: absolute;
+    top: 0.2em;
+    width: var(--margin-width);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .page--verso .note {
+    right: calc(100% + var(--note-gap));
+    text-align: right;
+  }
+
+  .page--recto .note {
+    left: calc(100% + var(--note-gap));
+  }
+
+  .page--cover-plate .plate {
+    --plate-width: min(26rem, 56vh);
+  }
+
+  /* The title page is composed for the height of the window, so the whole
+     spread shows at once on a laptop as well as on a tall screen. */
+  .title-page {
+    font-size: clamp(0.95rem, 2.3vh, 1.34rem);
+  }
+
+  .page--tailpiece .plate {
+    --plate-width: min(20rem, 42vh);
+  }
+
+  .facsimile {
+    width: min(100%, 24rem, 52vh);
+  }
+}
+
+/* The hint about the arrow keys only where there is a keyboard to speak of. */
+@media (min-width: 70rem) and (hover: hover) {
+  .toc__keys {
+    display: block;
+  }
+}
+
+/* ── Candlelight ───────────────────────────────────────────────────────────
+   In the dark theme a flame stands behind the book, over the spine: each page
+   is lit from its inner edge and falls off towards the corners. The light
+   wavers, slowly and never by much. By day the glow token is transparent. */
+
+.leaf {
+  position: relative;
+  isolation: isolate;
+}
+
+.leaf::before,
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* A single column is lit as one sheet, from above. */
+.leaf::before {
+  max-height: 60rem;
+  background: radial-gradient(
+    ellipse 95% 60% at 50% 8%,
+    var(--color-glow),
+    transparent 75%
+  );
+}
+
+@media (min-width: 70rem) {
+  .leaf::before {
+    display: none;
+  }
+
+  .page--verso::before {
+    background: radial-gradient(
+      ellipse 105% 80% at 100% 22%,
+      var(--color-glow),
+      transparent 72%
+    );
+  }
+
+  .page--recto::before {
+    background: radial-gradient(
+      ellipse 105% 80% at 0% 22%,
+      var(--color-glow),
+      transparent 72%
+    );
+  }
+}
+
+@keyframes candle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  11% {
+    opacity: 0.86;
+  }
+  19% {
+    opacity: 0.97;
+  }
+  34% {
+    opacity: 0.8;
+  }
+  52% {
+    opacity: 0.94;
+  }
+  63% {
+    opacity: 0.84;
+  }
+  81% {
+    opacity: 0.98;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .leaf::before,
+  .page::before {
+    animation: candle 7s ease-in-out infinite;
+  }
+}
+
+/* ── Turning the page ──────────────────────────────────────────────────────
+   The script wraps a change of leaf in a view transition and says which way
+   the reader is going. On a spread the two pages are captured separately and
+   a real turn is played in two halves: the page being left lifts and closes
+   on the spine, then the page arriving opens from it on the other side. The
+   remaining two pages simply sit underneath. In a single column the change
+   is a quick cross-fade. Without view transitions, or with reduced motion,
+   the leaf just changes. */
+
+::view-transition-group(*) {
+  animation-duration: var(--duration-base);
+}
+
+@media (min-width: 70rem) and (prefers-reduced-motion: no-preference) {
+  :root:is([data-turn='forward'], [data-turn='back']) .page--verso {
+    view-transition-name: verso;
+  }
+
+  :root:is([data-turn='forward'], [data-turn='back']) .page--recto {
+    view-transition-name: recto;
+  }
+
+  :root:is([data-turn='forward'], [data-turn='back'])::view-transition-old(
+      root
+    ),
+  :root:is([data-turn='forward'], [data-turn='back'])::view-transition-new(
+      root
+    ) {
+    animation: none;
+  }
+
+  ::view-transition-group(verso),
+  ::view-transition-group(recto) {
+    animation: none;
+  }
+
+  ::view-transition-old(verso),
+  ::view-transition-new(verso),
+  ::view-transition-old(recto),
+  ::view-transition-new(recto) {
+    height: 100%;
+    mix-blend-mode: normal;
+    backface-visibility: hidden;
+    animation-duration: var(--duration-turn);
+    animation-fill-mode: both;
+  }
+
+  /* Forward: the right page turns over to become the next left page. */
+  :root[data-turn='forward']::view-transition-old(recto) {
+    z-index: 1;
+    transform-origin: left center;
+    animation-name: leave-recto;
+    animation-timing-function: var(--ease-in);
+  }
+
+  :root[data-turn='forward']::view-transition-new(recto) {
+    animation: none;
+  }
+
+  :root[data-turn='forward']::view-transition-old(verso) {
+    animation-name: stay;
+    animation-duration: calc(var(--duration-turn) * 2);
+  }
+
+  :root[data-turn='forward']::view-transition-new(verso) {
+    transform-origin: right center;
+    animation-name: arrive-verso;
+    animation-delay: var(--duration-turn);
+    animation-timing-function: var(--ease-out);
+  }
+
+  /* Back: the left page turns over to become the previous right page. */
+  :root[data-turn='back']::view-transition-old(verso) {
+    z-index: 1;
+    transform-origin: right center;
+    animation-name: leave-verso;
+    animation-timing-function: var(--ease-in);
+  }
+
+  :root[data-turn='back']::view-transition-new(verso) {
+    animation: none;
+  }
+
+  :root[data-turn='back']::view-transition-old(recto) {
+    animation-name: stay;
+    animation-duration: calc(var(--duration-turn) * 2);
+  }
+
+  :root[data-turn='back']::view-transition-new(recto) {
+    transform-origin: left center;
+    animation-name: arrive-recto;
+    animation-delay: var(--duration-turn);
+    animation-timing-function: var(--ease-out);
+  }
+}
+
+@keyframes stay {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes leave-recto {
+  from {
+    transform: perspective(160rem) rotateY(0);
+    filter: brightness(1);
+  }
+  to {
+    transform: perspective(160rem) rotateY(-90deg);
+    filter: brightness(0.72);
+  }
+}
+
+@keyframes arrive-verso {
+  from {
+    transform: perspective(160rem) rotateY(90deg);
+    filter: brightness(0.72);
+  }
+  to {
+    transform: perspective(160rem) rotateY(0);
+    filter: brightness(1);
+  }
+}
+
+@keyframes leave-verso {
+  from {
+    transform: perspective(160rem) rotateY(0);
+    filter: brightness(1);
+  }
+  to {
+    transform: perspective(160rem) rotateY(90deg);
+    filter: brightness(0.72);
+  }
+}
+
+@keyframes arrive-recto {
+  from {
+    transform: perspective(160rem) rotateY(-90deg);
+    filter: brightness(0.72);
+  }
+  to {
+    transform: perspective(160rem) rotateY(0);
+    filter: brightness(1);
+  }
+}
+
+/* Lighting or snuffing the candle: the new light spreads from the button. */
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-turn='light']::view-transition-old(root) {
+    animation: none;
+  }
+
+  :root[data-turn='light']::view-transition-new(root) {
+    animation: spread-light 650ms var(--ease-out) both;
+  }
+}
+
+@keyframes spread-light {
+  from {
+    clip-path: circle(0 at var(--light-x, 100%) var(--light-y, 0%));
+  }
+  to {
+    clip-path: circle(150vmax at var(--light-x, 100%) var(--light-y, 0%));
+  }
+}

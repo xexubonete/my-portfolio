@@ -1,4 +1,6 @@
 ---
+import Leaf from '@/components/book/Leaf.astro'
+import Plate from '@/components/book/Plate.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { t } from '@/i18n'
 
@@ -13,26 +15,31 @@ const { notFound } = t(lang)
   title="404 - Not Found"
   description="404 Error — this page was not found"
 >
-  <main id="main" class="hero not-found">
-    <div class="wrap not-found__grid">
-      <div>
-        <p class="eyebrow eyebrow--accent">{notFound.eyebrow}</p>
-        <p class="display-hero display not-found__code">{notFound.code}</p>
-        <h1 class="not-found__title">{notFound.title}</h1>
-        <p class="not-found__text">{notFound.body}</p>
-        <p class="not-found__action">
-          <a class="btn" href="/">
+  <main id="main" class="book">
+    <Leaf
+      id="torn"
+      index={0}
+      label={notFound.title}
+      full="both"
+      versoClass="page--tailpiece"
+    >
+      <Plate
+        slot="verso"
+        src="/plates/tailpiece.png"
+        alt={notFound.photoAlt}
+        ratio="1"
+      />
+      <div slot="recto" class="torn">
+        <p class="opener__word">{notFound.word}</p>
+        <p class="torn__code">{notFound.code}</p>
+        <h1 class="torn__title">{notFound.title}</h1>
+        <p class="torn__body">{notFound.body}</p>
+        <p class="torn__action">
+          <a class="cartouche cartouche--rubric" href="/">
             {notFound.back}
           </a>
         </p>
       </div>
-      <img
-        class="not-found__portrait"
-        src="/me_chillin.png"
-        alt={notFound.photoAlt}
-        width="420"
-        height="420"
-      />
-    </div>
+    </Leaf>
   </main>
 </BaseLayout>

@@ -9,12 +9,13 @@ interface Props {
 
 const { lang, page, label } = Astro.props
 const names: Record<Lang, string> = { es: 'Español', en: 'English' }
-// English first, as in the mockups' `en · es` pill.
+// English first: `en · es`.
 const order = [...LANGS].reverse()
 ---
 
-{/* Plain links to the same page in the other language: no script, and
-    crawlers follow them. The active language is marked, not linked. */}
+{/* Plain links to the same page in the other language: crawlers follow them
+    and they work with no script. `data-keep-leaf` lets the book's script add
+    the open leaf to the address. The active language is marked, not linked. */}
 <span class="lang-switch" aria-label={label}>
   {order.map((item) =>
     item === lang ? (
@@ -27,6 +28,7 @@ const order = [...LANGS].reverse()
         hreflang={item}
         lang={item}
         title={names[item]}
+        data-keep-leaf
       >
         {item}
       </a>

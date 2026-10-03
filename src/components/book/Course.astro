@@ -1,0 +1,37 @@
+---
+import { leafNav, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { course } = t(lang)
+const nav = leafNav(lang, 'iv')
+const [first] = course.paragraphs
+---
+
+<Leaf {...nav}>
+  <Fragment slot="verso">
+    <Opener {...course} />
+    <p
+      class="text text--opening"
+      set:html={withLeadIn(first ?? '', course.leadIn)}
+    />
+    <p class="fleuron" aria-hidden="true">
+      ❦
+    </p>
+  </Fragment>
+
+  <ol slot="recto" class="articles">
+    {course.items.map((item) => (
+      <li>
+        <h3>{item.label}</h3>
+        <p class="text">{item.text}</p>
+      </li>
+    ))}
+  </ol>
+</Leaf>

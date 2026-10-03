@@ -1,0 +1,60 @@
+---
+import { leafNav, pagePath, t, type Lang } from '@/i18n'
+import { withLeadIn } from '@/lib/book'
+import Leaf from './Leaf.astro'
+import Opener from './Opener.astro'
+import Plate from './Plate.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { contact, cover, a11y } = t(lang)
+const nav = leafNav(lang, 'vi')
+const [first] = contact.paragraphs
+---
+
+<Leaf {...nav} full="recto" rectoClass="page--tailpiece">
+  <Fragment slot="verso">
+    <Opener {...contact} />
+    <p
+      class="text text--opening"
+      set:html={withLeadIn(first ?? '', contact.leadIn)}
+    />
+    <ul class="ledger ledger--contact">
+      {contact.items.map((item) => (
+        <li>
+          <span class="sc">{item.label}</span>
+          <span class="ledger__dots" />
+          <a
+            class="ledger__value"
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {item.detail}
+            <span class="sr-only">{a11y.external}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </Fragment>
+
+  {/* The last page of the book: a tailpiece, the CV once more, the colophon. */}
+  <Fragment slot="recto">
+    <Plate src="/plates/tailpiece.png" alt={contact.photoAlt} ratio="1" />
+    <p class="cv-call">
+      <a
+        class="cartouche cartouche--rubric"
+        href={pagePath(lang, 'cv')}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {cover.cv}
+        <span class="sr-only">{a11y.external}</span>
+      </a>
+    </p>
+    <p class="colophon">{contact.colophon}</p>
+  </Fragment>
+</Leaf>
