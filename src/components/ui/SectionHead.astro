@@ -1,0 +1,25 @@
+---
+/** The compact head every column opens with: a mono number, the title, a note. */
+interface Props {
+  num: string
+  title: string
+  /** Mono note on the right; pass a `meta` slot instead for live content. */
+  meta?: string | undefined
+  id?: string | undefined
+}
+
+const { num, title, meta, id } = Astro.props
+const hasMeta = meta !== undefined || Astro.slots.has('meta')
+---
+
+<header class="section-head">
+  <span class="section-num">{num}</span>
+  <h2 class="section-title" id={id}>
+    <slot name="title">{title}</slot>
+  </h2>
+  {hasMeta && (
+    <span class="section-head__meta">
+      <slot name="meta">{meta}</slot>
+    </span>
+  )}
+</header>

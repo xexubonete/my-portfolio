@@ -1,25 +1,29 @@
 ---
 import '@/styles/globals.css'
-import '@/styles/fonts.css'
+import { LANGS, pagePath, type Lang, type PageId } from '@/i18n'
 
 interface Props {
   title?: string | undefined
   description?: string | undefined
   ogImage?: URL | undefined
+  /** When given, every language version of the page is announced to crawlers. */
+  alternates?: { lang: Lang; page: PageId } | undefined
 }
 
-// Asegurarnos de que Astro.site está definido antes de crear la URL
-const canonicalURL = Astro.site
-  ? new URL(Astro.url.pathname, Astro.site)
-  : new URL('https://tu-dominio.com' + Astro.url.pathname)
+// Astro.site is set in astro.config.mjs; the fallback only matters in isolation.
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site ?? 'https://xexubonete.dev',
+)
 
-if (Astro.props.ogImage === undefined) {
-  Astro.props.ogImage = new URL(
+const {
+  title,
+  description,
+  alternates,
+  ogImage = new URL(
     'https://img.icons8.com/?size=100&id=9918&format=png&color=000000',
-  )
-}
-
-const { title, description, ogImage } = Astro.props
+  ),
+} = Astro.props
 ---
 
 <meta charset="utf-8" />
@@ -27,8 +31,17 @@ const { title, description, ogImage } = Astro.props
 <meta name="googlebot" content="index, follow" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
+<meta name="color-scheme" content="light dark" />
 <link rel="canonical" href={canonicalURL} />
-<link rel="icon" type="image/png" href="../me.png" />
+<link rel="icon" type="image/png" href="/me.png" />
+{alternates &&
+  LANGS.map((lang) => (
+    <link
+      rel="alternate"
+      hreflang={lang}
+      href={new URL(pagePath(lang, alternates.page), canonicalURL)}
+    />
+  ))}
 
 <title>{title}</title>
 <meta name="title" content={title} />

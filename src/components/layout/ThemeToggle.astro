@@ -1,0 +1,45 @@
+---
+import Glyph from '@/components/ui/Glyph.astro'
+
+interface Props {
+  label: string
+}
+
+const { label } = Astro.props
+---
+
+{/* recipes.css shows one glyph at a time with the same precedence as the
+    tokens: the explicit data-theme first, the OS preference otherwise. */}
+<button
+  class="theme-toggle"
+  type="button"
+  data-theme-toggle
+  aria-label={label}
+  title={label}
+>
+  <Glyph name="sun" class="icon-sun" />
+  <Glyph name="moon" class="icon-moon" />
+</button>
+
+<script is:inline>
+  ;(function () {
+    var html = document.documentElement
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var set = html.dataset.theme
+        var dark = set === 'dark' || (!set && prefersDark.matches)
+        var next = dark ? 'light' : 'dark'
+        // Colours cross-fade for one toggle; layout never moves.
+        html.classList.add('theme-transition')
+        html.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (_) {}
+        setTimeout(function () {
+          html.classList.remove('theme-transition')
+        }, 400)
+      })
+    })
+  })()
+</script>

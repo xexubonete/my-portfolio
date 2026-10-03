@@ -1,0 +1,68 @@
+---
+import Contact from '@/components/sections/Contact.astro'
+import Cv from '@/components/sections/Cv.astro'
+import Experience from '@/components/sections/Experience.astro'
+import Goals from '@/components/sections/Goals.astro'
+import Hero from '@/components/sections/Hero.astro'
+import Profile from '@/components/sections/Profile.astro'
+import Projects from '@/components/sections/Projects.astro'
+import Quote from '@/components/sections/Quote.astro'
+import Stack from '@/components/sections/Stack.astro'
+import Tape from '@/components/sections/Tape.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { t, type Lang } from '@/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const { meta } = t(lang)
+---
+
+{/* The home is composed like one drawing sheet: the hero, the tape, two
+    three-column bands, the quote strip and the contact band. */}
+<BaseLayout
+  lang={lang}
+  page="home"
+  title={meta.title}
+  description={meta.description}
+>
+  <main id="main">
+    <Hero lang={lang} />
+    <Tape lang={lang} />
+
+    <section class="band band--sheet" data-reveal id="sheet-1">
+      <div class="wrap band__grid">
+        <Cv lang={lang} />
+        <Experience lang={lang} num="01" />
+        <Stack lang={lang} num="02" />
+      </div>
+    </section>
+
+    <section class="band band--sheet" data-reveal id="sheet-2">
+      <div class="wrap band__grid band__grid--second">
+        <Projects lang={lang} num="03" />
+        <Goals lang={lang} num="04" />
+        <Profile lang={lang} num="05" />
+      </div>
+    </section>
+
+    <Quote lang={lang} />
+    <Contact lang={lang} num="06" />
+  </main>
+
+  <script is:inline>
+    // Scale the embedded A4 CV (794px wide) to the preview box. Lives here,
+    // not in the column, so no element sits between the sheet's columns.
+    ;(function () {
+      var sheet = document.querySelector('.cv__sheet')
+      if (!sheet) return
+      var fit = function () {
+        sheet.style.setProperty('--cv-scale', String(sheet.clientWidth / 794))
+      }
+      fit()
+      new ResizeObserver(fit).observe(sheet)
+    })()
+  </script>
+</BaseLayout>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mockup — CV (/en/cv)</title>
+    <link rel="stylesheet" href="./mockup.css" />
+    <link rel="stylesheet" href="../src/styles/cv.css" />
+    <style>
+      .is-embed .cv-page {
+        padding: 0;
+      }
+      .is-embed .cv-toolbar {
+        display: none;
+      }
+      .is-embed .cv-sheet {
+        box-shadow: none;
+      }
+    </style>
+    <script>
+      // Mockup-only. With no ?theme the page follows the OS colour scheme
+      // through the media query in tokens.css; ?theme=dark|light forces one,
+      // exactly like the stored choice the real site writes to <html>.
+      const forced = new URLSearchParams(location.search).get('theme')
+      if (forced) document.documentElement.dataset.theme = forced
+    </script>
+    <script>
+      if (new URLSearchParams(location.search).get('embed'))
+        document.documentElement.classList.add('is-embed')
+    </script>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol
+        id="arrow"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M7 17 17 7M8 7h9v9" />
+      </symbol>
+      <symbol
+        id="check"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol
+        id="sun"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path
+          d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+        />
+      </symbol>
+      <symbol
+        id="moon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+      </symbol>
+      <symbol id="pin" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"
+        />
+      </symbol>
+      <symbol id="mail" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+        />
+      </symbol>
+      <symbol id="phone" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1l-2.23 2.2z"
+        />
+      </symbol>
+      <symbol
+        id="globe"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </symbol>
+    </svg>
+
+    <div class="cv-page">
+      <div class="cv-toolbar">
+        <a class="btn btn--accent" href="/CV_Jesus_Bonete_EN.pdf" download
+          >Download PDF
+          <svg class="arrow btn__arrow" aria-hidden="true">
+            <use href="#arrow" /></svg
+        ></a>
+        <a class="btn btn--ghost" href="home.html">Back to site</a>
+      </div>
+
+      <article class="cv-sheet">
+        <aside class="cv-aside">
+          <div>
+            <img class="cv-photo" src="../public/me.png" alt="Jesús Bonete" />
+            <h1 class="cv-name">Jesús <span>Bonete Sánchez</span></h1>
+            <p class="cv-role">Senior .NET Developer</p>
+          </div>
+
+          <section>
+            <h2>Contact</h2>
+            <div class="cv-contact">
+              <svg><use href="#pin" /></svg><span>Elda, Alicante, Spain</span>
+            </div>
+            <div class="cv-contact">
+              <svg><use href="#mail" /></svg
+              ><a href="mailto:xexubonete@gmail.com">xexubonete@gmail.com</a>
+            </div>
+            <div class="cv-contact">
+              <svg><use href="#phone" /></svg><span>(+34) 722 243 881</span>
+            </div>
+            <div class="cv-contact">
+              <svg><use href="#globe" /></svg
+              ><a
+                href="https://xexubonete.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                >xexubonete.dev</a
+              >
+            </div>
+            <div class="cv-contact">
+              <svg><use href="#globe" /></svg
+              ><a
+                href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >linkedin.com/in/jesus-bonete-sanchez</a
+              >
+            </div>
+            <div class="cv-contact">
+              <svg><use href="#globe" /></svg
+              ><a
+                href="https://github.com/xexubonete"
+                target="_blank"
+                rel="noopener noreferrer"
+                >github.com/xexubonete</a
+              >
+            </div>
+          </section>
+
+          <section>
+            <h2>Details</h2>
+            <div class="cv-field">
+              <span class="label">Nationality</span>Spanish
+            </div>
+            <div class="cv-field">
+              <span class="label">Driving licence</span>B
+            </div>
+          </section>
+
+          <section>
+            <h2>Languages</h2>
+            <div class="cv-field"><span class="label">Spanish</span>Native</div>
+            <div class="cv-field"><span class="label">English</span>B2</div>
+          </section>
+
+          <section>
+            <h2>Skills</h2>
+            <div class="cv-chips">
+              <span class="cv-chip">Self-learning</span
+              ><span class="cv-chip">Working under pressure</span
+              ><span class="cv-chip">Problem solving</span
+              ><span class="cv-chip">Autonomy and proactivity</span
+              ><span class="cv-chip">Leadership</span
+              ><span class="cv-chip">Communication</span
+              ><span class="cv-chip">Teamwork</span
+              ><span class="cv-chip">Adaptability</span>
+            </div>
+          </section>
+        </aside>
+
+        <main class="cv-main">
+          <section>
+            <h2 data-num="01">Profile</h2>
+            <p class="cv-summary">
+              Senior .NET developer with <b>4+ years</b> of experience building
+              robust and scalable services. Specialized in clean architectures,
+              microservices and database optimization. AI is at the core of how
+              I work: I integrate LLMs and assistants like Claude or GitHub
+              Copilot into my daily workflow to build faster, automate tasks and
+              raise code quality without compromising best practices.
+            </p>
+          </section>
+
+          <section>
+            <h2 data-num="02">Experience</h2>
+            <div class="cv-job">
+              <div class="cv-job-head">
+                <span class="cv-job-title"
+                  >Senior .NET Developer ·
+                  <a
+                    class="cv-job-company"
+                    href="https://cafler.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Cafler</a
+                  ></span
+                >
+                <span class="cv-job-period">01/2026 – 09/2026</span>
+              </div>
+              <div class="cv-job-place">Barcelona, Spain</div>
+              <p class="cv-job-summary">
+                AI-powered Operating System for the automotive industry and
+                backend services for a car-services marketplace.
+              </p>
+              <ul>
+                <li>
+                  Design and development of backend services with microservices
+                  architecture and gRPC.
+                </li>
+                <li>
+                  AI-assisted development with Claude and GitHub Copilot PRO.
+                </li>
+              </ul>
+              <div class="cv-stack">
+                <span>.NET 10</span><span>.NET 9</span><span>.NET 8</span
+                ><span>C#</span><span>Clean Architecture</span><span>CQRS</span
+                ><span>MediatR</span><span>Microservices</span><span>gRPC</span
+                ><span>RabbitMQ</span><span>Entity Framework</span
+                ><span>Hangfire</span><span>CosmoDB</span><span>MSSQL</span
+                ><span>Azure</span><span>Azure Blob Storage</span
+                ><span>Azure DevOps</span><span>Git/GitHub</span
+                ><span>Postman</span><span>Bruno</span><span>Angular</span>
+              </div>
+            </div>
+            <div class="cv-job">
+              <div class="cv-job-head">
+                <span class="cv-job-title"
+                  >.NET Developer ·
+                  <a
+                    class="cv-job-company"
+                    href="https://www.savia.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Savia by Berger-Levrault</a
+                  ></span
+                >
+                <span class="cv-job-period">05/2024 – 12/2025</span>
+              </div>
+              <div class="cv-job-place">Madrid, Spain</div>
+              <p class="cv-job-summary">
+                Web application for human-resources management in public
+                administration.
+              </p>
+              <ul>
+                <li>
+                  Development of enhancements and new features; optimization of
+                  database query times.
+                </li>
+                <li>
+                  Bug fixing, creation of different types of tests and best
+                  practices.
+                </li>
+                <li>AI-assisted development with GitHub Copilot.</li>
+              </ul>
+              <div class="cv-stack">
+                <span>.NET 8</span><span>.NET Framework 4.8</span><span>C#</span
+                ><span>REST APIs</span><span>Dapper</span
+                ><span>Entity Framework</span><span>AutoMapper</span
+                ><span>MediatR</span><span>Hangfire</span><span>SignalR</span
+                ><span>MSSQL</span><span>Azure DevOps</span><span>Git</span
+                ><span>Postman</span><span>Angular</span>
+              </div>
+            </div>
+            <div class="cv-job">
+              <div class="cv-job-head">
+                <a
+                  class="cv-job-title cv-job-company"
+                  href="https://es.nttdata.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >NTT DATA</a
+                >
+                <span class="cv-job-period">02/2022 – 05/2024</span>
+              </div>
+              <div class="cv-job-place">Alicante, Spain</div>
+              <div class="cv-roles">
+                <div>
+                  <div class="cv-job-head">
+                    <span class="cv-job-title">.NET Developer</span
+                    ><span class="cv-job-period">12/2023 – 05/2024</span>
+                  </div>
+                  <p class="cv-job-summary">
+                    Sole maintenance of the corrective service for a leading
+                    renewable-energy company.
+                  </p>
+                  <ul>
+                    <li>
+                      Sole maintenance of the corrective service and direct
+                      communication with the client.
+                    </li>
+                    <li>
+                      Analysis, coding, deployment of fixes and validation of
+                      features.
+                    </li>
+                    <li>Proposal of new enhancements.</li>
+                  </ul>
+                  <div class="cv-stack">
+                    <span>.NET Core 3.1</span><span>C#</span
+                    ><span>REST APIs</span><span>Entity Framework</span
+                    ><span>Azure DevOps</span><span>Git/GitHub</span
+                    ><span>Postman</span><span>Angular</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="cv-job-head">
+                    <span class="cv-job-title">Junior .NET Developer</span
+                    ><span class="cv-job-period">06/2022 – 12/2023</span>
+                  </div>
+                  <p class="cv-job-summary">
+                    Maintenance of language literals in a web application in the
+                    fuel sector.
+                  </p>
+                  <ul>
+                    <li>
+                      Development of classic ASP enhancements and SQL database
+                      scripts.
+                    </li>
+                  </ul>
+                  <div class="cv-stack">
+                    <span>Classic ASP</span><span>SQL</span><span>MSSQL</span
+                    ><span>Team Explorer</span><span>Jenkins</span
+                    ><span>Postman</span><span>Angular</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="cv-job-head">
+                    <span class="cv-job-title">Backend Intern</span
+                    ><span class="cv-job-period">02/2022 – 06/2022</span>
+                  </div>
+                  <p class="cv-job-summary">
+                    Backend for a wind-farm application (3-month internship).
+                  </p>
+                  <ul>
+                    <li>Design and implementation of an API in .NET C#.</li>
+                  </ul>
+                  <div class="cv-stack">
+                    <span>.NET 6</span><span>C#</span
+                    ><span>Entity Framework</span><span>Azure DevOps</span
+                    ><span>Git/GitHub</span><span>Postman</span
+                    ><span>Angular</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 data-num="03">Education</h2>
+            <div class="cv-job">
+              <div class="cv-job-head">
+                <span class="cv-job-title"
+                  >Web Application Development (DAW) ·
+                  <span class="cv-job-company">IES Mare Nostrum</span></span
+                >
+                <span class="cv-job-period">2020 – 2022</span>
+              </div>
+              <div class="cv-job-place">Alicante, Spain</div>
+            </div>
+          </section>
+        </main>
+      </article>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maqueta — Inicio (/es)</title>
+    <link rel="stylesheet" href="./mockup.css" />
+    <script>
+      // Mockup-only. With no ?theme the page follows the OS colour scheme
+      // through the media query in tokens.css; ?theme=dark|light forces one,
+      // exactly like the stored choice the real site writes to <html>.
+      const forced = new URLSearchParams(location.search).get('theme')
+      if (forced) document.documentElement.dataset.theme = forced
+    </script>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol
+        id="arrow"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M7 17 17 7M8 7h9v9" />
+      </symbol>
+      <symbol
+        id="check"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol
+        id="sun"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path
+          d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+        />
+      </symbol>
+      <symbol
+        id="moon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+      </symbol>
+      <symbol id="pin" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"
+        />
+      </symbol>
+      <symbol id="mail" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+        />
+      </symbol>
+      <symbol id="phone" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1l-2.23 2.2z"
+        />
+      </symbol>
+      <symbol
+        id="globe"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </symbol>
+    </svg>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="home-es.html"
+          ><span class="brand__label">dotnet developer</span></a
+        >
+        <nav class="site-nav" aria-label="Principal">
+          <a
+            class="link-arrow"
+            href="https://github.com/xexubonete"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub
+            <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg
+          ></a>
+          <a
+            class="link-arrow"
+            href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn
+            <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg
+          ></a>
+          <span class="lang-switch" aria-label="Idioma">
+            <a href="home.html" lang="en">en</a
+            ><span aria-current="true">es</span>
+          </span>
+          <button
+            class="theme-toggle"
+            type="button"
+            aria-label="Cambiar tema"
+            onclick="toggleTheme()"
+          >
+            <svg class="icon-sun"><use href="#sun" /></svg>
+            <svg class="icon-moon"><use href="#moon" /></svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- 00 · Hero: name, portrait, title block and the intro, in one viewport. -->
+      <section class="hero" id="hero">
+        <div class="wrap">
+          <div class="hero__top">
+            <div class="hero__name-block">
+              <p class="eyebrow eyebrow--accent rise">bienvenido</p>
+              <h1 class="hero__name">
+                <span class="rise" style="--reveal-delay: 80ms">Jesús</span>
+                <span class="accent-line rise" style="--reveal-delay: 160ms"
+                  >Bonete</span
+                >
+              </h1>
+            </div>
+            <div class="hero__portrait rise" style="--reveal-delay: 280ms">
+              <img
+                src="../public/me.png"
+                alt="memoji de Jesús Bonete"
+                width="420"
+                height="420"
+              />
+            </div>
+          </div>
+
+          <dl class="title-block rise" style="--reveal-delay: 360ms">
+            <div class="title-block__field">
+              <dt class="eyebrow">Puesto</dt>
+              <dd class="title-block__value">Senior .NET Developer</dd>
+            </div>
+            <div class="title-block__field">
+              <dt class="eyebrow">Ubicación</dt>
+              <dd class="title-block__value">Elda, Alicante, España</dd>
+            </div>
+            <div class="title-block__field">
+              <dt class="eyebrow">Experiencia</dt>
+              <dd class="title-block__value">+4 años</dd>
+            </div>
+            <div class="title-block__field">
+              <dt class="eyebrow">Estado</dt>
+              <dd class="title-block__value">
+                <span class="beacon">Disponible</span>
+              </dd>
+            </div>
+          </dl>
+
+          <div class="hero__intro rise" style="--reveal-delay: 440ms">
+            <p class="lead">
+              Hola, soy <b>Jesús Bonete</b>, desarrollador backend enfocado en
+              crear aplicaciones eficientes y escalables.
+            </p>
+            <p class="prose">
+              Me especializo en servicios robustos y seguros, optimización de
+              bases de datos e integración impecable con el frontend desde el
+              servidor. La IA es el núcleo de mi forma de trabajar: la integro
+              en mi día a día para desarrollar más rápido, automatizar tareas
+              repetitivas y elevar la calidad del código sin sacrificar buenas
+              prácticas.
+            </p>
+            <p class="prose">
+              Saco el máximo partido de LLMs, agentes y asistentes como Claude o
+              GitHub Copilot para acelerar cada fase, de la arquitectura al
+              despliegue, tomando mejores decisiones en menos tiempo. Cuido el
+              código limpio, la arquitectura sólida y el crecimiento en cada
+              proyecto. Apasionado de la tecnología, siempre busco nuevos retos.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 00b · Tape -->
+      <div class="tape" aria-hidden="true">
+        <div class="tape__track display tape__text">
+          <span>C#</span><span>.NET 10</span><span>gRPC</span><span>CQRS</span
+          ><span>Clean Architecture</span><span>Microservices</span
+          ><span>Entity Framework</span><span>Dapper</span><span>MediatR</span
+          ><span>Hangfire</span><span>Azure</span><span>MSSQL</span
+          ><span>PostgreSQL</span><span>CosmoDB</span><span>Claude</span
+          ><span>GitHub Copilot</span>
+        </div>
+        <div class="tape__track display tape__text">
+          <span>C#</span><span>.NET 10</span><span>gRPC</span><span>CQRS</span
+          ><span>Clean Architecture</span><span>Microservices</span
+          ><span>Entity Framework</span><span>Dapper</span><span>MediatR</span
+          ><span>Hangfire</span><span>Azure</span><span>MSSQL</span
+          ><span>PostgreSQL</span><span>CosmoDB</span><span>Claude</span
+          ><span>GitHub Copilot</span>
+        </div>
+      </div>
+
+      <!-- Sheet 1: CV | 01 Experience | 02 Stack -->
+      <section class="band band--sheet" data-reveal id="sheet-1">
+        <div class="wrap band__grid">
+          <div class="col col--cv reveal" id="cv">
+            <header class="section-head">
+              <h2 class="section-title">CV</h2>
+            </header>
+            <div class="cv-plate">
+              <a
+                class="cv__sheet"
+                href="cv-es.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Abrir el CV"
+              >
+                <iframe
+                  src="./cv-es.html?embed=1"
+                  title="Vista previa del CV"
+                  tabindex="-1"
+                  loading="lazy"
+                ></iframe>
+              </a>
+              <div class="cv-plate__copy">
+                <p>Vista previa de mi CV — haz clic para verlo y descargarlo</p>
+                <a
+                  class="btn btn--accent"
+                  href="cv-es.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Ver y descargar CV
+                  <svg class="arrow btn__arrow" aria-hidden="true">
+                    <use href="#arrow" /></svg
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col col--exp reveal"
+            style="--reveal-delay: 100ms"
+            id="experience"
+          >
+            <header class="section-head">
+              <span class="section-num">01</span>
+              <h2 class="section-title">Experiencia</h2>
+              <span class="section-head__meta">+4 años</span>
+            </header>
+            <div class="exp">
+              <article class="exp__row">
+                <div class="exp__year">2026</div>
+                <div class="exp__head">
+                  <a
+                    class="exp__company link-arrow"
+                    href="https://cafler.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Cafler
+                    <svg class="arrow" aria-hidden="true">
+                      <use href="#arrow" /></svg
+                  ></a>
+                  <div class="exp__position">Senior .NET Developer</div>
+                  <div class="exp__dates">
+                    01/2026 – 09/2026 · Barcelona, España
+                  </div>
+                  <p class="exp__body">
+                    Sistema operativo con IA para el sector de la automoción y
+                    servicios backend para un marketplace de servicios del
+                    automóvil.
+                  </p>
+                </div>
+                <img
+                  class="exp__logo"
+                  src="../public/cafler-logo.png"
+                  alt=""
+                  width="40"
+                  height="40"
+                />
+              </article>
+              <article class="exp__row">
+                <div class="exp__year">2025</div>
+                <div class="exp__head">
+                  <a
+                    class="exp__company link-arrow"
+                    href="https://www.savia.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Savia by Berger-Levrault
+                    <svg class="arrow" aria-hidden="true">
+                      <use href="#arrow" /></svg
+                  ></a>
+                  <div class="exp__position">.NET Developer</div>
+                  <div class="exp__dates">
+                    05/2024 – 12/2025 · Madrid, España
+                  </div>
+                  <p class="exp__body">
+                    Aplicación web para la gestión de recursos humanos en la
+                    administración pública.
+                  </p>
+                </div>
+              </article>
+              <article class="exp__row">
+                <div class="exp__year">2024</div>
+                <div class="exp__head">
+                  <a
+                    class="exp__company link-arrow"
+                    href="https://es.nttdata.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >NTT DATA
+                    <svg class="arrow" aria-hidden="true">
+                      <use href="#arrow" /></svg
+                  ></a>
+                  <div class="exp__position">
+                    .NET Developer <span class="exp__count">· 3 puestos</span>
+                  </div>
+                  <div class="exp__dates">
+                    02/2022 – 05/2024 · Alicante, España
+                  </div>
+                  <p class="exp__body">
+                    Mantenimiento en solitario del servicio correctivo de una
+                    importante empresa de energías renovables.
+                  </p>
+                </div>
+              </article>
+            </div>
+            <p class="col__foot">
+              <a class="btn btn--outline" href="work-es.html"
+                >Ver más
+                <svg class="arrow btn__arrow" aria-hidden="true">
+                  <use href="#arrow" /></svg
+              ></a>
+            </p>
+          </div>
+
+          <div
+            class="col col--stack reveal"
+            style="--reveal-delay: 200ms"
+            id="stack"
+          >
+            <header class="section-head">
+              <span class="section-num">02</span>
+              <h2 class="section-title">Stack</h2>
+            </header>
+            <div class="stack">
+              <div class="stack__group">
+                <h3 class="stack__label">
+                  <span class="section-num">02.1</span>Frameworks y librerías
+                </h3>
+                <div class="stack__items">
+                  <span class="tag">C#</span><span class="tag">SQL</span
+                  ><span class="tag">.NET</span
+                  ><span class="tag">.NET Core 3.1</span
+                  ><span class="tag">.NET Framework 4.8</span
+                  ><span class="tag">REST APIs</span
+                  ><span class="tag">gRPC</span
+                  ><span class="tag">Microservicios</span
+                  ><span class="tag">Dapper</span
+                  ><span class="tag">Entity Framework Core</span
+                  ><span class="tag">Entity Framework 6.0</span
+                  ><span class="tag">Hangfire</span
+                  ><span class="tag">MediatR</span
+                  ><span class="tag">AutoMapper</span
+                  ><span class="tag">FluentValidation</span
+                  ><span class="tag">SignalR</span
+                  ><span class="tag">xUnit / MSTest</span
+                  ><span class="tag">Serilog</span
+                  ><span class="tag">Swagger / OpenAPI</span
+                  ><span class="tag">Angular</span>
+                </div>
+              </div>
+              <div class="stack__group">
+                <h3 class="stack__label">
+                  <span class="section-num">02.2</span>Patrones de diseño
+                </h3>
+                <div class="stack__items">
+                  <span class="tag">Clean Architecture</span
+                  ><span class="tag">DDD Domain-Driven Design</span
+                  ><span class="tag">CQRS</span
+                  ><span class="tag">MediatR pattern</span
+                  ><span class="tag">Repository</span
+                  ><span class="tag">Unit of Work</span>
+                </div>
+              </div>
+              <div class="stack__group">
+                <h3 class="stack__label">
+                  <span class="section-num">02.3</span>Bases de datos
+                </h3>
+                <div class="stack__items">
+                  <span class="tag">PostgreSQL</span
+                  ><span class="tag">MSSQL</span><span class="tag">CosmoDB</span
+                  ><span class="tag">Stored Procedures</span>
+                </div>
+              </div>
+              <div class="stack__group">
+                <h3 class="stack__label">
+                  <span class="section-num">02.4</span>DevOps y Cloud
+                </h3>
+                <div class="stack__items">
+                  <span class="tag">Azure</span
+                  ><span class="tag">Azure Blob Storage</span
+                  ><span class="tag">Azure DevOps</span
+                  ><span class="tag">Pipelines</span
+                  ><span class="tag">CI/CD</span><span class="tag">Jenkins</span
+                  ><span class="tag">Git</span>
+                </div>
+              </div>
+              <div class="stack__group">
+                <h3 class="stack__label">
+                  <span class="section-num">02.5</span>Herramientas
+                </h3>
+                <div class="stack__items">
+                  <span class="tag">Postman</span><span class="tag">Bruno</span
+                  ><span class="tag">Team Explorer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sheet 2: 03 Projects | 04 Goals | 05 Profile -->
+      <section class="band band--sheet" data-reveal id="sheet-2">
+        <div class="wrap band__grid band__grid--second">
+          <div class="col col--projects reveal" id="projects">
+            <header class="section-head">
+              <span class="section-num">03</span>
+              <h2 class="section-title">Proyectos</h2>
+            </header>
+            <div class="projects">
+              <a
+                class="project"
+                href="https://github.com/xexubonete/pilot-api"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="project__index">01</span>
+                <span class="project__name">pilot-api</span>
+                <svg class="arrow" aria-hidden="true">
+                  <use href="#arrow" />
+                </svg>
+              </a>
+              <a
+                class="project"
+                href="https://github.com/xexubonete/mediator-api"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="project__index">02</span>
+                <span class="project__name">mediator-api</span>
+                <svg class="arrow" aria-hidden="true">
+                  <use href="#arrow" />
+                </svg>
+              </a>
+              <a
+                class="project"
+                href="https://github.com/xexubonete/dapper-api"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="project__index">03</span>
+                <span class="project__name">dapper-api</span>
+                <svg class="arrow" aria-hidden="true">
+                  <use href="#arrow" />
+                </svg>
+              </a>
+              <a
+                class="project"
+                href="https://github.com/xexubonete/my-portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="estás aquí"
+              >
+                <span class="project__index">04</span>
+                <span class="project__name"
+                  ><span class="live-dot" aria-hidden="true"></span>my-portfolio
+                  <span class="project__note">estás aquí</span></span
+                >
+                <svg class="arrow" aria-hidden="true">
+                  <use href="#arrow" />
+                </svg>
+              </a>
+            </div>
+            <p class="col__foot">
+              <a
+                class="btn btn--outline"
+                href="https://github.com/xexubonete?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Todos los repos
+                <svg class="arrow btn__arrow" aria-hidden="true">
+                  <use href="#arrow" /></svg
+              ></a>
+            </p>
+          </div>
+
+          <div
+            class="col col--goals reveal"
+            style="--reveal-delay: 100ms"
+            id="goals"
+          >
+            <header class="section-head">
+              <span class="section-num">04</span>
+              <h2 class="section-title">Objetivos</h2>
+              <span class="section-head__meta">IA en el backend</span>
+            </header>
+            <p class="goals__intro">
+              Quiero especializarme en integrar la IA en el backend, dominando:
+            </p>
+            <div class="goals">
+              <div class="goal">
+                <span class="section-num">01</span>
+                <h3 class="goal__title">Integración de LLMs</h3>
+                <p class="goal__text">
+                  Conectar modelos como Claude o GPT a servicios y APIs backend
+                  de forma segura y eficiente.
+                </p>
+              </div>
+              <div class="goal">
+                <span class="section-num">02</span>
+                <h3 class="goal__title">RAG y bases vectoriales</h3>
+                <p class="goal__text">
+                  Búsqueda semántica con embeddings y bases de datos vectoriales
+                  para dar contexto propio a los modelos.
+                </p>
+              </div>
+              <div class="goal">
+                <span class="section-num">03</span>
+                <h3 class="goal__title">Agentes y tool calling</h3>
+                <p class="goal__text">
+                  Orquestar agentes que invocan herramientas y APIs (function
+                  calling, MCP) para automatizar flujos.
+                </p>
+              </div>
+              <div class="goal">
+                <span class="section-num">04</span>
+                <h3 class="goal__title">Evaluación y observabilidad</h3>
+                <p class="goal__text">
+                  Medir calidad, latencia y coste de los LLMs con evals y trazas
+                  para llevar la IA a producción con garantías.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col col--profile reveal"
+            style="--reveal-delay: 200ms"
+            id="profile"
+          >
+            <header class="section-head">
+              <span class="section-num">05</span>
+              <h2 class="section-title">Perfil</h2>
+              <span class="section-head__meta">sobre mí · idiomas</span>
+            </header>
+            <div class="profile">
+              <div class="profile__about">
+                <h3 class="profile__title">Sobre mí</h3>
+                <p>
+                  Mas allá de la programación, me apasiona entrenar 🏋️‍♂️ y llevar
+                  una vida saludable 🍏.
+                </p>
+                <p>
+                  Otra afición que practico es jugar a airsoft 🎖️ los fines de
+                  semana.
+                </p>
+              </div>
+              <div>
+                <h3 class="profile__title">Aprendizaje</h3>
+                <ul class="chips">
+                  <li>
+                    <a
+                      href="https://todofp.es/que-estudiar/loe/informatica-comunicaciones/des-aplicaciones-web.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >DAW <span class="mono">2020 – 2022</span>
+                      <svg class="arrow" aria-hidden="true">
+                        <use href="#arrow" /></svg
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://dometrain.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >Dometrain
+                      <svg class="arrow" aria-hidden="true">
+                        <use href="#arrow" /></svg
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.udemy.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >Udemy
+                      <svg class="arrow" aria-hidden="true">
+                        <use href="#arrow" /></svg
+                    ></a>
+                  </li>
+                  <li>Autodidacta</li>
+                  <li>Libros</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="profile__title">Idiomas</h3>
+                <ul class="chips">
+                  <li>Español <span class="mono">Nativo</span></li>
+                  <li>Inglés <span class="mono">B2</span></li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="profile__title">Soft skills</h3>
+                <ul class="chips">
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Autoaprendizaje
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Trabajo en equipo
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Resolución de problemas
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Comunicación
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Adaptabilidad
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Liderazgo
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Trabajo bajo presión
+                  </li>
+                  <li>
+                    <svg class="check" aria-hidden="true">
+                      <use href="#check" /></svg
+                    >Proactividad
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quote -->
+      <section class="quote-band" data-reveal id="quote">
+        <div class="wrap">
+          <figure class="reveal">
+            <blockquote>
+              “The only way to go fast, is to
+              <span class="accent-word">go well.</span>”
+            </blockquote>
+            <figcaption>— Robert C. Martin</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 06 Contact -->
+      <section class="band" data-reveal id="contact">
+        <div class="wrap contact reveal">
+          <div class="contact__main">
+            <header class="section-head">
+              <span class="section-num">06</span>
+              <h2 class="section-title">Contacto</h2>
+              <span class="section-head__meta">hablemos</span>
+            </header>
+            <ul class="contact__links">
+              <li>
+                <a
+                  href="tel:+34722243881"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span class="contact__label">Llámame</span
+                  ><small>+34 722 243 881</small
+                  ><svg class="arrow" aria-hidden="true">
+                    <use href="#arrow" /></svg
+                ></a>
+              </li>
+              <li>
+                <a
+                  href="mailto:xexubonete@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span class="contact__label">Escríbeme</span
+                  ><small>xexubonete@gmail.com</small
+                  ><svg class="arrow" aria-hidden="true">
+                    <use href="#arrow" /></svg
+                ></a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span class="contact__label">LinkedIn</span
+                  ><small>jesus-bonete-sanchez</small
+                  ><svg class="arrow" aria-hidden="true">
+                    <use href="#arrow" /></svg
+                ></a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/xexubonete"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span class="contact__label">GitHub</span
+                  ><small>xexubonete</small
+                  ><svg class="arrow" aria-hidden="true">
+                    <use href="#arrow" /></svg
+                ></a>
+              </li>
+            </ul>
+          </div>
+          <div class="contact__aside">
+            <img
+              class="contact__portrait"
+              src="../public/me_chillin.png"
+              alt="memoji de Jesús relajado"
+              width="420"
+              height="420"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© 2026 Jesús Bonete</span>
+        <span>Hecho con Astro</span>
+        <span class="site-footer__links">
+          <a
+            href="https://github.com/xexubonete"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <a
+            href="https://www.linkedin.com/in/jesus-bonete-sanchez/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+          <a href="home.html" lang="en">EN</a>
+        </span>
+      </div>
+    </footer>
+    <script>
+      function toggleTheme() {
+        const html = document.documentElement
+        const dark =
+          html.dataset.theme === 'dark' ||
+          (!html.dataset.theme &&
+            matchMedia('(prefers-color-scheme: dark)').matches)
+        html.classList.add('theme-transition')
+        html.dataset.theme = dark ? 'light' : 'dark'
+        setTimeout(() => html.classList.remove('theme-transition'), 400)
+      }
+    </script>
+    <script>
+      // Reveal on scroll: one IntersectionObserver, fires once per block.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries)
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible')
+              io.unobserve(e.target)
+            }
+        },
+        { rootMargin: '0px 0px -10% 0px' },
+      )
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el))
+
+      // Scale the embedded A4 CV (794px wide) to the preview box.
+      const sheet = document.querySelector('.cv__sheet')
+      const fitCv = () =>
+        sheet.style.setProperty('--cv-scale', sheet.clientWidth / 794)
+      fitCv()
+      new ResizeObserver(fitCv).observe(sheet)
+    </script>
+  </body>
+</html>

@@ -1,24 +1,14 @@
 import { EXPERIENCE, STUDIES as STUDIES_EN, LINKS } from '@/lib/constants'
 import { SPANISH, STUDIES as STUDIES_ES } from '@/lib/constants-es'
+import { CONTENT } from './content'
+import type { Lang } from './routes'
 
-export const LANGS = ['es', 'en'] as const
-export type Lang = (typeof LANGS)[number]
+export { LANGS, isLang, otherLang, pagePath } from './routes'
+export type { Lang, PageId } from './routes'
 
-/**
- * Years of professional experience, counted from February 2022.
- * `exact` is true during the anniversary month (February) — show "N";
- * otherwise show "+N". Recomputed on each server render, so it stays current.
- */
-export function yearsOfExperience(now: Date = new Date()): {
-  years: number
-  exact: boolean
-} {
-  const START_YEAR = 2022
-  const START_MONTH = 2 // February
-  const month = now.getMonth() + 1
-  let years = now.getFullYear() - START_YEAR
-  if (month < START_MONTH) years -= 1
-  return { years, exact: month === START_MONTH }
+/** All UI strings for a language. Content lives in `./content.ts`. */
+export function t(lang: Lang) {
+  return CONTENT[lang]
 }
 
 /** Experience entries per language (same shape, translated content). */
@@ -27,9 +17,9 @@ export const experienceByLang = { es: SPANISH, en: EXPERIENCE } as const
 /** Study/learning entries per language. */
 export const studiesByLang = { es: STUDIES_ES, en: STUDIES_EN } as const
 
-export type ProjectLink = { label: string; href: string; outline?: boolean }
+export type ProjectLink = { label: string; href: string; live?: boolean }
 
-/** Project links shown in the "Projects" card — identical across languages. */
+/** Project links shown in the "Projects" section — identical across languages. */
 export const PROJECT_LINKS: ProjectLink[] = [
   { label: 'pilot-api', href: 'https://github.com/xexubonete/pilot-api' },
   { label: 'mediator-api', href: 'https://github.com/xexubonete/mediator-api' },
@@ -37,7 +27,7 @@ export const PROJECT_LINKS: ProjectLink[] = [
   {
     label: 'my-portfolio',
     href: 'https://github.com/xexubonete/my-portfolio',
-    outline: true,
+    live: true,
   },
 ]
 
