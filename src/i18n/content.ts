@@ -43,7 +43,6 @@ type Content = {
     years: YearsTemplate
     sectionTitle: string
     pageLead: string
-    companies: string
     roles: string
     viewMore: string
     stack: string
@@ -52,11 +51,9 @@ type Content = {
   }
   skills: {
     title: string
-    groupsLabel: string
-    itemsLabel: string
     groups: (Labelled & { items: string[] })[]
   }
-  projects: { title: string; meta: string; here: string; all: string }
+  projects: { title: string; here: string; all: string }
   about: { title: string; paragraphs: string[] }
   goals: {
     title: string
@@ -69,7 +66,7 @@ type Content = {
   study: { title: string }
   profile: { title: string; meta: string }
   quote: { text: string; accent: string; author: string }
-  cv: { title: string; meta: string; caption: string; download: string }
+  cv: { title: string; caption: string; download: string }
   contact: {
     title: string
     meta: string
@@ -95,6 +92,7 @@ const frameworks = (microservices: string) => [
   '.NET Framework 4.8',
   'REST APIs',
   'gRPC',
+  'RabbitMQ',
   microservices,
   'Dapper',
   'Entity Framework Core',
@@ -126,6 +124,7 @@ const devops = [
   'CI/CD',
   'Jenkins',
   'Git',
+  'GitHub',
 ]
 const tools = ['Postman', 'Bruno', 'Team Explorer']
 
@@ -208,7 +207,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       years: { plus: '+{n} años', exact: '{n} años' },
       sectionTitle: 'Experiencia',
       pageLead: 'Experiencia laboral',
-      companies: 'empresas',
       roles: 'puestos',
       viewMore: 'Ver más',
       stack: 'Stack:',
@@ -217,8 +215,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     skills: {
       title: 'Stack',
-      groupsLabel: 'grupos',
-      itemsLabel: 'elementos',
       groups: [
         {
           emoji: '📚',
@@ -233,7 +229,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     projects: {
       title: 'Proyectos',
-      meta: '@xexubonete',
       here: 'estás aquí',
       all: 'Todos los repos',
     },
@@ -297,7 +292,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     quote,
     cv: {
       title: 'CV',
-      meta: 'A4 · PDF · ES / EN',
       caption: 'Vista previa de mi CV — haz clic para verlo y descargarlo',
       download: 'Ver y descargar CV',
     },
@@ -317,7 +311,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       ],
       photoAlt: 'memoji de Jesús relajado',
     },
-    footer: { builtWith: 'Hecho con Astro · Elda, Alicante' },
+    footer: { builtWith: 'Hecho con Astro' },
     notFound: {
       eyebrow: 'error',
       code: '404',
@@ -371,7 +365,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       years: { plus: '+{n} years', exact: '{n} years' },
       sectionTitle: 'Experience',
       pageLead: 'Work experience',
-      companies: 'companies',
       roles: 'roles',
       viewMore: 'View more',
       stack: 'Stack:',
@@ -380,8 +373,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     skills: {
       title: 'Stack',
-      groupsLabel: 'groups',
-      itemsLabel: 'items',
       groups: [
         {
           emoji: '📚',
@@ -396,7 +387,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     },
     projects: {
       title: 'Projects',
-      meta: '@xexubonete',
       here: 'you are here',
       all: 'All repositories',
     },
@@ -460,7 +450,6 @@ export const CONTENT: Record<'es' | 'en', Content> = {
     quote,
     cv: {
       title: 'CV',
-      meta: 'A4 · PDF · EN / ES',
       caption: 'Preview of my resume — click to view and download',
       download: 'View & download CV',
     },
@@ -480,7 +469,7 @@ export const CONTENT: Record<'es' | 'en', Content> = {
       ],
       photoAlt: 'memoji of Jesús taking it easy',
     },
-    footer: { builtWith: 'Built with Astro · Elda, Alicante' },
+    footer: { builtWith: 'Built with Astro' },
     notFound: {
       eyebrow: 'error',
       code: '404',

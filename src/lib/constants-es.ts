@@ -57,6 +57,7 @@ export const SPANISH = [
       'MediatR',
       'Microservicios',
       'gRPC',
+      'RabbitMQ',
       'Entity Framework',
       'Hangfire',
       'CosmoDB',

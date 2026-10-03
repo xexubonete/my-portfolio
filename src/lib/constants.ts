@@ -65,6 +65,7 @@ export const EXPERIENCE = [
       'MediatR',
       'Microservices',
       'gRPC',
+      'RabbitMQ',
       'Entity Framework',
       'Hangfire',
       'CosmoDB',

@@ -9,8 +9,6 @@ interface Props {
 
 const { lang, num } = Astro.props
 const { skills } = t(lang)
-const itemCount = skills.groups.reduce((n, group) => n + group.items.length, 0)
-const meta = `${skills.groups.length} ${skills.groupsLabel} · ${itemCount} ${skills.itemsLabel}`
 ---
 
 <div
@@ -19,7 +17,7 @@ const meta = `${skills.groups.length} ${skills.groupsLabel} · ${itemCount} ${sk
   id="stack"
   aria-labelledby="stack-title"
 >
-  <SectionHead num={num} title={skills.title} meta={meta} id="stack-title" />
+  <SectionHead num={num} title={skills.title} id="stack-title" />
   <div class="stack">
     {skills.groups.map((group, i) => (
       <div class="stack__group">

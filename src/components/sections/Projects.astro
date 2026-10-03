@@ -17,12 +17,7 @@ const { projects, a11y } = t(lang)
   id="projects"
   aria-labelledby="projects-title"
 >
-  <SectionHead
-    num={num}
-    title={projects.title}
-    meta={projects.meta}
-    id="projects-title"
-  />
+  <SectionHead num={num} title={projects.title} id="projects-title" />
   <div class="projects">
     {PROJECT_LINKS.map((project, i) => (
       <a

@@ -127,7 +127,7 @@ const colHead = (s) => `
             <header class="section-head">
               <span class="section-num">${s.num}</span>
               <h2 class="section-title">${s.title}</h2>
-              <span class="section-head__meta">${s.meta}</span>
+              ${s.meta ? `<span class="section-head__meta">${s.meta}</span>` : ''}
             </header>`
 
 /* Home ──────────────────────────────────────────────────────────────────── */
@@ -188,7 +188,6 @@ function home(c) {
         <div class="wrap band__grid">
           <div class="col col--cv reveal" id="cv">
             <header class="section-head">
-              <span class="section-num">${c.cv.eyebrow}</span>
               <h2 class="section-title">${c.cv.title}</h2>
             </header>
             <div class="cv-plate">

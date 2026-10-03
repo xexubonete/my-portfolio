@@ -153,7 +153,7 @@ export const CONTENT = {
     },
     footer: {
       copy: '© 2026 Jesús Bonete',
-      built: 'Built with Astro · Elda, Alicante',
+      built: 'Built with Astro',
     },
     hero: {
       eyebrow: 'welcome',
@@ -172,7 +172,6 @@ export const CONTENT = {
       ],
     },
     cv: {
-      eyebrow: 'A4 · PDF · EN / ES',
       title: 'CV',
       caption: 'Preview of my resume — click to view and download',
       button: 'View & download CV',
@@ -182,7 +181,7 @@ export const CONTENT = {
     experience: {
       num: '01',
       title: 'Experience',
-      meta: '+4 years · 3 companies',
+      meta: '+4 years',
       more: 'View more',
       roles: EXPERIENCE,
       rolesWord: 'roles',
@@ -190,13 +189,11 @@ export const CONTENT = {
     stack: {
       num: '02',
       title: 'Stack',
-      meta: '5 groups · 40 items',
       groups: STACK('en'),
     },
     projects: {
       num: '03',
       title: 'Projects',
-      meta: '@xexubonete',
       here: 'you are here',
       all: 'All repositories',
     },
@@ -346,7 +343,7 @@ export const CONTENT = {
     },
     footer: {
       copy: '© 2026 Jesús Bonete',
-      built: 'Hecho con Astro · Elda, Alicante',
+      built: 'Hecho con Astro',
     },
     hero: {
       eyebrow: 'bienvenido',
@@ -365,7 +362,6 @@ export const CONTENT = {
       ],
     },
     cv: {
-      eyebrow: 'A4 · PDF · ES / EN',
       title: 'CV',
       caption: 'Vista previa de mi CV — haz clic para verlo y descargarlo',
       button: 'Ver y descargar CV',
@@ -375,7 +371,7 @@ export const CONTENT = {
     experience: {
       num: '01',
       title: 'Experiencia',
-      meta: '+4 años · 3 empresas',
+      meta: '+4 años',
       more: 'Ver más',
       roles: SPANISH,
       rolesWord: 'puestos',
@@ -383,13 +379,11 @@ export const CONTENT = {
     stack: {
       num: '02',
       title: 'Stack',
-      meta: '5 grupos · 40 items',
       groups: STACK('es'),
     },
     projects: {
       num: '03',
       title: 'Proyectos',
-      meta: '@xexubonete',
       here: 'estás aquí',
       all: 'Todos los repos',
     },
