@@ -373,6 +373,18 @@
     width: 100%;
     min-height: 100vh;
   }
+
+  /* Chromium's print-to-PDF positions each glyph explicitly once
+     letter-spacing grows past roughly 0.6pt of absolute gap, and
+     extractors then read every letter as its own word. These two
+     headings used 0.12em/0.14em, well past that line, so the job
+     title and "Contacto"/"Contact" came out letter by letter in an
+     ATS. Tracking is narrowed for print only; the screen view keeps
+     the original spacing. */
+  .cv-role,
+  .cv-section--contact h2 {
+    letter-spacing: 0.08em;
+  }
 }
 
 @page {
