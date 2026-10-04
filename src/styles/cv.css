@@ -374,15 +374,17 @@
     min-height: 100vh;
   }
 
-  /* Chromium's print-to-PDF positions each glyph explicitly once
-     letter-spacing grows past roughly 0.6pt of absolute gap, and
-     extractors then read every letter as its own word. These two
-     headings used 0.12em/0.14em, well past that line, so the job
-     title and "Contacto"/"Contact" came out letter by letter in an
-     ATS. Tracking is narrowed for print only; the screen view keeps
-     the original spacing. */
+  /* Chromium's print-to-PDF places every glyph with its own advance,
+     whatever the letter-spacing, so the PDF has no word boundaries of
+     its own. Text extractors infer them: pdf.js, poppler and pdfminer
+     start a new word once the gap between glyphs reaches about 0.1x
+     the font size. The job title and "Contacto"/"Contact" used
+     0.12em/0.14em and came out letter by letter in an ATS; the field
+     labels sat at 0.1em, right on the line. In print, keep tracking
+     well under 0.1em; the screen view keeps the original spacing. */
   .cv-role,
-  .cv-section--contact h2 {
+  .cv-section--contact h2,
+  .cv-field .label {
     letter-spacing: 0.08em;
   }
 }
