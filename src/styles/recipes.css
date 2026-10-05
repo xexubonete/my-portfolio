@@ -101,6 +101,7 @@
   line-height: 1.2;
   color: var(--color-text);
   white-space: nowrap;
+  cursor: default;
   transition:
     border-color var(--duration-fast) var(--ease-out),
     color var(--duration-fast) var(--ease-out),
@@ -316,8 +317,8 @@
   transform: none;
 }
 
-/* Horizontal tape of the stack: pure CSS, duplicated content, pauses on
-   hover and stops entirely under reduced motion. */
+/* Horizontal tape of the stack: pure CSS, duplicated content, never pauses,
+   and stops entirely under reduced motion. */
 .tape {
   display: flex;
   overflow: hidden;
@@ -335,12 +336,7 @@
   display: flex;
   flex: none;
   gap: var(--space-6);
-  padding-inline-end: var(--space-6);
   animation: tape-scroll 40s linear infinite;
-}
-
-.tape:hover .tape__track {
-  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -353,7 +349,7 @@
     flex-wrap: wrap;
   }
 
-  .tape__track + .tape__track {
+  .tape__dup {
     display: none;
   }
 
@@ -385,7 +381,7 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
