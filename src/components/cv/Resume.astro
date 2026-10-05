@@ -14,7 +14,8 @@ interface Props {
 
 const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
-const { a11y, skills } = t(lang)
+const { a11y, skills, experience } = t(lang)
+const stackLabel = experience.stack
 
 // Short, CV-specific labels for the same five stack groups the website's
 // Stack section renders (src/i18n/content.ts: frameworks, patterns,
@@ -49,35 +50,17 @@ const T = {
     location: 'Elda, Alicante, España',
     profileTitle: 'Perfil profesional',
     profile:
-      'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables. Especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código sin sacrificar buenas prácticas.',
-    contactTitle: 'Contacto',
-    dataTitle: 'Datos',
-    dob: 'Nacimiento',
-    nat: 'Nacionalidad',
-    natValue: 'Española',
-    license: 'Permiso de conducir',
-    licenseValue: 'B',
+      'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables. Especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código sin sacrificar buenas prácticas. Combino resolución de problemas, trabajo en equipo, comunicación y adaptabilidad para integrarme rápido en cualquier equipo.',
     langTitle: 'Idiomas',
     spanish: 'Español',
     spanishLevel: 'Nativo',
     english: 'Inglés',
     englishLevel: 'B2',
     techSkillsTitle: 'Habilidades técnicas',
-    skillsTitle: 'Competencias',
     expTitle: 'Experiencia profesional',
     eduTitle: 'Formación',
     eduName: 'Desarrollo de Aplicaciones Web (DAW)',
     eduPlace: 'Alicante, España',
-    softSkills: [
-      'Autoaprendizaje',
-      'Trabajo bajo presión',
-      'Resolución de problemas',
-      'Autonomía y proactividad',
-      'Liderazgo',
-      'Comunicación',
-      'Trabajo en equipo',
-      'Adaptabilidad',
-    ],
   },
   en: {
     role: 'Senior .NET Developer',
@@ -87,35 +70,17 @@ const T = {
     location: 'Elda, Alicante, Spain',
     profileTitle: 'Summary',
     profile:
-      'Senior .NET developer with {EXP} of experience building robust and scalable services. Specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality without compromising best practices.',
-    contactTitle: 'Contact',
-    dataTitle: 'Details',
-    dob: 'Date of birth',
-    nat: 'Nationality',
-    natValue: 'Spanish',
-    license: 'Driving licence',
-    licenseValue: 'B',
+      'Senior .NET developer with {EXP} of experience building robust and scalable services. Specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality without compromising best practices. I bring strong problem solving, teamwork, communication and adaptability to quickly integrate into any team.',
     langTitle: 'Languages',
     spanish: 'Spanish',
     spanishLevel: 'Native',
     english: 'English',
     englishLevel: 'B2',
     techSkillsTitle: 'Technical Skills',
-    skillsTitle: 'Soft Skills',
     expTitle: 'Experience',
     eduTitle: 'Education',
     eduName: 'Web Application Development (DAW)',
     eduPlace: 'Alicante, Spain',
-    softSkills: [
-      'Self-learning',
-      'Working under pressure',
-      'Problem solving',
-      'Autonomy and proactivity',
-      'Leadership',
-      'Communication',
-      'Teamwork',
-      'Adaptability',
-    ],
   },
 }[lang]
 
@@ -184,52 +149,60 @@ const profileText = T.profile.replace(
         <header class="cv-header">
           <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
           <div class="cv-heading">
-            <h1 class="cv-name">
-              Jesús <span>Bonete Sánchez</span>
-            </h1>
-            <p class="cv-role">{T.role}</p>
+            <div class="cv-heading-row">
+              <h1 class="cv-name">
+                Jesús <span>Bonete Sánchez</span>
+              </h1>
+              <p class="cv-role">{T.role}</p>
+            </div>
+            <div class="cv-contact-row">
+              <span class="cv-contact-item">
+                <Glyph name="pin" />
+                <span>{T.location}</span>
+              </span>
+              <span class="cv-contact-item">
+                <Glyph name="mail" />
+                <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
+                  xexubonete@gmail.com
+                </a>
+              </span>
+              <span class="cv-contact-item">
+                <Glyph name="phone" />
+                <span>(+34) 722 243 881</span>
+              </span>
+              <span class="cv-contact-item">
+                <Glyph name="globe" />
+                <a
+                  href="https://xexubonete.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://xexubonete.dev
+                </a>
+              </span>
+              <span class="cv-contact-item">
+                <Glyph name="globe" />
+                <a
+                  href={LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://www.linkedin.com/in/jesus-bonete-sanchez
+                </a>
+              </span>
+              <span class="cv-contact-item">
+                <Glyph name="globe" />
+                <a
+                  href={LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://github.com/xexubonete
+                </a>
+              </span>
+            </div>
           </div>
         </header>
-
-        <section class="cv-section cv-section--contact">
-          <h2>{T.contactTitle}</h2>
-          <div class="cv-contact">
-            <Glyph name="pin" />
-            <span>{T.location}</span>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="mail" />
-            <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
-              xexubonete@gmail.com
-            </a>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="phone" />
-            <span>(+34) 722 243 881</span>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="globe" />
-            <a
-              href="https://xexubonete.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              https://xexubonete.dev
-            </a>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="globe" />
-            <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-              https://www.linkedin.com/in/jesus-bonete-sanchez
-            </a>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="globe" />
-            <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
-              https://github.com/xexubonete
-            </a>
-          </div>
-        </section>
 
         <main class="cv-main">
           <section class="cv-section">
@@ -248,24 +221,10 @@ const profileText = T.profile.replace(
           </section>
 
           <section class="cv-section">
-            <h2>{T.skillsTitle}</h2>
-            <div class="cv-chips">
-              {T.softSkills.map((skill) => (
-                <span class="cv-chip">{skill}</span>
-              ))}
-            </div>
-          </section>
-
-          <section class="cv-section">
             <h2>{T.langTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.spanish}</span>
-              {T.spanishLevel}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.english}</span>
-              {T.englishLevel}
-            </div>
+            <p class="cv-languages">
+              {T.spanish}: {T.spanishLevel} · {T.english}: {T.englishLevel}
+            </p>
           </section>
 
           <section class="cv-section">
@@ -296,11 +255,10 @@ const profileText = T.profile.replace(
                       <li>{task}</li>
                     ))}
                   </ul>
-                  <div class="cv-stack">
-                    {group.roles[0].stack.map((item) => (
-                      <span>{item}</span>
-                    ))}
-                  </div>
+                  <p class="cv-stack-line">
+                    <span class="label">{stackLabel}</span>{' '}
+                    {group.roles[0].stack.join(', ')}
+                  </p>
                 </div>
               ) : (
                 <div class="cv-job">
@@ -333,11 +291,10 @@ const profileText = T.profile.replace(
                             <li>{task}</li>
                           ))}
                         </ul>
-                        <div class="cv-stack">
-                          {role.stack.map((item) => (
-                            <span>{item}</span>
-                          ))}
-                        </div>
+                        <p class="cv-stack-line">
+                          <span class="label">{stackLabel}</span>{' '}
+                          {role.stack.join(', ')}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -357,18 +314,6 @@ const profileText = T.profile.replace(
                 <span class="cv-job-period">2020 – 2022</span>
               </div>
               <div class="cv-job-place">{T.eduPlace}</div>
-            </div>
-          </section>
-
-          <section class="cv-section cv-section--data">
-            <h2>{T.dataTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.nat}</span>
-              {T.natValue}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.license}</span>
-              {T.licenseValue}
             </div>
           </section>
         </main>

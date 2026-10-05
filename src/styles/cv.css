@@ -43,26 +43,27 @@
   flex-direction: column;
   box-shadow: var(--shadow-sheet);
   overflow: hidden;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
-/* Header band: ink with paper text, full width, single row. */
+/* Header band: ink with paper text, full width. Name/role sit on the first
+   line, the full contact details wrap onto the second -- a compact
+   two-line header with no separate "Contact" section. */
 .cv-header {
   background: var(--ink);
   color: var(--paper);
-  padding: 10mm 9mm 7mm;
+  padding: 8mm 15mm 6mm;
   display: flex;
   align-items: center;
-  gap: 6mm;
+  gap: 5mm;
 }
 
 .cv-photo {
-  /* The source is square, so the circle shows the whole memoji with its
-     edges trimmed evenly. */
+  /* Small and decorative only: the header reflows the same without it. */
   display: block;
   flex: none;
-  width: 28mm;
-  height: 28mm;
+  width: 18mm;
+  height: 18mm;
   border-radius: 50%;
   object-fit: cover;
   object-position: center center;
@@ -73,13 +74,23 @@
 .cv-heading {
   display: flex;
   flex-direction: column;
+  gap: 1.8mm;
+  min-width: 0;
+}
+
+.cv-heading-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 3mm;
+  row-gap: 0.6mm;
 }
 
 .cv-name {
   font-family: var(--font-display);
   font-weight: 800;
   font-stretch: 78%;
-  font-size: 22pt;
+  font-size: 19pt;
   line-height: 0.98;
   letter-spacing: -0.03em;
 }
@@ -90,115 +101,62 @@
 
 .cv-role {
   font-family: var(--font-mono);
-  font-size: 8pt;
+  font-size: 7.5pt;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgb(251 248 242 / 0.75);
-  margin-top: 2mm;
 }
 
-/* Contact block: still inside the ink band, directly under the header. */
-.cv-section--contact {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 0 9mm 8mm;
+.cv-contact-row {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 8mm;
-  row-gap: 1.6mm;
+  column-gap: 4.5mm;
+  row-gap: 0.8mm;
 }
 
-.cv-section--contact h2 {
-  flex: 1 0 100%;
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 7pt;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.cv-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1.4mm;
+  font-size: 7.5pt;
+  line-height: 1.3;
+}
+
+.cv-contact-item svg {
+  width: 3mm;
+  height: 3mm;
+  flex: none;
   color: var(--orange-vivid);
-  padding-bottom: 1.2mm;
-  border-bottom: 1px solid rgb(251 248 242 / 0.25);
-  margin-bottom: 1.4mm;
 }
 
-.cv-section--contact a {
+.cv-contact-item a {
   color: inherit;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
-.cv-contact {
-  display: flex;
-  gap: 2mm;
-  align-items: flex-start;
-  font-size: 8pt;
-  line-height: 1.3;
-}
-
-.cv-contact svg {
-  width: 3.4mm;
-  height: 3.4mm;
-  flex: none;
-  margin-top: 0.3mm;
-  color: var(--orange-vivid);
-}
-
-.cv-field {
-  font-size: 8.5pt;
-  margin-bottom: 1.8mm;
-}
-
-.cv-field .label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 6.5pt;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-}
-
-.cv-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.6mm;
-}
-
-.cv-chip {
-  font-family: var(--font-mono);
-  font-size: 6.8pt;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--rule);
-  border-radius: 1mm;
-  padding: 0.7mm 1.6mm;
-  color: var(--ink);
-}
-
 /* Body: every remaining section stacks full width, in reading order. */
 .cv-main {
-  padding: 7mm 9mm 8mm;
+  padding: 4mm 15mm 5mm;
   display: flex;
   flex-direction: column;
-  gap: 4.5mm;
-}
-
-.cv-section--data {
-  margin-top: -1.5mm;
+  gap: 1.8mm;
 }
 
 .cv-main h2 {
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 85%;
-  font-size: 13pt;
+  font-size: 11.5pt;
   letter-spacing: -0.02em;
-  padding-bottom: 1.2mm;
+  padding-bottom: 0.8mm;
   border-bottom: 1px solid var(--ink);
-  margin-bottom: 2.5mm;
+  margin-bottom: 1.6mm;
 }
 
 .cv-summary {
-  font-size: 9pt;
-  line-height: 1.45;
+  font-size: 9.5pt;
+  line-height: 1.35;
 }
 
 .cv-summary b {
@@ -208,9 +166,9 @@
 /* Technical skills: plain comma-separated keywords, one group per line, so
    every stack keyword is real flowing text an ATS can match. */
 .cv-tech-group {
-  font-size: 8.5pt;
-  line-height: 1.5;
-  margin-bottom: 0.8mm;
+  font-size: 9pt;
+  line-height: 1.35;
+  margin-bottom: 0.5mm;
 }
 
 .cv-tech-group .label {
@@ -221,10 +179,15 @@
   margin-right: 1mm;
 }
 
+/* Languages: one short line, no stacked fields. */
+.cv-languages {
+  font-size: 9.5pt;
+}
+
 .cv-job {
   position: relative;
   padding-left: 5mm;
-  margin-bottom: 3mm;
+  margin-bottom: 1.5mm;
 }
 
 .cv-job::before {
@@ -283,28 +246,29 @@
 .cv-job-place {
   font-family: var(--font-mono);
   font-size: 7.2pt;
+  line-height: 1.15;
   letter-spacing: 0.04em;
   color: var(--ink-muted);
 }
 
 .cv-job-summary {
-  font-size: 8.5pt;
+  font-size: 9pt;
   color: var(--ink-muted);
-  margin: 0.6mm 0 0.8mm;
+  margin: 0.3mm 0 0.5mm;
 }
 
 .cv-job ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 8.5pt;
+  font-size: 9pt;
 }
 
 .cv-job li {
   position: relative;
   padding-left: 3.2mm;
-  margin-bottom: 0.4mm;
-  line-height: 1.3;
+  margin-bottom: 0.2mm;
+  line-height: 1.2;
 }
 
 .cv-job li::before {
@@ -318,30 +282,29 @@
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-.cv-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1mm;
-  margin-top: 1.2mm;
+/* One short line per role instead of a tag cloud: still every stack
+   keyword, as plain flowing text an ATS can match without extra lines. */
+.cv-stack-line {
+  font-size: 8pt;
+  line-height: 1.2;
+  color: var(--ink-muted);
+  margin-top: 0.6mm;
 }
 
-.cv-stack span {
+.cv-stack-line .label {
   font-family: var(--font-mono);
-  font-size: 6.6pt;
-  letter-spacing: 0.02em;
-  background: var(--paper-2);
-  border-radius: 1mm;
-  padding: 0.5mm 1.4mm;
-  color: var(--ink);
+  font-weight: 600;
+  color: var(--orange);
+  margin-right: 1mm;
 }
 
 .cv-roles {
-  margin-top: 2mm;
+  margin-top: 1.4mm;
   padding-left: 3.5mm;
   border-left: 1px solid var(--rule);
   display: flex;
   flex-direction: column;
-  gap: 2.5mm;
+  gap: 1.4mm;
 }
 
 .cv-roles .cv-job-title {
@@ -378,13 +341,10 @@
      whatever the letter-spacing, so the PDF has no word boundaries of
      its own. Text extractors infer them: pdf.js, poppler and pdfminer
      start a new word once the gap between glyphs reaches about 0.1x
-     the font size. The job title and "Contacto"/"Contact" used
-     0.12em/0.14em and came out letter by letter in an ATS; the field
-     labels sat at 0.1em, right on the line. In print, keep tracking
-     well under 0.1em; the screen view keeps the original spacing. */
-  .cv-role,
-  .cv-section--contact h2,
-  .cv-field .label {
+     the font size. The role line used 0.12em and came out letter by
+     letter in an ATS. In print, keep tracking well under 0.1em; the
+     screen view keeps the original spacing. */
+  .cv-role {
     letter-spacing: 0.08em;
   }
 }
