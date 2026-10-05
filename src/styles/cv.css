@@ -17,6 +17,9 @@
   --orange-vivid: #f26b1d;
   --band: #f6e7d5;
   --band-rule: #e6d2b8;
+  /* The site's drafting grid (--color-grid in tokens.css), a touch fainter
+     because here it runs behind body text instead of a hero. */
+  --grid: rgb(23 19 14 / 0.045);
 
   min-height: 100dvh;
   padding: var(--space-6) var(--gutter) var(--space-9);
@@ -136,6 +139,14 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 2.6mm;
+  /* The drafting grid of the site (.grid-bg in recipes.css), on the paper
+     below the band. Gradients only: it adds no text to the PDF, and
+     generate-cv.mjs prints backgrounds. Even where a line crosses a
+     glyph, the muted ink and the orange stay above 4.5:1. */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 3rem 3rem;
 }
 
 /* Section title: an orange tick, the word, and a hairline to the margin. */
