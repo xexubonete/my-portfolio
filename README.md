@@ -95,6 +95,8 @@ pnpm preview   # serves the production build from dist/
 pnpm cv:pdf
 ```
 
+The script fails, and leaves the previous PDFs alone, if a CV is not exactly one page or if `pdftotext` (poppler, e.g. `brew install poppler`) does not read its text in source order with every word apart, in default, `-raw` and `-layout` mode. Without poppler that check is skipped with a warning. The CV sheet uses static cuts of the site's fonts from `public/fonts/cv/`, so the PDF embeds them as plain TrueType; rebuild them with `pnpm cv:fonts` after changing a font file.
+
 ## ⚙️ Build pipeline
 
 `pnpm build` prerenders every route into `dist/`. A post-build integration (`scripts/integrations/static-pipeline.mjs`) then:

@@ -2,10 +2,12 @@
 import '@/styles/globals.css'
 import '@/styles/cv.css'
 import ThemeScript from '@/components/layout/ThemeScript.astro'
+import Keywords from '@/components/cv/Keywords.astro'
 import LanguageSwitch from '@/components/layout/LanguageSwitch.astro'
 import Glyph from '@/components/ui/Glyph.astro'
 import Sprite from '@/components/ui/Sprite.astro'
 import { experienceByLang, LINKS, pagePath, t, type Lang } from '@/i18n'
+import { displayUrl } from '@/lib/cv'
 import { formatYears, groupByCompany } from '@/lib/experience'
 
 interface Props {
@@ -14,7 +16,8 @@ interface Props {
 
 const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
-const { a11y, skills } = t(lang)
+const { a11y, skills, experience } = t(lang)
+const stackLabel = experience.stack
 
 // Short, CV-specific labels for the same five stack groups the website's
 // Stack section renders (src/i18n/content.ts: frameworks, patterns,
@@ -49,35 +52,17 @@ const T = {
     location: 'Elda, Alicante, España',
     profileTitle: 'Perfil profesional',
     profile:
-      'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables. Especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código sin sacrificar buenas prácticas.',
-    contactTitle: 'Contacto',
-    dataTitle: 'Datos',
-    dob: 'Nacimiento',
-    nat: 'Nacionalidad',
-    natValue: 'Española',
-    license: 'Permiso de conducir',
-    licenseValue: 'B',
+      'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables, especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código.',
     langTitle: 'Idiomas',
     spanish: 'Español',
     spanishLevel: 'Nativo',
     english: 'Inglés',
     englishLevel: 'B2',
     techSkillsTitle: 'Habilidades técnicas',
-    skillsTitle: 'Competencias',
     expTitle: 'Experiencia profesional',
     eduTitle: 'Formación',
     eduName: 'Desarrollo de Aplicaciones Web (DAW)',
     eduPlace: 'Alicante, España',
-    softSkills: [
-      'Autoaprendizaje',
-      'Trabajo bajo presión',
-      'Resolución de problemas',
-      'Autonomía y proactividad',
-      'Liderazgo',
-      'Comunicación',
-      'Trabajo en equipo',
-      'Adaptabilidad',
-    ],
   },
   en: {
     role: 'Senior .NET Developer',
@@ -87,35 +72,17 @@ const T = {
     location: 'Elda, Alicante, Spain',
     profileTitle: 'Summary',
     profile:
-      'Senior .NET developer with {EXP} of experience building robust and scalable services. Specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality without compromising best practices.',
-    contactTitle: 'Contact',
-    dataTitle: 'Details',
-    dob: 'Date of birth',
-    nat: 'Nationality',
-    natValue: 'Spanish',
-    license: 'Driving licence',
-    licenseValue: 'B',
+      'Senior .NET developer with {EXP} of experience building robust and scalable services, specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality.',
     langTitle: 'Languages',
     spanish: 'Spanish',
     spanishLevel: 'Native',
     english: 'English',
     englishLevel: 'B2',
     techSkillsTitle: 'Technical Skills',
-    skillsTitle: 'Soft Skills',
     expTitle: 'Experience',
     eduTitle: 'Education',
     eduName: 'Web Application Development (DAW)',
     eduPlace: 'Alicante, Spain',
-    softSkills: [
-      'Self-learning',
-      'Working under pressure',
-      'Problem solving',
-      'Autonomy and proactivity',
-      'Leadership',
-      'Communication',
-      'Teamwork',
-      'Adaptability',
-    ],
   },
 }[lang]
 
@@ -125,6 +92,11 @@ const expTemplate = {
   es: { plus: 'más de {n} años', exact: '{n} años' },
   en: { plus: '{n}+ years', exact: '{n} years' },
 }[lang]
+// Printed as the short form, linked to the full URL.
+const profiles = ['https://xexubonete.dev', LINKS.linkedin, LINKS.github].map(
+  (href) => ({ href, text: displayUrl(href) }),
+)
+
 const profileText = T.profile.replace(
   '{EXP}',
   `<b data-exp-plus="${expTemplate.plus}" data-exp-exact="${expTemplate.exact}">${formatYears(expTemplate)}</b>`,
@@ -180,56 +152,47 @@ const profileText = T.profile.replace(
         </a>
       </div>
 
+      {/* A decorative panel and one column of text. The panel -- a wide
+          block with the portrait beside the header, then a strip down the
+          left edge -- holds nothing an extractor can read, so the whole CV
+          is a single column in source order: whatever way a PDF parser
+          rebuilds the page, there is no second column to interleave. */}
       <article class="cv-sheet">
-        <header class="cv-header">
+        <div class="cv-panel">
           <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
-          <div class="cv-heading">
-            <h1 class="cv-name">
-              Jesús <span>Bonete Sánchez</span>
-            </h1>
-            <p class="cv-role">{T.role}</p>
-          </div>
-        </header>
+        </div>
 
-        <section class="cv-section cv-section--contact">
-          <h2>{T.contactTitle}</h2>
-          <div class="cv-contact">
-            <Glyph name="pin" />
-            <span>{T.location}</span>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="mail" />
+        <header class="cv-header">
+          <h1 class="cv-name">
+            Jesús <span>Bonete Sánchez</span>
+          </h1>
+          <p class="cv-role">{T.role}</p>
+          {/* Two plain lines of text, items set apart by a middle dot. Items
+              spaced out like the cells of a row are read by column-detecting
+              extractors as a table, in the wrong order. */}
+          <p class="cv-contact">
+            <span>{T.location}</span> ·{' '}
             <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
               xexubonete@gmail.com
-            </a>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="phone" />
-            <span>(+34) 722 243 881</span>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="globe" />
-            <a
-              href="https://xexubonete.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              https://xexubonete.dev
-            </a>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="globe" />
-            <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-              https://www.linkedin.com/in/jesus-bonete-sanchez
-            </a>
-          </div>
-          <div class="cv-contact">
-            <Glyph name="globe" />
-            <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
-              https://github.com/xexubonete
-            </a>
-          </div>
-        </section>
+            </a>{' '}
+            · <span>(+34) 722 243 881</span>
+          </p>
+          <p class="cv-contact">
+            {profiles.map((profile, i) => (
+              <>
+                {i > 0 ? ' · ' : ''}
+                <a
+                  class="cv-profile"
+                  href={profile.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {profile.text}
+                </a>
+              </>
+            ))}
+          </p>
+        </header>
 
         <main class="cv-main">
           <section class="cv-section">
@@ -242,30 +205,16 @@ const profileText = T.profile.replace(
             {techSkillGroups.map((group) => (
               <p class="cv-tech-group">
                 <span class="label">{group.label}:</span>{' '}
-                {group.items.join(', ')}
+                <Keywords items={group.items} />
               </p>
             ))}
           </section>
 
           <section class="cv-section">
-            <h2>{T.skillsTitle}</h2>
-            <div class="cv-chips">
-              {T.softSkills.map((skill) => (
-                <span class="cv-chip">{skill}</span>
-              ))}
-            </div>
-          </section>
-
-          <section class="cv-section">
             <h2>{T.langTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.spanish}</span>
-              {T.spanishLevel}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.english}</span>
-              {T.englishLevel}
-            </div>
+            <p class="cv-languages">
+              {T.spanish}: {T.spanishLevel} · {T.english}: {T.englishLevel}
+            </p>
           </section>
 
           <section class="cv-section">
@@ -274,57 +223,57 @@ const profileText = T.profile.replace(
               group.roles.length === 1 ? (
                 <div class="cv-job">
                   <div class="cv-job-head">
-                    <span class="cv-job-title">
-                      {group.roles[0].position} ·{' '}
-                      <a
-                        class="cv-job-company"
-                        href={group.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {group.company}
-                      </a>
-                    </span>
+                    <h3 class="cv-job-title">{group.roles[0].position}</h3>{' '}
                     <span class="cv-job-period">
-                      {group.roles[0].start} – {group.roles[0].end}
+                      · {group.roles[0].start} – {group.roles[0].end}
                     </span>
                   </div>
-                  <div class="cv-job-place">{group.location}</div>
+                  <p class="cv-job-place">
+                    <a
+                      class="cv-job-company"
+                      href={group.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {group.company}
+                    </a>{' '}
+                    · {group.location}
+                  </p>
                   <p class="cv-job-summary">{group.roles[0].description}</p>
                   <ul>
                     {group.roles[0].responsibilities.map((task) => (
                       <li>{task}</li>
                     ))}
                   </ul>
-                  <div class="cv-stack">
-                    {group.roles[0].stack.map((item) => (
-                      <span>{item}</span>
-                    ))}
-                  </div>
+                  <p class="cv-stack-line">
+                    <span class="label">{stackLabel}</span>{' '}
+                    <Keywords items={group.roles[0].stack} />
+                  </p>
                 </div>
               ) : (
                 <div class="cv-job">
-                  <div class="cv-job-head">
+                  {/* The company's whole period stays in the title line: the
+                      date column on the right is one date per role. */}
+                  <h3 class="cv-job-title">
                     <a
-                      class="cv-job-title cv-job-company"
+                      class="cv-job-company"
                       href={group.link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {group.company}
-                    </a>
-                    <span class="cv-job-period">
-                      {group.start} – {group.end}
+                    </a>{' '}
+                    <span class="cv-job-place">
+                      · {group.location} · {group.start} – {group.end}
                     </span>
-                  </div>
-                  <div class="cv-job-place">{group.location}</div>
+                  </h3>
                   <div class="cv-roles">
                     {group.roles.map((role) => (
-                      <div>
+                      <div class="cv-role-item">
                         <div class="cv-job-head">
-                          <span class="cv-job-title">{role.position}</span>
+                          <h4 class="cv-job-title">{role.position}</h4>{' '}
                           <span class="cv-job-period">
-                            {role.start} – {role.end}
+                            · {role.start} – {role.end}
                           </span>
                         </div>
                         <p class="cv-job-summary">{role.description}</p>
@@ -333,11 +282,10 @@ const profileText = T.profile.replace(
                             <li>{task}</li>
                           ))}
                         </ul>
-                        <div class="cv-stack">
-                          {role.stack.map((item) => (
-                            <span>{item}</span>
-                          ))}
-                        </div>
+                        <p class="cv-stack-line">
+                          <span class="label">{stackLabel}</span>{' '}
+                          <Keywords items={role.stack} />
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -350,25 +298,13 @@ const profileText = T.profile.replace(
             <h2>{T.eduTitle}</h2>
             <div class="cv-job">
               <div class="cv-job-head">
-                <span class="cv-job-title">
-                  {T.eduName} ·{' '}
-                  <span class="cv-job-company">IES Mare Nostrum</span>
-                </span>
-                <span class="cv-job-period">2020 – 2022</span>
+                <h3 class="cv-job-title">{T.eduName}</h3>{' '}
+                <span class="cv-job-period">· 2020 – 2022</span>
               </div>
-              <div class="cv-job-place">{T.eduPlace}</div>
-            </div>
-          </section>
-
-          <section class="cv-section cv-section--data">
-            <h2>{T.dataTitle}</h2>
-            <div class="cv-field">
-              <span class="label">{T.nat}</span>
-              {T.natValue}
-            </div>
-            <div class="cv-field">
-              <span class="label">{T.license}</span>
-              {T.licenseValue}
+              <p class="cv-job-place">
+                <span class="cv-job-company">IES Mare Nostrum</span> ·{' '}
+                {T.eduPlace}
+              </p>
             </div>
           </section>
         </main>

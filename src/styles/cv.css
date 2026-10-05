@@ -7,6 +7,86 @@
    Plain CSS, imported by the CV page component and by design/cv.html.
    ────────────────────────────────────────────────────────────────────────── */
 
+/* The sheet's own fonts: static cuts of the site's variable fonts, one per
+   style used here (scripts/lib/cv-fonts.mjs lists them, `pnpm cv:fonts`
+   builds them). Chromium embeds a static font in the PDF as TrueType; a
+   variable one becomes Type 3 glyph procedures, which text extractors read
+   less reliably. The shapes are the same, so the sheet looks as it did. */
+@font-face {
+  font-family: 'CV Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cv/sans-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/cv/sans-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/cv/sans-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Display';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 78%;
+  font-display: swap;
+  src: url('/fonts/cv/display-800-78.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Display';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 85%;
+  font-display: swap;
+  src: url('/fonts/cv/display-700-85.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Display';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 90%;
+  font-display: swap;
+  src: url('/fonts/cv/display-700-90.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cv/mono-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/cv/mono-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/cv/mono-600.woff2') format('woff2');
+}
+
 .cv-page {
   --paper: #fbf8f2;
   --paper-2: #efe9dc;
@@ -32,320 +112,292 @@
   align-items: center;
 }
 
+/* One column of text and a tinted panel: a block with the portrait beside
+   the header, continued as a strip down the left edge. The panel is
+   decoration only. Every word of the CV is in the column, in source order,
+   so a text extractor has a single column to read however it rebuilds the
+   page. */
 .cv-sheet {
+  --panel: 36mm;
+  --strip: 9mm;
+  --font-display:
+    'CV Display', 'Bricolage Grotesque Fallback', 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-body:
+    'CV Sans', 'Instrument Sans Fallback', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    'CV Mono', 'JetBrains Mono Fallback', ui-monospace, 'SF Mono', Menlo,
+    Consolas, monospace;
+
   width: 210mm;
   min-height: 297mm;
   max-width: 100%;
-  background: var(--paper);
+  /* The paper carries the drafting grid of the site's hero (.grid-bg in
+     recipes.css): the same 1px lines on a 3rem cell, in the paper value of
+     --color-grid, ink at 7%. It is a background image, so it adds nothing to
+     the text of the PDF. The strip is a second image over it, so the grid
+     shows on the paper only.
+
+     One L-shaped path per cell instead of the site's two crossed gradients:
+     where the lines cross they would darken twice, and the orange text has
+     to keep its 4.5:1 contrast over every pixel of the grid. */
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(
+      90deg,
+      var(--paper-2) var(--strip),
+      transparent var(--strip)
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 0H48V1H1V48H0z' fill='%2317130e' fill-opacity='.07'/%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    3rem 3rem;
   color: var(--ink);
   font-family: var(--font-body);
-  display: flex;
-  flex-direction: column;
+  font-size: 9.5pt;
+  line-height: 1.25;
+  /* Chromium positions each word in the PDF instead of writing the spaces,
+     and poppler's raw mode only sees a word break in a gap wider than this
+     font's own space. A hair more keeps the words apart in every extractor. */
+  word-spacing: 0.03em;
+  display: grid;
+  grid-template-columns: var(--panel) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
   box-shadow: var(--shadow-sheet);
   overflow: hidden;
-  line-height: 1.4;
 }
 
-/* Header band: ink with paper text, full width, single row. */
-.cv-header {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 10mm 9mm 7mm;
-  display: flex;
-  align-items: center;
-  gap: 6mm;
+.cv-panel {
+  background: var(--paper-2);
+  padding: 5.5mm 0 4mm 4.5mm;
 }
 
 .cv-photo {
-  /* The source is square, so the circle shows the whole memoji with its
-     edges trimmed evenly. */
+  /* Decorative only: the sheet reads the same without it. */
   display: block;
-  flex: none;
-  width: 28mm;
-  height: 28mm;
+  width: 27mm;
+  height: 27mm;
   border-radius: 50%;
   object-fit: cover;
   object-position: center center;
-  background: var(--paper-2);
-  border: 1px solid rgb(251 248 242 / 0.4);
+  background: var(--paper);
+  border: 0.3mm solid var(--rule);
 }
 
-.cv-heading {
-  display: flex;
-  flex-direction: column;
+/* Header: the name, the role and one run of contact details. */
+.cv-header {
+  align-self: end;
+  margin: 0 11mm 0 6mm;
+  padding: 6.5mm 0 3mm;
+  border-bottom: 0.5mm solid var(--ink);
 }
 
 .cv-name {
   font-family: var(--font-display);
   font-weight: 800;
   font-stretch: 78%;
-  font-size: 22pt;
-  line-height: 0.98;
+  font-size: 28pt;
+  line-height: 1;
   letter-spacing: -0.03em;
 }
 
+/* The condensed display cut has a narrow space and is set tight; see the
+   note on word-spacing in .cv-sheet. */
+.cv-name,
+.cv-section h2,
+.cv-job-title {
+  word-spacing: 0.1em;
+}
+
+.cv-name {
+  word-spacing: 0.2em;
+}
+
 .cv-name span {
-  color: var(--orange-vivid);
+  color: var(--orange);
 }
 
 .cv-role {
   font-family: var(--font-mono);
-  font-size: 8pt;
+  font-weight: 500;
+  font-size: 9.5pt;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(251 248 242 / 0.75);
-  margin-top: 2mm;
-}
-
-/* Contact block: still inside the ink band, directly under the header. */
-.cv-section--contact {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 0 9mm 8mm;
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 8mm;
-  row-gap: 1.6mm;
-}
-
-.cv-section--contact h2 {
-  flex: 1 0 100%;
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 7pt;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--orange-vivid);
-  padding-bottom: 1.2mm;
-  border-bottom: 1px solid rgb(251 248 242 / 0.25);
-  margin-bottom: 1.4mm;
-}
-
-.cv-section--contact a {
-  color: inherit;
-  text-decoration: none;
-  overflow-wrap: anywhere;
+  color: var(--ink-muted);
+  margin-top: 1.8mm;
 }
 
 .cv-contact {
-  display: flex;
-  gap: 2mm;
-  align-items: flex-start;
-  font-size: 8pt;
-  line-height: 1.3;
-}
-
-.cv-contact svg {
-  width: 3.4mm;
-  height: 3.4mm;
-  flex: none;
-  margin-top: 0.3mm;
-  color: var(--orange-vivid);
-}
-
-.cv-field {
-  font-size: 8.5pt;
-  margin-bottom: 1.8mm;
-}
-
-.cv-field .label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 6.5pt;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--ink-muted);
 }
 
-.cv-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.6mm;
+.cv-role + .cv-contact {
+  margin-top: 2.4mm;
 }
 
-.cv-chip {
-  font-family: var(--font-mono);
-  font-size: 6.8pt;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--rule);
-  border-radius: 1mm;
-  padding: 0.7mm 1.6mm;
+/* An item never breaks: an address split in two is no longer one an ATS
+   recognises. */
+.cv-contact span,
+.cv-contact a {
   color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-/* Body: every remaining section stacks full width, in reading order. */
+/* The site and the two profiles are where a reader goes next: bold, in the
+   orange ink (5.5:1 on the paper, 4.8:1 over a grid line). */
+.cv-contact .cv-profile {
+  font-weight: 700;
+  color: var(--orange);
+}
+
 .cv-main {
-  padding: 7mm 9mm 8mm;
+  grid-column: 1 / -1;
+  padding: 3.6mm 11mm 6mm calc(var(--strip) + 7mm);
   display: flex;
   flex-direction: column;
-  gap: 4.5mm;
+  gap: 2.6mm;
 }
 
-.cv-section--data {
-  margin-top: -1.5mm;
-}
-
-.cv-main h2 {
+/* Section titles: the word, then a hairline running to the edge of the zone. */
+.cv-section h2 {
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 85%;
-  font-size: 13pt;
+  font-size: 12.5pt;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  padding-bottom: 1.2mm;
-  border-bottom: 1px solid var(--ink);
-  margin-bottom: 2.5mm;
+  display: flex;
+  align-items: center;
+  gap: 2.5mm;
+  margin-bottom: 1.5mm;
 }
 
-.cv-summary {
-  font-size: 9pt;
-  line-height: 1.45;
+.cv-section h2::after {
+  content: '';
+  flex: 1;
+  height: 0.3mm;
+  background: var(--rule);
+}
+
+/* Technical skills: one labelled line per group, its keywords as plain
+   comma-separated text an ATS can match. A keyword never breaks across two
+   lines, so "Entity Framework Core" is always extracted whole. */
+.cv-tech-group + .cv-tech-group {
+  margin-top: 0.5mm;
+}
+
+.cv-tech-group .label {
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.cv-keyword {
+  white-space: nowrap;
 }
 
 .cv-summary b {
   color: var(--orange);
 }
 
-/* Technical skills: plain comma-separated keywords, one group per line, so
-   every stack keyword is real flowing text an ATS can match. */
-.cv-tech-group {
-  font-size: 8.5pt;
-  line-height: 1.5;
-  margin-bottom: 0.8mm;
+.cv-job + .cv-job {
+  margin-top: 2.3mm;
 }
 
-.cv-tech-group .label {
-  font-family: var(--font-mono);
-  font-size: 7.5pt;
-  letter-spacing: 0.02em;
-  color: var(--orange);
-  margin-right: 1mm;
-}
-
-.cv-job {
-  position: relative;
-  padding-left: 5mm;
-  margin-bottom: 3mm;
-}
-
-.cv-job::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1.6mm;
-  width: 2mm;
-  height: 2mm;
-  background: var(--orange-vivid);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-.cv-job::after {
-  content: '';
-  position: absolute;
-  left: 0.9mm;
-  top: 5mm;
-  bottom: -3mm;
-  width: 0.3mm;
-  background: var(--rule);
-}
-
-.cv-job:last-child::after {
-  display: none;
-}
-
-.cv-job-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 4mm;
-}
-
+/* The title, then its dates, as one line of text. A date pushed to the
+   right edge is a block of its own to an extractor that rebuilds the page,
+   and comes out lines away from the title it belongs to. */
 .cv-job-title {
+  display: inline;
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 90%;
-  font-size: 10.5pt;
+  font-size: 11pt;
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
 .cv-job-company {
   color: var(--orange);
+  font-weight: 600;
   text-decoration: none;
+}
+
+/* A company name that is the entry's title keeps the title's weight. */
+.cv-job-title .cv-job-company {
+  font-weight: inherit;
 }
 
 .cv-job-period {
   font-family: var(--font-mono);
-  font-size: 7.2pt;
-  letter-spacing: 0.04em;
+  font-size: 8.5pt;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
   white-space: nowrap;
+  margin-left: 0.15em;
 }
 
 .cv-job-place {
-  font-family: var(--font-mono);
-  font-size: 7.2pt;
-  letter-spacing: 0.04em;
   color: var(--ink-muted);
 }
 
+/* Beside a company name that is the entry's title: body text, not a title. */
+.cv-job-title .cv-job-place {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-stretch: 100%;
+  font-size: 9.5pt;
+  letter-spacing: 0;
+}
+
 .cv-job-summary {
-  font-size: 8.5pt;
-  color: var(--ink-muted);
-  margin: 0.6mm 0 0.8mm;
+  margin-top: 0.5mm;
 }
 
 .cv-job ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-  font-size: 8.5pt;
+  margin: 0.4mm 0 0;
 }
 
+/* The marker is a background image, not a positioned pseudo-element: a
+   positioned box is painted after the normal flow, which would move every
+   bullet to the end of the PDF's text stream. */
 .cv-job li {
-  position: relative;
-  padding-left: 3.2mm;
-  margin-bottom: 0.4mm;
-  line-height: 1.3;
+  padding-left: 3.6mm;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 17'%3E%3Cpath d='M0 0 15 8.5 0 17z' fill='%23f26b1d'/%3E%3C/svg%3E")
+    no-repeat 0.3mm 1.3mm / 1.5mm 1.7mm;
 }
 
-.cv-job li::before {
-  content: '';
-  position: absolute;
-  left: 0.2mm;
-  top: 1.5mm;
-  width: 1.4mm;
-  height: 1.4mm;
-  background: var(--orange);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
+/* One line of plain text per role instead of a tag cloud: still every stack
+   keyword, as flowing text an ATS can match. */
+.cv-stack-line {
+  font-size: 8.5pt;
+  line-height: 1.25;
+  color: var(--ink-muted);
+  margin-top: 0.6mm;
+  text-wrap: wrap;
 }
 
-.cv-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1mm;
-  margin-top: 1.2mm;
-}
-
-.cv-stack span {
+.cv-stack-line .label {
   font-family: var(--font-mono);
-  font-size: 6.6pt;
-  letter-spacing: 0.02em;
-  background: var(--paper-2);
-  border-radius: 1mm;
-  padding: 0.5mm 1.4mm;
-  color: var(--ink);
+  font-weight: 600;
+  font-size: 8pt;
+  color: var(--orange);
 }
 
+/* Several roles at one company: indented under it, along a rule. */
 .cv-roles {
-  margin-top: 2mm;
+  margin-top: 1.2mm;
   padding-left: 3.5mm;
-  border-left: 1px solid var(--rule);
+  border-left: 0.3mm solid var(--rule);
   display: flex;
   flex-direction: column;
-  gap: 2.5mm;
+  gap: 1.3mm;
 }
 
 .cv-roles .cv-job-title {
-  font-size: 9.5pt;
+  font-size: 10pt;
 }
 
 @media (max-width: 48rem) {
@@ -353,8 +405,24 @@
     min-height: 0;
   }
 
+  /* Narrow screens: the portrait above the header, no strip. */
+  .cv-sheet {
+    --strip: 0mm;
+
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cv-panel {
+    padding: 6mm 8mm;
+  }
+
   .cv-header {
-    flex-wrap: wrap;
+    margin-inline: 8mm;
+    padding-top: 6mm;
+  }
+
+  .cv-main {
+    padding-inline: 8mm;
   }
 }
 
@@ -378,13 +446,10 @@
      whatever the letter-spacing, so the PDF has no word boundaries of
      its own. Text extractors infer them: pdf.js, poppler and pdfminer
      start a new word once the gap between glyphs reaches about 0.1x
-     the font size. The job title and "Contacto"/"Contact" used
-     0.12em/0.14em and came out letter by letter in an ATS; the field
-     labels sat at 0.1em, right on the line. In print, keep tracking
-     well under 0.1em; the screen view keeps the original spacing. */
-  .cv-role,
-  .cv-section--contact h2,
-  .cv-field .label {
+     the font size. The role line used 0.12em and came out letter by
+     letter in an ATS. In print, keep tracking well under 0.1em; the
+     screen view keeps the original spacing. */
+  .cv-role {
     letter-spacing: 0.08em;
   }
 }
