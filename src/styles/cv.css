@@ -43,7 +43,18 @@
   width: 210mm;
   min-height: 297mm;
   max-width: 100%;
-  background: var(--paper);
+  /* The paper carries the drafting grid of the site's hero (.grid-bg in
+     recipes.css): the same 1px lines on a 3rem cell, in the paper value of
+     --color-grid, ink at 7%. It is a background image, so it adds nothing to
+     the text of the PDF, and the tinted side zone covers it: the grid shows
+     on the paper only.
+
+     One L-shaped path per cell instead of the site's two crossed gradients:
+     where the lines cross they would darken twice, and the orange text has
+     to keep its 4.5:1 contrast over every pixel of the grid. */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 0H48V1H1V48H0z' fill='%2317130e' fill-opacity='.07'/%3E%3C/svg%3E");
+  background-size: 3rem 3rem;
   color: var(--ink);
   font-family: var(--font-body);
   display: grid;
