@@ -1,0 +1,21 @@
+---
+/**
+ * A comma-separated run of keywords as plain text. Each keyword sits in its
+ * own span so cv.css can keep it on one line: "Entity Framework Core" is then
+ * always extracted whole by an ATS, never split by a line break.
+ */
+interface Props {
+  items: readonly string[]
+}
+
+const { items } = Astro.props
+---
+
+{items.map((item, i) => (
+  <>
+    <span class="cv-keyword">
+      {item}
+      {i < items.length - 1 ? ',' : ''}
+    </span>{' '}
+  </>
+))}

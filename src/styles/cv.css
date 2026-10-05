@@ -32,6 +32,13 @@
   align-items: center;
 }
 
+/* A grid of four cells, not floats or positioned boxes:
+
+     portrait | header
+     side     | main
+
+   The source order is header, portrait, side, main, and Chromium writes the
+   PDF's text in that order. */
 .cv-sheet {
   width: 210mm;
   min-height: 297mm;
@@ -39,182 +46,211 @@
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 66mm minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
   box-shadow: var(--shadow-sheet);
   overflow: hidden;
   line-height: 1.3;
 }
 
-/* Header band: ink with paper text, full width. Name/role sit on the first
-   line, the full contact details wrap onto the second -- a compact
-   two-line header with no separate "Contact" section. */
+/* Header: the name and the role, beside the portrait. Nothing but the
+   portrait stands to its left, so every text extractor reads it first. */
 .cv-header {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 8mm 15mm 6mm;
-  display: flex;
-  align-items: center;
-  gap: 5mm;
-}
-
-.cv-photo {
-  /* Small and decorative only: the header reflows the same without it. */
-  display: block;
-  flex: none;
-  width: 18mm;
-  height: 18mm;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center center;
-  background: var(--paper-2);
-  border: 1px solid rgb(251 248 242 / 0.4);
-}
-
-.cv-heading {
-  display: flex;
-  flex-direction: column;
-  gap: 1.8mm;
-  min-width: 0;
-}
-
-.cv-heading-row {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  column-gap: 3mm;
-  row-gap: 0.6mm;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  margin: 0 12mm 0 7mm;
+  padding: 9mm 0 4mm;
+  border-bottom: 0.5mm solid var(--ink);
 }
 
 .cv-name {
   font-family: var(--font-display);
   font-weight: 800;
   font-stretch: 78%;
-  font-size: 19pt;
-  line-height: 0.98;
+  font-size: 31pt;
+  line-height: 1;
   letter-spacing: -0.03em;
 }
 
 .cv-name span {
-  color: var(--orange-vivid);
+  color: var(--orange);
 }
 
 .cv-role {
   font-family: var(--font-mono);
-  font-size: 7.5pt;
+  font-weight: 500;
+  font-size: 9.5pt;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(251 248 242 / 0.75);
+  color: var(--ink-muted);
+  margin-top: 2mm;
 }
 
-.cv-contact-row {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 4.5mm;
-  row-gap: 0.8mm;
+.cv-portrait {
+  grid-column: 1;
+  grid-row: 1;
+  background: var(--paper-2);
+  padding: 7mm 5mm 0 11mm;
 }
 
-.cv-contact-item {
+.cv-photo {
+  /* Decorative only: the sheet reads the same without it. */
+  display: block;
+  width: 30mm;
+  height: 30mm;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  background: var(--paper);
+  border: 0.3mm solid var(--rule);
+}
+
+/* The two zones start on the same line, under the portrait and the header,
+   and the side zone's text runs down without a tall blank. That is what keeps
+   poppler-style extractors on the source order: they treat a main-zone line
+   with no side-zone text beside it as a full-width line, and read it before
+   the rest of the side zone. Keep --side-gap small for the same reason. */
+.cv-side {
+  --side-gap: 4mm;
+
+  grid-column: 1;
+  grid-row: 2;
+  background: var(--paper-2);
+  padding: 5mm 5mm 7mm 11mm;
+  font-size: 9.5pt;
+  line-height: 1.4;
+  /* Instrument Sans has a width axis: a slightly narrower cut suits the
+     narrow zone. */
+  font-stretch: 85%;
+}
+
+.cv-side .cv-section + .cv-section {
+  margin-top: var(--side-gap);
+}
+
+.cv-main {
+  grid-column: 2;
+  grid-row: 2;
+  padding: 5mm 12mm 7mm 7mm;
   display: flex;
-  align-items: center;
-  gap: 1.4mm;
-  font-size: 7.5pt;
+  flex-direction: column;
+  gap: 3.6mm;
+  font-size: 9.5pt;
   line-height: 1.3;
 }
 
-.cv-contact-item svg {
-  width: 3mm;
-  height: 3mm;
-  flex: none;
-  color: var(--orange-vivid);
-}
-
-.cv-contact-item a {
-  color: inherit;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-
-/* Body: every remaining section stacks full width, in reading order. */
-.cv-main {
-  padding: 4mm 15mm 5mm;
-  display: flex;
-  flex-direction: column;
-  gap: 1.8mm;
-}
-
-.cv-main h2 {
+/* Section titles: the word, then a hairline running to the edge of the zone. */
+.cv-section h2 {
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 85%;
-  font-size: 11.5pt;
+  font-size: 12.5pt;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  padding-bottom: 0.8mm;
-  border-bottom: 1px solid var(--ink);
-  margin-bottom: 1.6mm;
+  display: flex;
+  align-items: center;
+  gap: 2.5mm;
+  margin-bottom: 2mm;
 }
 
-.cv-summary {
-  font-size: 9.5pt;
-  line-height: 1.35;
+.cv-section h2::after {
+  content: '';
+  flex: 1;
+  height: 0.3mm;
+  background: var(--rule);
 }
+
+.cv-side .cv-section h2::after {
+  background: #c4b9a1;
+}
+
+/* Side zone ─────────────────────────────────────────────────────────────── */
+
+.cv-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4mm;
+}
+
+.cv-contact li {
+  display: flex;
+  align-items: center;
+  gap: 2.3mm;
+  /* The longest line, the LinkedIn address, has to stay whole: an address
+     broken in two is no longer one an ATS recognises. */
+  white-space: nowrap;
+  font-size: 9pt;
+  font-stretch: 80%;
+}
+
+.cv-contact svg {
+  width: 2.9mm;
+  height: 2.9mm;
+  flex: none;
+  color: var(--orange);
+}
+
+.cv-contact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Technical skills: a label per group and its keywords as plain
+   comma-separated text an ATS can match. A keyword never breaks across two
+   lines, so "Entity Framework Core" is always extracted whole.
+
+   The keywords and the languages are indented under their section title,
+   along a rule. The indent is not only looks: poppler takes side-by-side
+   blocks that share a left edge for the cells of a table and reads them row
+   by row, so no two neighbouring blocks of this zone start on the same
+   edge. The label has the keywords' size so both form one block. */
+.cv-tech,
+.cv-languages {
+  padding-left: 2.8mm;
+  border-left: 0.3mm solid #c4b9a1;
+}
+
+.cv-tech-group + .cv-tech-group {
+  margin-top: 1mm;
+}
+
+.cv-tech-group h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-stretch: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: 0;
+  word-spacing: 0.08em;
+  color: var(--orange);
+}
+
+.cv-keyword {
+  white-space: nowrap;
+}
+
+.cv-languages {
+  list-style: none;
+  margin: 0;
+}
+
+/* Main zone ─────────────────────────────────────────────────────────────── */
 
 .cv-summary b {
   color: var(--orange);
 }
 
-/* Technical skills: plain comma-separated keywords, one group per line, so
-   every stack keyword is real flowing text an ATS can match. */
-.cv-tech-group {
-  font-size: 9pt;
-  line-height: 1.35;
-  margin-bottom: 0.5mm;
+.cv-job + .cv-job {
+  margin-top: 2.8mm;
 }
 
-.cv-tech-group .label {
-  font-family: var(--font-mono);
-  font-size: 7.5pt;
-  letter-spacing: 0.02em;
-  color: var(--orange);
-  margin-right: 1mm;
-}
-
-/* Languages: one short line, no stacked fields. */
-.cv-languages {
-  font-size: 9.5pt;
-}
-
-.cv-job {
-  position: relative;
-  padding-left: 5mm;
-  margin-bottom: 1.5mm;
-}
-
-.cv-job::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1.6mm;
-  width: 2mm;
-  height: 2mm;
-  background: var(--orange-vivid);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-.cv-job::after {
-  content: '';
-  position: absolute;
-  left: 0.9mm;
-  top: 5mm;
-  bottom: -3mm;
-  width: 0.3mm;
-  background: var(--rule);
-}
-
-.cv-job:last-child::after {
-  display: none;
-}
-
+/* The title on the left, the dates on the right: every period ends on the
+   same right edge, so the dates read as one column down the page. */
 .cv-job-head {
   display: flex;
   justify-content: space-between;
@@ -226,89 +262,86 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 90%;
-  font-size: 10.5pt;
+  font-size: 11pt;
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
 .cv-job-company {
   color: var(--orange);
+  font-weight: 600;
   text-decoration: none;
 }
 
 .cv-job-period {
   font-family: var(--font-mono);
-  font-size: 7.2pt;
-  letter-spacing: 0.04em;
+  font-size: 8.5pt;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
   white-space: nowrap;
 }
 
 .cv-job-place {
-  font-family: var(--font-mono);
-  font-size: 7.2pt;
-  line-height: 1.15;
-  letter-spacing: 0.04em;
   color: var(--ink-muted);
 }
 
+/* Beside a company name that is the entry's title: body text, not a title. */
+.cv-job-title .cv-job-place {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-stretch: 100%;
+  font-size: 9.5pt;
+  letter-spacing: 0;
+}
+
 .cv-job-summary {
-  font-size: 9pt;
-  color: var(--ink-muted);
-  margin: 0.3mm 0 0.5mm;
+  margin-top: 0.5mm;
 }
 
 .cv-job ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-  font-size: 9pt;
+  margin: 0.4mm 0 0;
 }
 
+/* The marker is a background image, not a positioned pseudo-element: a
+   positioned box is painted after the normal flow, which would move every
+   bullet to the end of the PDF's text stream. */
 .cv-job li {
-  position: relative;
-  padding-left: 3.2mm;
-  margin-bottom: 0.2mm;
-  line-height: 1.2;
+  padding-left: 3.6mm;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 17'%3E%3Cpath d='M0 0 15 8.5 0 17z' fill='%23f26b1d'/%3E%3C/svg%3E")
+    no-repeat 0.3mm 1.3mm / 1.5mm 1.7mm;
 }
 
-.cv-job li::before {
-  content: '';
-  position: absolute;
-  left: 0.2mm;
-  top: 1.5mm;
-  width: 1.4mm;
-  height: 1.4mm;
-  background: var(--orange);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-/* One short line per role instead of a tag cloud: still every stack
-   keyword, as plain flowing text an ATS can match without extra lines. */
+/* One line of plain text per role instead of a tag cloud: still every stack
+   keyword, as flowing text an ATS can match. */
 .cv-stack-line {
-  font-size: 8pt;
-  line-height: 1.2;
+  font-size: 8.5pt;
+  line-height: 1.25;
   color: var(--ink-muted);
   margin-top: 0.6mm;
+  text-wrap: wrap;
 }
 
 .cv-stack-line .label {
   font-family: var(--font-mono);
   font-weight: 600;
+  font-size: 8pt;
   color: var(--orange);
-  margin-right: 1mm;
 }
 
+/* Several roles at one company: indented under it, along a rule. */
 .cv-roles {
-  margin-top: 1.4mm;
+  margin-top: 1.2mm;
   padding-left: 3.5mm;
-  border-left: 1px solid var(--rule);
+  border-left: 0.3mm solid var(--rule);
   display: flex;
   flex-direction: column;
-  gap: 1.4mm;
+  gap: 1.6mm;
 }
 
 .cv-roles .cv-job-title {
-  font-size: 9.5pt;
+  font-size: 10pt;
 }
 
 @media (max-width: 48rem) {
@@ -316,8 +349,26 @@
     min-height: 0;
   }
 
+  /* One column: header, portrait, side zone, main zone. */
+  .cv-sheet {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .cv-header,
+  .cv-portrait,
+  .cv-side,
+  .cv-main {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
   .cv-header {
-    flex-wrap: wrap;
+    margin-inline: 11mm;
+  }
+
+  .cv-main {
+    padding-inline: 11mm;
   }
 }
 

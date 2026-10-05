@@ -10,11 +10,16 @@
 // error overlay under the resume, Chromium printed it, and the good PDF was
 // overwritten without a word. Every check below exists to make that impossible --
 // a bad run now fails loudly and leaves the previous PDF alone.
+import { execFile } from 'node:child_process'
 import { readFile, rename, unlink, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
+import { promisify } from 'node:util'
 import puppeteer from 'puppeteer'
 import { PDFDocument } from 'pdf-lib'
+import { readingOrderProblems } from './lib/cv-text.mjs'
 import { serveStatic } from './lib/static-server.mjs'
+
+const run = promisify(execFile)
 
 const server = process.env.CV_BASE_URL ? null : await serveDist()
 const BASE = process.env.CV_BASE_URL ?? server.url
@@ -105,6 +110,19 @@ async function serveDist() {
   return serveStatic('dist')
 }
 
+// What poppler's pdftotext reads out of a PDF, or null when poppler is not
+// installed. It rebuilds columns from glyph positions, like the parsers many
+// ATS are built on, so it is the extraction worth checking.
+async function extractText(file) {
+  try {
+    const { stdout } = await run('pdftotext', [file, '-'])
+    return stdout
+  } catch (error) {
+    if (error.code === 'ENOENT') return null
+    throw error
+  }
+}
+
 // The Node the project pins. Astro 7 needs 22.12 or newer, so a mismatch here is
 // worth saying out loud before a confusing compile failure appears instead.
 async function warnOnNodeMismatch() {
@@ -178,6 +196,18 @@ async function render(browser, target) {
       )
     }
 
+    // The text of the header and of the two zones, in source order: what an
+    // extractor has to give back from the PDF, in this order.
+    const zones = await page.evaluate(() => {
+      const text = (selector) =>
+        document.querySelector(selector)?.textContent ?? ''
+      return {
+        header: text('.cv-header'),
+        side: text('.cv-side'),
+        main: text('.cv-main'),
+      }
+    })
+
     // Written beside the real file and moved into place only once everything above
     // has passed, so a failed run can never replace a good CV with a broken one.
     const pending = `${target.out}.pending`
@@ -192,12 +222,37 @@ async function render(browser, target) {
     // else; an ATS reads this metadata too, so it gets the same canonical
     // wording as the page content.
     const pdfDoc = await PDFDocument.load(pdfBytes)
+
+    // The CV is one A4 page. Content that grew past it would otherwise spill
+    // onto a second page without a word.
+    if (pdfDoc.getPageCount() !== 1) {
+      throw new Error(
+        `the CV takes ${pdfDoc.getPageCount()} pages instead of 1; ` +
+          `shorten the content or tighten src/styles/cv.css`,
+      )
+    }
+
     pdfDoc.setTitle(target.title)
     pdfDoc.setAuthor('Jesús Bonete Sánchez')
     pdfDoc.setSubject(target.subject)
     pdfDoc.setKeywords(KEYWORDS.split(', '))
     pdfDoc.setLanguage(target.lang)
     await writeFile(pending, await pdfDoc.save())
+
+    // The two zones stand side by side, so an extractor that rebuilds columns
+    // must still read them one after the other. See src/styles/cv.css for what
+    // the layout does to keep it so.
+    const extracted = await extractText(pending)
+    if (extracted === null) {
+      noise.push(
+        'pdftotext (poppler) is not installed: the reading order of the PDF was not checked',
+      )
+    } else {
+      const problems = readingOrderProblems(zones, extracted)
+      if (problems.length) {
+        throw new Error(`pdftotext reads the PDF out of order: ${problems[0]}`)
+      }
+    }
 
     await rename(pending, target.out)
     console.log(`✓ ${target.out}`)

@@ -278,11 +278,14 @@ stack as `.tag`s. Groups separated by `--color-border-strong`.
 ### `/en/cv` and `/cv` — CV
 
 The sheet is always **paper**, regardless of theme: it prints, and it is
-embedded as a preview. The page around it follows the theme. Two columns (it
-fits A4 and the PDF generator): name in Bricolage, section titles with a mono
-number and an ink rule, body in Instrument Sans, the side column in ink with
-paper text, orange only for titles and markers. Chips become `.tag`-like
-`.cv-chip`s. The toolbar has `Download PDF` and `Back to site`.
+embedded as a preview. The page around it follows the theme. One A4 page in
+two zones: a narrow tinted side zone (portrait, contact, technical skills,
+languages) and a wide main zone (summary, experience, education), with the
+name in Bricolage and the role beside the portrait. Section titles run into a
+hairline, body in Instrument Sans, one right-aligned mono date per role, orange
+only for the surname, company names, labels and markers. The source order is
+header, side zone, main zone, and `pnpm cv:pdf` checks that a PDF text
+extractor reads it that way. The toolbar has `Download PDF` and `Back to site`.
 
 ### `404`
 
