@@ -92,10 +92,19 @@ const expTemplate = {
   es: { plus: 'más de {n} años', exact: '{n} años' },
   en: { plus: '{n}+ years', exact: '{n} years' },
 }[lang]
+// The contact lines: the run of spaces an icon sits on, and the middle dot
+// between two items with its spaces. Plain spaces, kept by `white-space: pre`.
+// Three before the dot is the limit: from five on, poppler reads the two
+// lines as a table, and `pnpm cv:pdf` fails.
+const PAD = ' '.repeat(5)
+const DOT = `${' '.repeat(3)}·${' '.repeat(2)}`
+
 // Printed as the short form, linked to the full URL.
-const profiles = ['https://xexubonete.dev', LINKS.linkedin, LINKS.github].map(
-  (href) => ({ href, text: displayUrl(href) }),
-)
+const profiles = [
+  { href: 'https://xexubonete.dev', icon: 'globe' as const },
+  { href: LINKS.linkedin, icon: 'linkedin' as const },
+  { href: LINKS.github, icon: 'github' as const },
+].map((profile) => ({ ...profile, text: displayUrl(profile.href) }))
 
 const profileText = T.profile.replace(
   '{EXP}',
@@ -167,20 +176,32 @@ const profileText = T.profile.replace(
             Jesús <span>Bonete Sánchez</span>
           </h1>
           <p class="cv-role">{T.role}</p>
-          {/* Two plain lines of text, items set apart by a middle dot. Items
-              spaced out like the cells of a row are read by column-detecting
-              extractors as a table, in the wrong order. */}
+          {/* Two lines of text, each item behind its icon and set apart by a
+              middle dot. The icons are vector paths, hidden from assistive
+              tech: they add nothing to the text of the PDF. The air around
+              them is made of real spaces (cv.css says why), so a text
+              extractor sees the same words as without icons, further apart. */}
           <p class="cv-contact">
-            <span>{T.location}</span> ·{' '}
+            <Glyph name="pin" />
+            <span class="cv-pad">{PAD}</span>
+            <span>{T.location}</span>
+            <i>{DOT}</i>
+            <Glyph name="mail" />
+            <span class="cv-pad">{PAD}</span>
             <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
               xexubonete@gmail.com
-            </a>{' '}
-            · <span>(+34) 722 243 881</span>
+            </a>
+            <i>{DOT}</i>
+            <Glyph name="phone" />
+            <span class="cv-pad">{PAD}</span>
+            <span>(+34) 722 243 881</span>
           </p>
           <p class="cv-contact">
             {profiles.map((profile, i) => (
               <>
-                {i > 0 ? ' · ' : ''}
+                {i > 0 ? <i>{DOT}</i> : ''}
+                <Glyph name={profile.icon} />
+                <span class="cv-pad">{PAD}</span>
                 <a
                   class="cv-profile"
                   href={profile.href}
