@@ -32,47 +32,71 @@
   align-items: center;
 }
 
-/* A grid of four cells, not floats or positioned boxes:
-
-     portrait | header
-     side     | main
-
-   The source order is header, portrait, side, main, and Chromium writes the
-   PDF's text in that order. */
+/* One column of text and a tinted panel: a block with the portrait beside
+   the header, continued as a strip down the left edge. The panel is
+   decoration only. Every word of the CV is in the column, in source order,
+   so a text extractor has a single column to read however it rebuilds the
+   page. */
 .cv-sheet {
+  --panel: 36mm;
+  --strip: 9mm;
+
   width: 210mm;
   min-height: 297mm;
   max-width: 100%;
   /* The paper carries the drafting grid of the site's hero (.grid-bg in
      recipes.css): the same 1px lines on a 3rem cell, in the paper value of
      --color-grid, ink at 7%. It is a background image, so it adds nothing to
-     the text of the PDF, and the tinted side zone covers it: the grid shows
-     on the paper only.
+     the text of the PDF. The strip is a second image over it, so the grid
+     shows on the paper only.
 
      One L-shaped path per cell instead of the site's two crossed gradients:
      where the lines cross they would darken twice, and the orange text has
      to keep its 4.5:1 contrast over every pixel of the grid. */
   background-color: var(--paper);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 0H48V1H1V48H0z' fill='%2317130e' fill-opacity='.07'/%3E%3C/svg%3E");
-  background-size: 3rem 3rem;
+  background-image:
+    linear-gradient(
+      90deg,
+      var(--paper-2) var(--strip),
+      transparent var(--strip)
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 0H48V1H1V48H0z' fill='%2317130e' fill-opacity='.07'/%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    3rem 3rem;
   color: var(--ink);
   font-family: var(--font-body);
+  font-size: 9.5pt;
+  line-height: 1.25;
   display: grid;
-  grid-template-columns: 66mm minmax(0, 1fr);
+  grid-template-columns: var(--panel) minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   box-shadow: var(--shadow-sheet);
   overflow: hidden;
-  line-height: 1.3;
 }
 
-/* Header: the name and the role, beside the portrait. Nothing but the
-   portrait stands to its left, so every text extractor reads it first. */
+.cv-panel {
+  background: var(--paper-2);
+  padding: 5.5mm 0 4mm 4.5mm;
+}
+
+.cv-photo {
+  /* Decorative only: the sheet reads the same without it. */
+  display: block;
+  width: 27mm;
+  height: 27mm;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  background: var(--paper);
+  border: 0.3mm solid var(--rule);
+}
+
+/* Header: the name, the role and one run of contact details. */
 .cv-header {
-  grid-column: 2;
-  grid-row: 1;
   align-self: end;
-  margin: 0 12mm 0 7mm;
-  padding: 9mm 0 4mm;
+  margin: 0 11mm 0 6mm;
+  padding: 6.5mm 0 3mm;
   border-bottom: 0.5mm solid var(--ink);
 }
 
@@ -80,7 +104,7 @@
   font-family: var(--font-display);
   font-weight: 800;
   font-stretch: 78%;
-  font-size: 31pt;
+  font-size: 28pt;
   line-height: 1;
   letter-spacing: -0.03em;
 }
@@ -96,60 +120,32 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-muted);
-  margin-top: 2mm;
+  margin-top: 1.8mm;
 }
 
-.cv-portrait {
-  grid-column: 1;
-  grid-row: 1;
-  background: var(--paper-2);
-  padding: 7mm 5mm 0 11mm;
+.cv-contact {
+  color: var(--ink-muted);
 }
 
-.cv-photo {
-  /* Decorative only: the sheet reads the same without it. */
-  display: block;
-  width: 30mm;
-  height: 30mm;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center center;
-  background: var(--paper);
-  border: 0.3mm solid var(--rule);
+.cv-role + .cv-contact {
+  margin-top: 2.4mm;
 }
 
-/* The two zones start on the same line, under the portrait and the header,
-   and the side zone's text runs down without a tall blank. That is what keeps
-   poppler-style extractors on the source order: they treat a main-zone line
-   with no side-zone text beside it as a full-width line, and read it before
-   the rest of the side zone. Keep --side-gap small for the same reason. */
-.cv-side {
-  --side-gap: 4mm;
-
-  grid-column: 1;
-  grid-row: 2;
-  background: var(--paper-2);
-  padding: 5mm 5mm 7mm 11mm;
-  font-size: 9.5pt;
-  line-height: 1.4;
-  /* Instrument Sans has a width axis: a slightly narrower cut suits the
-     narrow zone. */
-  font-stretch: 85%;
-}
-
-.cv-side .cv-section + .cv-section {
-  margin-top: var(--side-gap);
+/* An item never breaks: an address split in two is no longer one an ATS
+   recognises. */
+.cv-contact span,
+.cv-contact a {
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .cv-main {
-  grid-column: 2;
-  grid-row: 2;
-  padding: 5mm 12mm 7mm 7mm;
+  grid-column: 1 / -1;
+  padding: 3.6mm 11mm 6mm calc(var(--strip) + 7mm);
   display: flex;
   flex-direction: column;
-  gap: 3.6mm;
-  font-size: 9.5pt;
-  line-height: 1.3;
+  gap: 2.6mm;
 }
 
 /* Section titles: the word, then a hairline running to the edge of the zone. */
@@ -163,7 +159,7 @@
   display: flex;
   align-items: center;
   gap: 2.5mm;
-  margin-bottom: 2mm;
+  margin-bottom: 1.5mm;
 }
 
 .cv-section h2::after {
@@ -173,71 +169,15 @@
   background: var(--rule);
 }
 
-.cv-side .cv-section h2::after {
-  background: #c4b9a1;
-}
-
-/* Side zone ─────────────────────────────────────────────────────────────── */
-
-.cv-contact {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4mm;
-}
-
-.cv-contact li {
-  display: flex;
-  align-items: center;
-  gap: 2.3mm;
-  /* The longest line, the LinkedIn address, has to stay whole: an address
-     broken in two is no longer one an ATS recognises. */
-  white-space: nowrap;
-  font-size: 9pt;
-  font-stretch: 80%;
-}
-
-.cv-contact svg {
-  width: 2.9mm;
-  height: 2.9mm;
-  flex: none;
-  color: var(--orange);
-}
-
-.cv-contact a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Technical skills: a label per group and its keywords as plain
+/* Technical skills: one labelled line per group, its keywords as plain
    comma-separated text an ATS can match. A keyword never breaks across two
-   lines, so "Entity Framework Core" is always extracted whole.
-
-   The keywords and the languages are indented under their section title,
-   along a rule. The indent is not only looks: poppler takes side-by-side
-   blocks that share a left edge for the cells of a table and reads them row
-   by row, so no two neighbouring blocks of this zone start on the same
-   edge. The label has the keywords' size so both form one block. */
-.cv-tech,
-.cv-languages {
-  padding-left: 2.8mm;
-  border-left: 0.3mm solid #c4b9a1;
-}
-
+   lines, so "Entity Framework Core" is always extracted whole. */
 .cv-tech-group + .cv-tech-group {
-  margin-top: 1mm;
+  margin-top: 0.5mm;
 }
 
-.cv-tech-group h3 {
-  font-family: var(--font-body);
+.cv-tech-group .label {
   font-weight: 700;
-  font-stretch: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  letter-spacing: 0;
-  word-spacing: 0.08em;
   color: var(--orange);
 }
 
@@ -245,31 +185,19 @@
   white-space: nowrap;
 }
 
-.cv-languages {
-  list-style: none;
-  margin: 0;
-}
-
-/* Main zone ─────────────────────────────────────────────────────────────── */
-
 .cv-summary b {
   color: var(--orange);
 }
 
 .cv-job + .cv-job {
-  margin-top: 2.8mm;
+  margin-top: 2.3mm;
 }
 
-/* The title on the left, the dates on the right: every period ends on the
-   same right edge, so the dates read as one column down the page. */
-.cv-job-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 4mm;
-}
-
+/* The title, then its dates, as one line of text. A date pushed to the
+   right edge is a block of its own to an extractor that rebuilds the page,
+   and comes out lines away from the title it belongs to. */
 .cv-job-title {
+  display: inline;
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 90%;
@@ -348,7 +276,7 @@
   border-left: 0.3mm solid var(--rule);
   display: flex;
   flex-direction: column;
-  gap: 1.6mm;
+  gap: 1.3mm;
 }
 
 .cv-roles .cv-job-title {
@@ -360,26 +288,24 @@
     min-height: 0;
   }
 
-  /* One column: header, portrait, side zone, main zone. */
+  /* Narrow screens: the portrait above the header, no strip. */
   .cv-sheet {
+    --strip: 0mm;
+
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: none;
   }
 
-  .cv-header,
-  .cv-portrait,
-  .cv-side,
-  .cv-main {
-    grid-column: 1;
-    grid-row: auto;
+  .cv-panel {
+    padding: 6mm 8mm;
   }
 
   .cv-header {
-    margin-inline: 11mm;
+    margin-inline: 8mm;
+    padding-top: 6mm;
   }
 
   .cv-main {
-    padding-inline: 11mm;
+    padding-inline: 8mm;
   }
 }
 

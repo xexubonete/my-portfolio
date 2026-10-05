@@ -50,7 +50,6 @@ const T = {
     back: 'Volver a la web',
     pdf: '/CV_Jesus_Bonete_ES.pdf',
     location: 'Elda, Alicante, España',
-    contactTitle: 'Contacto',
     profileTitle: 'Perfil profesional',
     profile:
       'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables, especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código.',
@@ -71,7 +70,6 @@ const T = {
     back: 'Back to site',
     pdf: '/CV_Jesus_Bonete_EN.pdf',
     location: 'Elda, Alicante, Spain',
-    contactTitle: 'Contact',
     profileTitle: 'Summary',
     profile:
       'Senior .NET developer with {EXP} of experience building robust and scalable services, specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality.',
@@ -154,81 +152,46 @@ const profileText = T.profile.replace(
         </a>
       </div>
 
-      {/* A header and two zones. The source order is the reading order --
-          header, the side zone in full, then the main zone -- and no text is
-          floated or positioned, so the PDF's text stream follows it. cv.css
-          explains what keeps column-detecting extractors on the same path. */}
+      {/* A decorative panel and one column of text. The panel -- a wide
+          block with the portrait beside the header, then a strip down the
+          left edge -- holds nothing an extractor can read, so the whole CV
+          is a single column in source order: whatever way a PDF parser
+          rebuilds the page, there is no second column to interleave. */}
       <article class="cv-sheet">
+        <div class="cv-panel">
+          <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
+        </div>
+
         <header class="cv-header">
           <h1 class="cv-name">
             Jesús <span>Bonete Sánchez</span>
           </h1>
           <p class="cv-role">{T.role}</p>
-        </header>
-
-        <div class="cv-portrait">
-          <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
-        </div>
-
-        <aside class="cv-side">
-          <section class="cv-section">
-            <h2>{T.contactTitle}</h2>
-            <ul class="cv-contact">
-              <li>
-                <Glyph name="pin" />
-                <span>{T.location}</span>
-              </li>
-              <li>
-                <Glyph name="mail" />
-                <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
-                  xexubonete@gmail.com
+          {/* Two plain lines of text, items set apart by a middle dot. Items
+              spaced out like the cells of a row are read by column-detecting
+              extractors as a table, in the wrong order. */}
+          <p class="cv-contact">
+            <span>{T.location}</span> ·{' '}
+            <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
+              xexubonete@gmail.com
+            </a>{' '}
+            · <span>(+34) 722 243 881</span>
+          </p>
+          <p class="cv-contact">
+            {profiles.map((profile, i) => (
+              <>
+                {i > 0 ? ' · ' : ''}
+                <a
+                  href={profile.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {profile.text}
                 </a>
-              </li>
-              <li>
-                <Glyph name="phone" />
-                <span>(+34) 722 243 881</span>
-              </li>
-              {profiles.map((profile) => (
-                <li>
-                  <Glyph name="globe" />
-                  <a
-                    href={profile.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {profile.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section class="cv-section">
-            <h2>{T.techSkillsTitle}</h2>
-            <div class="cv-tech">
-              {techSkillGroups.map((group) => (
-                <div class="cv-tech-group">
-                  <h3>{group.label}</h3>
-                  <p>
-                    <Keywords items={group.items} />
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section class="cv-section">
-            <h2>{T.langTitle}</h2>
-            <ul class="cv-languages">
-              <li>
-                {T.spanish}: {T.spanishLevel}
-              </li>
-              <li>
-                {T.english}: {T.englishLevel}
-              </li>
-            </ul>
-          </section>
-        </aside>
+              </>
+            ))}
+          </p>
+        </header>
 
         <main class="cv-main">
           <section class="cv-section">
@@ -237,14 +200,31 @@ const profileText = T.profile.replace(
           </section>
 
           <section class="cv-section">
+            <h2>{T.techSkillsTitle}</h2>
+            {techSkillGroups.map((group) => (
+              <p class="cv-tech-group">
+                <span class="label">{group.label}:</span>{' '}
+                <Keywords items={group.items} />
+              </p>
+            ))}
+          </section>
+
+          <section class="cv-section">
+            <h2>{T.langTitle}</h2>
+            <p class="cv-languages">
+              {T.spanish}: {T.spanishLevel} · {T.english}: {T.englishLevel}
+            </p>
+          </section>
+
+          <section class="cv-section">
             <h2>{T.expTitle}</h2>
             {companyGroups.map((group) =>
               group.roles.length === 1 ? (
                 <div class="cv-job">
                   <div class="cv-job-head">
-                    <h3 class="cv-job-title">{group.roles[0].position}</h3>
+                    <h3 class="cv-job-title">{group.roles[0].position}</h3>{' '}
                     <span class="cv-job-period">
-                      {group.roles[0].start} – {group.roles[0].end}
+                      · {group.roles[0].start} – {group.roles[0].end}
                     </span>
                   </div>
                   <p class="cv-job-place">
@@ -290,9 +270,9 @@ const profileText = T.profile.replace(
                     {group.roles.map((role) => (
                       <div class="cv-role-item">
                         <div class="cv-job-head">
-                          <h4 class="cv-job-title">{role.position}</h4>
+                          <h4 class="cv-job-title">{role.position}</h4>{' '}
                           <span class="cv-job-period">
-                            {role.start} – {role.end}
+                            · {role.start} – {role.end}
                           </span>
                         </div>
                         <p class="cv-job-summary">{role.description}</p>
@@ -317,8 +297,8 @@ const profileText = T.profile.replace(
             <h2>{T.eduTitle}</h2>
             <div class="cv-job">
               <div class="cv-job-head">
-                <h3 class="cv-job-title">{T.eduName}</h3>
-                <span class="cv-job-period">2020 – 2022</span>
+                <h3 class="cv-job-title">{T.eduName}</h3>{' '}
+                <span class="cv-job-period">· 2020 – 2022</span>
               </div>
               <p class="cv-job-place">
                 <span class="cv-job-company">IES Mare Nostrum</span> ·{' '}

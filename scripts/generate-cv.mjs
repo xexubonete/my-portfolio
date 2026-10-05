@@ -110,12 +110,13 @@ async function serveDist() {
   return serveStatic('dist')
 }
 
-// What poppler's pdftotext reads out of a PDF, or null when poppler is not
-// installed. It rebuilds columns from glyph positions, like the parsers many
-// ATS are built on, so it is the extraction worth checking.
-async function extractText(file) {
+// What poppler's pdftotext reads out of a PDF in one of its modes, or null
+// when poppler is not installed. It rebuilds the page from glyph positions,
+// like the parsers many ATS are built on, so it is the extraction worth
+// checking.
+async function extractText(file, mode = []) {
   try {
-    const { stdout } = await run('pdftotext', [file, '-'])
+    const { stdout } = await run('pdftotext', [...mode, file, '-'])
     return stdout
   } catch (error) {
     if (error.code === 'ENOENT') return null
@@ -196,17 +197,11 @@ async function render(browser, target) {
       )
     }
 
-    // The text of the header and of the two zones, in source order: what an
-    // extractor has to give back from the PDF, in this order.
-    const zones = await page.evaluate(() => {
-      const text = (selector) =>
-        document.querySelector(selector)?.textContent ?? ''
-      return {
-        header: text('.cv-header'),
-        side: text('.cv-side'),
-        main: text('.cv-main'),
-      }
-    })
+    // The text of the CV in source order: what an extractor has to give back
+    // from the PDF, in this order.
+    const expected = await page.evaluate(
+      () => document.querySelector('.cv-sheet')?.textContent ?? '',
+    )
 
     // Written beside the real file and moved into place only once everything above
     // has passed, so a failed run can never replace a good CV with a broken one.
@@ -239,18 +234,23 @@ async function render(browser, target) {
     pdfDoc.setLanguage(target.lang)
     await writeFile(pending, await pdfDoc.save())
 
-    // The two zones stand side by side, so an extractor that rebuilds columns
-    // must still read them one after the other. See src/styles/cv.css for what
-    // the layout does to keep it so.
-    const extracted = await extractText(pending)
-    if (extracted === null) {
-      noise.push(
-        'pdftotext (poppler) is not installed: the reading order of the PDF was not checked',
-      )
-    } else {
-      const problems = readingOrderProblems(zones, extracted)
+    // The CV is one column of text, and every way of extracting it has to
+    // say so: reading order rebuilt from the glyphs (the default), the order
+    // of the PDF's own text stream (-raw) and the physical layout (-layout),
+    // which puts side-by-side columns on shared lines if there are any.
+    for (const mode of [[], ['-raw'], ['-layout']]) {
+      const extracted = await extractText(pending, mode)
+      if (extracted === null) {
+        noise.push(
+          'pdftotext (poppler) is not installed: the reading order of the PDF was not checked',
+        )
+        break
+      }
+      const problems = readingOrderProblems(expected, extracted)
       if (problems.length) {
-        throw new Error(`pdftotext reads the PDF out of order: ${problems[0]}`)
+        throw new Error(
+          `pdftotext ${mode[0] ?? '(default)'} reads the PDF out of order: ${problems[0]}`,
+        )
       }
     }
 

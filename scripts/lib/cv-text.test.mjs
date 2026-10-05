@@ -3,11 +3,10 @@ import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 import { normalizeText, readingOrderProblems } from './cv-text.mjs'
 
-const zones = {
-  header: 'Jesús Bonete Sánchez\nSenior .NET Developer',
-  side: 'Contact\nxexubonete.dev\nTechnical Skills\nC#, SQL',
-  main: 'Summary\nA renewable-energy company.\nExperience\n01/2026 – 09/2026',
-}
+const page =
+  'Jesús Bonete Sánchez\nSenior .NET Developer\nxexubonete.dev\n' +
+  'Summary\nA renewable-energy company.\nTechnical Skills\nC#, SQL\n' +
+  'Experience\nBackend Intern · 02/2022 – 06/2022\nAn API in .NET.'
 
 describe('normalizeText', () => {
   it('ignores case, whitespace and hyphens', () => {
@@ -23,53 +22,48 @@ describe('normalizeText', () => {
 })
 
 describe('readingOrderProblems', () => {
-  it('accepts header, side zone, main zone', () => {
-    const extracted = [zones.header, zones.side, zones.main].join('\n\n')
-    assert.deepEqual(readingOrderProblems(zones, extracted), [])
+  it('accepts the same text in the same order', () => {
+    assert.deepEqual(readingOrderProblems(page, page), [])
   })
 
-  it('accepts the upper-cased role and a word joined at a line end', () => {
-    const extracted =
-      'Jesús Bonete Sánchez\nSENIOR .NET DEVELOPER\n' +
-      `${zones.side}\nSummary\nA renewableenergy company.\n` +
-      'Experience\n01/2026 – 09/2026'
-    assert.deepEqual(readingOrderProblems(zones, extracted), [])
+  it('accepts other line breaks, the upper-cased role and a joined word', () => {
+    const extracted = page
+      .replace('Senior .NET Developer', 'SENIOR .NET DEVELOPER')
+      .replace('renewable-energy', 'renewableenergy')
+      .replaceAll('\n', '\n\n   ')
+    assert.deepEqual(readingOrderProblems(page, extracted), [])
   })
 
-  it('accepts a date moved by a line inside the main zone', () => {
-    const extracted =
-      `${zones.header}\n${zones.side}\n` +
-      'Summary\nA renewable-energy company.\n01/2026 – 09/2026\nExperience'
-    assert.deepEqual(readingOrderProblems(zones, extracted), [])
-  })
-
-  it('rejects a main-zone line read before the side zone', () => {
-    const extracted = `${zones.header}\nSummary\n${zones.side}\n${zones.main}`
-    const problems = readingOrderProblems(zones, extracted)
+  it('rejects a date read lines after its title', () => {
+    const extracted = page.replace(
+      'Backend Intern · 02/2022 – 06/2022\nAn API in .NET.',
+      'Backend Intern ·\nAn API in .NET.\n02/2022 – 06/2022',
+    )
+    const problems = readingOrderProblems(page, extracted)
     assert.equal(problems.length, 1)
-    assert.match(problems[0], /does not read header, then the side zone/)
+    assert.match(problems[0], /leaves the source order: expected "….*02\/2022/)
   })
 
-  it('rejects the two zones interleaved', () => {
-    const extracted =
-      `${zones.header}\nContact\nxexubonete.dev\nSummary\n` +
-      'Technical Skills\nC#, SQL\nA renewable-energy company.\n' +
-      'Experience\n01/2026 – 09/2026'
-    const problems = readingOrderProblems(zones, extracted)
+  it('rejects two columns read line by line', () => {
+    const extracted = page.replace(
+      'xexubonete.dev\nSummary',
+      'Summary\nxexubonete.dev',
+    )
+    const problems = readingOrderProblems(page, extracted)
     assert.equal(problems.length, 1)
-    assert.match(problems[0], /expected "….*technicalskills/)
+    assert.match(problems[0], /leaves the source order/)
   })
 
-  it('rejects text missing from the main zone', () => {
-    const extracted = `${zones.header}\n${zones.side}\nSummary\nExperience`
-    assert.deepEqual(readingOrderProblems(zones, extracted), [
-      'the text after the side zone is not the main zone: something is ' +
-        'missing, repeated or was read twice',
+  it('rejects text that stops short', () => {
+    const extracted = page.slice(0, page.indexOf('Experience'))
+    assert.deepEqual(readingOrderProblems(page, extracted), [
+      'the text stops short, before "…echnicalskillsc#,sqlexperiencebackendint"',
     ])
   })
 
-  it('rejects text repeated after the main zone', () => {
-    const extracted = `${zones.header}\n${zones.side}\n${zones.main}\nSummary`
-    assert.equal(readingOrderProblems(zones, extracted).length, 1)
+  it('rejects text after the end of the CV', () => {
+    const problems = readingOrderProblems(page, `${page}\nSummary`)
+    assert.equal(problems.length, 1)
+    assert.match(problems[0], /text after the end of the CV/)
   })
 })

@@ -278,14 +278,16 @@ stack as `.tag`s. Groups separated by `--color-border-strong`.
 ### `/en/cv` and `/cv` — CV
 
 The sheet is always **paper**, regardless of theme: it prints, and it is
-embedded as a preview. The page around it follows the theme. One A4 page in
-two zones: a narrow tinted side zone (portrait, contact, technical skills,
-languages) and a wide main zone (summary, experience, education), with the
-name in Bricolage and the role beside the portrait. Section titles run into a
-hairline, body in Instrument Sans, one right-aligned mono date per role, orange
-only for the surname, company names, labels and markers. The source order is
-header, side zone, main zone, and `pnpm cv:pdf` checks that a PDF text
-extractor reads it that way. The toolbar has `Download PDF` and `Back to site`.
+embedded as a preview. The page around it follows the theme. One A4 page,
+one column of text: the name in Bricolage, the role and two lines of contact
+details beside the portrait, then summary, technical skills, languages,
+experience and education. A tinted panel holds the portrait and runs on as a
+strip down the left edge; it carries no text, so a PDF text extractor has a
+single column to read, and `pnpm cv:pdf` checks that it reads it in source
+order. The paper carries the hero's drafting grid. Section titles run into a
+hairline, body in Instrument Sans, dates in mono after each title, orange only
+for the surname, company names, labels and markers. The toolbar has
+`Download PDF` and `Back to site`.
 
 ### `404`
 

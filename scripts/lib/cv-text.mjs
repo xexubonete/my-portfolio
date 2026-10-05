@@ -1,11 +1,11 @@
 // Checks on the text a PDF extractor gets out of the printed CV.
 //
-// The CV is a header above two zones that stand side by side. An ATS has to
-// read it as header, side zone, main zone -- never a line of one zone in the
-// middle of the other. Chromium writes the text in source order, but
-// extractors that rebuild columns from glyph positions (poppler, and the
-// parsers built on it) decide the order themselves, and a layout change can
-// tip them over. `pnpm cv:pdf` runs these checks so that never ships unseen.
+// The CV is a single column of text: the header, then the sections. An ATS
+// has to read it in that order, with nothing lost, moved or read twice.
+// Chromium writes the text in source order, but extractors that rebuild the
+// page from glyph positions (poppler, and the parsers built on it) decide the
+// order themselves, and a layout change -- a second column, say -- can tip
+// them over. `pnpm cv:pdf` runs these checks so that never ships unseen.
 
 /**
  * Text reduced to what has to match between the page and its extraction:
@@ -17,38 +17,27 @@ export function normalizeText(text) {
 }
 
 /**
- * Compares the extracted text of a CV with the text of its three zones, taken
- * from the page in source order. Returns a list of problems, empty when the
- * extraction reads header, then the side zone in full, then the main zone.
- *
- * The header and the side zone must match character for character. Inside
- * the main zone an extractor may still move a right-aligned date by a line,
- * so there only the content is compared, not its exact order.
+ * Compares the extracted text of a CV with the text of the page, taken in
+ * source order. Returns a list of problems, empty when the extraction reads
+ * the same text in the same order.
  */
-export function readingOrderProblems({ header, side, main }, extracted) {
+export function readingOrderProblems(expected, extracted) {
+  const want = normalizeText(expected)
   const text = normalizeText(extracted)
-  const lead = normalizeText(header) + normalizeText(side)
-  const rest = normalizeText(main)
-  const problems = []
+  if (text === want) return []
 
-  if (!text.startsWith(lead)) {
-    let at = 0
-    while (at < lead.length && lead[at] === text[at]) at++
-    problems.push(
-      `the text does not read header, then the side zone: expected ` +
-        `"…${lead.slice(Math.max(0, at - 20), at + 20)}" but found ` +
-        `"…${text.slice(Math.max(0, at - 20), at + 20)}"`,
-    )
-    return problems
+  let at = 0
+  while (at < want.length && want[at] === text[at]) at++
+  const around = (value) => value.slice(Math.max(0, at - 20), at + 20)
+
+  if (at === want.length) {
+    return [`there is text after the end of the CV: "${around(text)}…"`]
   }
-
-  const sorted = (value) => [...value].sort().join('')
-  if (sorted(text.slice(lead.length)) !== sorted(rest)) {
-    problems.push(
-      'the text after the side zone is not the main zone: something is ' +
-        'missing, repeated or was read twice',
-    )
+  if (at === text.length) {
+    return [`the text stops short, before "…${around(want)}"`]
   }
-
-  return problems
+  return [
+    `the text leaves the source order: expected "…${around(want)}" but ` +
+      `found "…${around(text)}"`,
+  ]
 }
