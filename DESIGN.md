@@ -278,11 +278,15 @@ stack as `.tag`s. Groups separated by `--color-border-strong`.
 ### `/en/cv` and `/cv` — CV
 
 The sheet is always **paper**, regardless of theme: it prints, and it is
-embedded as a preview. The page around it follows the theme. Two columns (it
-fits A4 and the PDF generator): name in Bricolage, section titles with a mono
-number and an ink rule, body in Instrument Sans, the side column in ink with
-paper text, orange only for titles and markers. Chips become `.tag`-like
-`.cv-chip`s. The toolbar has `Download PDF` and `Back to site`.
+embedded as a preview. The page around it follows the theme. One column, one
+A4 page: a soft warm header band with a rounded-square photo, the name in
+Bricolage, the role, and the contact and short profile links as plain text
+lines; then Summary, Experience, Education, Technical Skills and Languages.
+Experience is a light timeline (a hairline with a dot per entry) where each
+entry starts with its period, so dates and titles line up and extract as one
+line. Body in Instrument Sans at 9.5 pt, orange only for names, links and
+markers. Skills are comma-separated text, never chips, so an ATS can read
+them. The toolbar has `Download PDF` and `Back to site`.
 
 ### `404`
 
