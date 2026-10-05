@@ -9,15 +9,19 @@ const { lang } = Astro.props
 const { tape } = t(lang)
 ---
 
-{/* The track is duplicated so the loop is seamless; recipes.css hides the
-    copy and wraps the first one under reduced motion. Decorative only: the
-    same items are listed, readable, in the Stack section. */}
+{/* One track holds the item list twice back-to-back so a translateX from
+    0 to -50% loops with no visible seam; recipes.css hides the second copy
+    and wraps the first one under reduced motion. Decorative only: the same
+    items are listed, readable, in the Stack section. */}
 <div class="tape" aria-hidden="true">
-  {[0, 1].map(() => (
-    <div class="tape__track display tape__text">
-      {tape.map((item) => (
-        <span>{item}</span>
-      ))}
-    </div>
-  ))}
+  <div class="tape__track display tape__text">
+    {tape.map((item) => (
+      <span>{item}</span>
+    ))}
+    {tape.map((item) => (
+      <span class="tape__dup" aria-hidden="true">
+        {item}
+      </span>
+    ))}
+  </div>
 </div>
