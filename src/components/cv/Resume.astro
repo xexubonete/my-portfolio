@@ -7,6 +7,7 @@ import Glyph from '@/components/ui/Glyph.astro'
 import Sprite from '@/components/ui/Sprite.astro'
 import { experienceByLang, LINKS, pagePath, t, type Lang } from '@/i18n'
 import { formatYears, groupByCompany } from '@/lib/experience'
+import { CV_WEBSITE, shortUrl } from '@/lib/cv'
 
 interface Props {
   lang: Lang
@@ -16,6 +17,13 @@ const { lang } = Astro.props
 const companyGroups = groupByCompany(experienceByLang[lang])
 const { a11y, skills, experience } = t(lang)
 const stackLabel = experience.stack
+
+// Printed short ("github.com/xexubonete"), linked in full: an ATS still reads
+// the profile, and the PDF keeps a real clickable link.
+const profiles = [LINKS.linkedin, LINKS.github, CV_WEBSITE].map((href) => ({
+  href,
+  label: shortUrl(href),
+}))
 
 // Short, CV-specific labels for the same five stack groups the website's
 // Stack section renders (src/i18n/content.ts: frameworks, patterns,
@@ -50,7 +58,7 @@ const T = {
     location: 'Elda, Alicante, España',
     profileTitle: 'Perfil profesional',
     profile:
-      'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables. Especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código sin sacrificar buenas prácticas. Combino resolución de problemas, trabajo en equipo, comunicación y adaptabilidad para integrarme rápido en cualquier equipo.',
+      'Desarrollador .NET senior con {EXP} de experiencia construyendo servicios robustos y escalables, especializado en arquitecturas limpias, microservicios y optimización de bases de datos. La IA es el núcleo de mi forma de trabajar: integro LLMs y asistentes como Claude o GitHub Copilot en mi día a día para desarrollar más rápido, automatizar tareas y elevar la calidad del código.',
     langTitle: 'Idiomas',
     spanish: 'Español',
     spanishLevel: 'Nativo',
@@ -70,7 +78,7 @@ const T = {
     location: 'Elda, Alicante, Spain',
     profileTitle: 'Summary',
     profile:
-      'Senior .NET developer with {EXP} of experience building robust and scalable services. Specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality without compromising best practices. I bring strong problem solving, teamwork, communication and adaptability to quickly integrate into any team.',
+      'Senior .NET developer with {EXP} of experience building robust and scalable services, specialized in clean architectures, microservices and database optimization. AI is at the core of how I work: I integrate LLMs and assistants like Claude or GitHub Copilot into my daily workflow to build faster, automate tasks and raise code quality.',
     langTitle: 'Languages',
     spanish: 'Spanish',
     spanishLevel: 'Native',
@@ -146,62 +154,37 @@ const profileText = T.profile.replace(
       </div>
 
       <article class="cv-sheet">
+        {/* Text first, photo second: the portrait is decoration at the top
+            right and the header reads the same without it. */}
         <header class="cv-header">
-          <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
           <div class="cv-heading">
-            <div class="cv-heading-row">
-              <h1 class="cv-name">
-                Jesús <span>Bonete Sánchez</span>
-              </h1>
-              <p class="cv-role">{T.role}</p>
-            </div>
-            <div class="cv-contact-row">
-              <span class="cv-contact-item">
-                <Glyph name="pin" />
-                <span>{T.location}</span>
-              </span>
-              <span class="cv-contact-item">
-                <Glyph name="mail" />
-                <a href={LINKS.mail} target="_blank" rel="noopener noreferrer">
-                  xexubonete@gmail.com
-                </a>
-              </span>
-              <span class="cv-contact-item">
-                <Glyph name="phone" />
-                <span>(+34) 722 243 881</span>
-              </span>
-              <span class="cv-contact-item">
-                <Glyph name="globe" />
-                <a
-                  href="https://xexubonete.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  https://xexubonete.dev
-                </a>
-              </span>
-              <span class="cv-contact-item">
-                <Glyph name="globe" />
-                <a
-                  href={LINKS.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  https://www.linkedin.com/in/jesus-bonete-sanchez
-                </a>
-              </span>
-              <span class="cv-contact-item">
-                <Glyph name="globe" />
-                <a
-                  href={LINKS.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  https://github.com/xexubonete
-                </a>
-              </span>
-            </div>
+            <h1 class="cv-name">
+              Jesús <span>Bonete Sánchez</span>
+            </h1>
+            <p class="cv-role">{T.role}</p>
+            <p class="cv-contact">
+              {T.location}
+              <span class="sep"> · </span>
+              xexubonete@gmail.com
+              <span class="sep"> · </span>
+              (+34) 722 243 881
+            </p>
+            <p class="cv-contact cv-contact--links">
+              {profiles.map((profile, i) => (
+                <>
+                  {i > 0 && <span class="sep"> · </span>}
+                  <a
+                    href={profile.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {profile.label}
+                  </a>
+                </>
+              ))}
+            </p>
           </div>
+          <img class="cv-photo" src="/me.png" alt="Jesús Bonete" />
         </header>
 
         <main class="cv-main">
@@ -221,18 +204,14 @@ const profileText = T.profile.replace(
           </section>
 
           <section class="cv-section">
-            <h2>{T.langTitle}</h2>
-            <p class="cv-languages">
-              {T.spanish}: {T.spanishLevel} · {T.english}: {T.englishLevel}
-            </p>
-          </section>
-
-          <section class="cv-section">
             <h2>{T.expTitle}</h2>
             {companyGroups.map((group) =>
               group.roles.length === 1 ? (
                 <div class="cv-job">
                   <div class="cv-job-head">
+                    <span class="cv-job-period">
+                      {group.roles[0].start} – {group.roles[0].end}
+                    </span>
                     <span class="cv-job-title">
                       {group.roles[0].position} ·{' '}
                       <a
@@ -243,12 +222,9 @@ const profileText = T.profile.replace(
                       >
                         {group.company}
                       </a>
-                    </span>
-                    <span class="cv-job-period">
-                      {group.roles[0].start} – {group.roles[0].end}
+                      <span class="cv-job-place">{group.location}</span>
                     </span>
                   </div>
-                  <div class="cv-job-place">{group.location}</div>
                   <p class="cv-job-summary">{group.roles[0].description}</p>
                   <ul>
                     {group.roles[0].responsibilities.map((task) => (
@@ -263,27 +239,29 @@ const profileText = T.profile.replace(
               ) : (
                 <div class="cv-job">
                   <div class="cv-job-head">
-                    <a
-                      class="cv-job-title cv-job-company"
-                      href={group.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {group.company}
-                    </a>
                     <span class="cv-job-period">
                       {group.start} – {group.end}
                     </span>
+                    <span class="cv-job-title">
+                      <a
+                        class="cv-job-company"
+                        href={group.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {group.company}
+                      </a>
+                      <span class="cv-job-place">{group.location}</span>
+                    </span>
                   </div>
-                  <div class="cv-job-place">{group.location}</div>
                   <div class="cv-roles">
                     {group.roles.map((role) => (
-                      <div>
+                      <div class="cv-role-entry">
                         <div class="cv-job-head">
-                          <span class="cv-job-title">{role.position}</span>
                           <span class="cv-job-period">
                             {role.start} – {role.end}
                           </span>
+                          <span class="cv-job-title">{role.position}</span>
                         </div>
                         <p class="cv-job-summary">{role.description}</p>
                         <ul>
@@ -307,14 +285,21 @@ const profileText = T.profile.replace(
             <h2>{T.eduTitle}</h2>
             <div class="cv-job">
               <div class="cv-job-head">
+                <span class="cv-job-period">2020 – 2022</span>
                 <span class="cv-job-title">
                   {T.eduName} ·{' '}
                   <span class="cv-job-company">IES Mare Nostrum</span>
+                  <span class="cv-job-place">{T.eduPlace}</span>
                 </span>
-                <span class="cv-job-period">2020 – 2022</span>
               </div>
-              <div class="cv-job-place">{T.eduPlace}</div>
             </div>
+          </section>
+
+          <section class="cv-section">
+            <h2>{T.langTitle}</h2>
+            <p class="cv-languages">
+              {T.spanish}: {T.spanishLevel} · {T.english}: {T.englishLevel}
+            </p>
           </section>
         </main>
       </article>

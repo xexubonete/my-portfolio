@@ -278,11 +278,15 @@ stack as `.tag`s. Groups separated by `--color-border-strong`.
 ### `/en/cv` and `/cv` — CV
 
 The sheet is always **paper**, regardless of theme: it prints, and it is
-embedded as a preview. The page around it follows the theme. Two columns (it
-fits A4 and the PDF generator): name in Bricolage, section titles with a mono
-number and an ink rule, body in Instrument Sans, the side column in ink with
-paper text, orange only for titles and markers. Chips become `.tag`-like
-`.cv-chip`s. The toolbar has `Download PDF` and `Back to site`.
+embedded as a preview. The page around it follows the theme. One editorial
+column on a single A4 page: the name large in Bricolage with the role in the
+serif italic, two contact lines (profiles printed short, linked in full), the
+portrait as a ringed circle at the top right, and a double rule closing the
+masthead. Each section hangs from a hairline on the left, its title marked by
+a short orange bar; entries lead with their dates, right-aligned in a fixed
+column beside the title so a text extractor reads both as one line. Body in
+Instrument Sans at 9.5pt, orange only for titles, labels and markers. The
+toolbar has `Download PDF` and `Back to site`.
 
 ### `404`
 
