@@ -9,17 +9,20 @@
 
 /**
  * Text reduced to what has to match between the page and its extraction:
- * lower case (the role line is upper-cased by CSS), no whitespace, and no
- * hyphens (extractors join a word hyphenated at a line end).
+ * the words, in order, in lower case (CSS upper-cases the role line), one
+ * space apart whatever the line breaks, and without hyphens (extractors join
+ * a word hyphenated at a line end). The spaces are kept on purpose: an
+ * extraction that runs the words together is a failure.
  */
 export function normalizeText(text) {
-  return text.toLowerCase().replace(/[\s-]+/g, '')
+  return text.toLowerCase().replace(/-\s*/g, '').replace(/\s+/g, ' ').trim()
 }
 
 /**
  * Compares the extracted text of a CV with the text of the page, taken in
- * source order. Returns a list of problems, empty when the extraction reads
- * the same text in the same order.
+ * source order as the browser lays it out (`innerText`). Returns a list of
+ * problems, empty when the extraction reads the same words in the same
+ * order.
  */
 export function readingOrderProblems(expected, extracted) {
   const want = normalizeText(expected)

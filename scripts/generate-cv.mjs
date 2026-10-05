@@ -200,7 +200,7 @@ async function render(browser, target) {
     // The text of the CV in source order: what an extractor has to give back
     // from the PDF, in this order.
     const expected = await page.evaluate(
-      () => document.querySelector('.cv-sheet')?.textContent ?? '',
+      () => document.querySelector('.cv-sheet')?.innerText ?? '',
     )
 
     // Written beside the real file and moved into place only once everything above

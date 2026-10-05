@@ -7,6 +7,86 @@
    Plain CSS, imported by the CV page component and by design/cv.html.
    ────────────────────────────────────────────────────────────────────────── */
 
+/* The sheet's own fonts: static cuts of the site's variable fonts, one per
+   style used here (scripts/lib/cv-fonts.mjs lists them, `pnpm cv:fonts`
+   builds them). Chromium embeds a static font in the PDF as TrueType; a
+   variable one becomes Type 3 glyph procedures, which text extractors read
+   less reliably. The shapes are the same, so the sheet looks as it did. */
+@font-face {
+  font-family: 'CV Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cv/sans-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/cv/sans-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/cv/sans-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Display';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 78%;
+  font-display: swap;
+  src: url('/fonts/cv/display-800-78.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Display';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 85%;
+  font-display: swap;
+  src: url('/fonts/cv/display-700-85.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Display';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 90%;
+  font-display: swap;
+  src: url('/fonts/cv/display-700-90.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cv/mono-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/cv/mono-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CV Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/cv/mono-600.woff2') format('woff2');
+}
+
 .cv-page {
   --paper: #fbf8f2;
   --paper-2: #efe9dc;
@@ -40,6 +120,14 @@
 .cv-sheet {
   --panel: 36mm;
   --strip: 9mm;
+  --font-display:
+    'CV Display', 'Bricolage Grotesque Fallback', 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-body:
+    'CV Sans', 'Instrument Sans Fallback', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    'CV Mono', 'JetBrains Mono Fallback', ui-monospace, 'SF Mono', Menlo,
+    Consolas, monospace;
 
   width: 210mm;
   min-height: 297mm;
@@ -68,6 +156,10 @@
   font-family: var(--font-body);
   font-size: 9.5pt;
   line-height: 1.25;
+  /* Chromium positions each word in the PDF instead of writing the spaces,
+     and poppler's raw mode only sees a word break in a gap wider than this
+     font's own space. A hair more keeps the words apart in every extractor. */
+  word-spacing: 0.03em;
   display: grid;
   grid-template-columns: var(--panel) minmax(0, 1fr);
   grid-template-rows: auto 1fr;
@@ -109,6 +201,18 @@
   letter-spacing: -0.03em;
 }
 
+/* The condensed display cut has a narrow space and is set tight; see the
+   note on word-spacing in .cv-sheet. */
+.cv-name,
+.cv-section h2,
+.cv-job-title {
+  word-spacing: 0.1em;
+}
+
+.cv-name {
+  word-spacing: 0.2em;
+}
+
 .cv-name span {
   color: var(--orange);
 }
@@ -138,6 +242,13 @@
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
+}
+
+/* The site and the two profiles are where a reader goes next: bold, in the
+   orange ink (5.5:1 on the paper, 4.8:1 over a grid line). */
+.cv-contact .cv-profile {
+  font-weight: 700;
+  color: var(--orange);
 }
 
 .cv-main {
@@ -212,12 +323,18 @@
   text-decoration: none;
 }
 
+/* A company name that is the entry's title keeps the title's weight. */
+.cv-job-title .cv-job-company {
+  font-weight: inherit;
+}
+
 .cv-job-period {
   font-family: var(--font-mono);
   font-size: 8.5pt;
   font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
   white-space: nowrap;
+  margin-left: 0.15em;
 }
 
 .cv-job-place {

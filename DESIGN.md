@@ -286,7 +286,9 @@ strip down the left edge; it carries no text, so a PDF text extractor has a
 single column to read, and `pnpm cv:pdf` checks that it reads it in source
 order. The paper carries the hero's drafting grid. Section titles run into a
 hairline, body in Instrument Sans, dates in mono after each title, orange only
-for the surname, company names, labels and markers. The toolbar has
+for the surname, company names, profile links, labels and markers. The sheet
+uses static cuts of the three families (`public/fonts/cv/`) so the PDF embeds
+plain TrueType. The toolbar has
 `Download PDF` and `Back to site`.
 
 ### `404`

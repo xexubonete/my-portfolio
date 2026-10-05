@@ -8,6 +8,7 @@
   "scripts": {
     "build": "astro build",
     "check": "astro check",
+    "cv:fonts": "node scripts/build-cv-fonts.mjs",
     "cv:pdf": "astro build && node scripts/generate-cv.mjs",
     "dev": "astro dev",
     "format": "prettier -w . --cache",
