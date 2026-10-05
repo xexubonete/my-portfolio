@@ -235,6 +235,10 @@
   margin-top: 2.4mm;
 }
 
+.cv-contact + .cv-contact {
+  margin-top: 0.6mm;
+}
+
 /* An item never breaks: an address split in two is no longer one an ATS
    recognises. */
 .cv-contact span,
@@ -242,6 +246,28 @@
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
+}
+
+/* The air between the items is made of spaces, not margins, and each icon
+   sits on a run of spaces instead of pushing the text aside. To an extractor
+   that rebuilds lines from glyph positions (pdfminer, poppler), a blank wider
+   than a couple of characters ends the line: the items then become cells of
+   a table and are read column by column. Spaces are glyphs in the PDF, so
+   the line stays one line however far apart the items look. */
+.cv-contact i,
+.cv-contact .cv-pad {
+  font-style: normal;
+  white-space: pre;
+}
+
+.cv-contact svg {
+  display: inline-block;
+  width: 2.9mm;
+  height: 2.9mm;
+  /* Takes no room: the spaces of .cv-pad that follow run under it. */
+  margin-right: -2.9mm;
+  vertical-align: -0.45mm;
+  color: var(--orange);
 }
 
 /* The site and the two profiles are where a reader goes next: bold, in the
